@@ -7,12 +7,12 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rpl.barbelq.FXMLController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#778a9a" height="400.0" stroke="WHITE" strokeType="INSIDE" width="600.0" />
-      <Button layoutX="277.0" layoutY="249.0" mnemonicParsing="false" text="Login" />
-      <PasswordField layoutX="226.0" layoutY="211.0" promptText="password" />
-      <TextField layoutX="226.0" layoutY="175.0" promptText="email" />
+      <Button layoutX="277.0" layoutY="249.0" mnemonicParsing="false" onAction="#Login" text="Login" />
+      <PasswordField fx:id="txtPassword" layoutX="226.0" layoutY="211.0" promptText="password" />
+      <TextField fx:id="txtEmail" layoutX="226.0" layoutY="175.0" promptText="email" /> 
       <Label layoutX="245.0" layoutY="58.0" text="BarbelQ" textFill="WHITE">
          <font>
             <Font name="Leelawadee UI Semilight" size="32.0" />
@@ -21,5 +21,6 @@
       <Label layoutX="260.0" layoutY="105.0" text="Weight Tracker" textFill="WHITE" />
       <Label layoutX="226.0" layoutY="314.0" text="Belum punya akun?" textFill="WHITE" />
       <Button fx:id="btnDaftar" layoutX="330.0" layoutY="310.0" mnemonicParsing="false" onAction="#buttoncomOnAction" text="Daftar" />
+      <Label fx:id="label" layoutX="286.0" layoutY="287.0" />
    </children>
 </AnchorPane>
