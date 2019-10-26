@@ -17,7 +17,7 @@ public class MainApp extends Application {
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/styles/Styles.css");
         
-        primaryStage.setTitle("JavaFX and Maven");
+        primaryStage.setTitle("BarbelQ: Weight Tracker");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

@@ -10,12 +10,10 @@
 
 <AnchorPane fx:id="formDaftar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#26a0bc" height="400.0" layoutX="159.0" stroke="WHITE" strokeType="INSIDE" width="283.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#26a0bc" height="400.0" stroke="WHITE" strokeType="INSIDE" width="600.0" />
       <Button layoutX="277.0" layoutY="297.0" mnemonicParsing="false" text="Daftar" />
       <PasswordField layoutX="227.0" layoutY="251.0" promptText="password" />
       <TextField layoutX="227.0" layoutY="206.0" promptText="email" />
-      <Label layoutX="216.0" layoutY="344.0" text="Tidak punya akun?" textFill="WHITE" />
-      <Button contentDisplay="TEXT_ONLY" layoutX="326.0" layoutY="340.0" mnemonicParsing="false" text="Daftar" />
       <Label layoutX="260.0" layoutY="105.0" text="Weight Tracker" textFill="WHITE" />
       <Label layoutX="232.0" layoutY="25.0" prefHeight="80.0" prefWidth="138.0" text="BarbelQ" textFill="WHITE">
          <font>
