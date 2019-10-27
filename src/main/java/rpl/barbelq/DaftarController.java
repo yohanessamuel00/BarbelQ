@@ -5,18 +5,19 @@
  */
 package rpl.barbelq;
 
+import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -26,7 +27,9 @@ import javafx.stage.Stage;
  *
  * @author yohan
  */
-public class DaftarController {
+public class DaftarController implements Initializable {
+    DBBarbelQ dbModel = new DBBarbelQ();
+    Alert a = new Alert(Alert.AlertType.NONE);
     
     @FXML
     private Button btnDaftar;
@@ -44,30 +47,70 @@ public class DaftarController {
     private PasswordField inputPassword;
     
     @FXML
-    void btnDaftar(ActionEvent event) {
-        Connection connection = SqliteConnection.getInstance().Connector();
-        try {
-        String nama = inputNama.getText();
+    private TextField inputUsia;
+    
+    @SuppressWarnings("empty-statement")
+    private boolean cekEmail(){
+        int id = 0;
         String email = inputEmail.getText();
-        String password = inputPassword.getText();
-        
-        Statement statement = connection.createStatement();
-        
-        int status = statement.executeUpdate("insert into DataPengguna (nama, email, password)" + 
-                " values ('"+nama+"','"+email+"','"+password+"')");
-       
-        if (status > 0) {
-            System.out.println("user registered");
+        try{
+            dbModel.rs =dbModel.resultset("select id_pengguna from DataPengguna where email ='" +inputEmail.getText()+"'");
+            while(dbModel.rs.next()) {
+                id = dbModel.rs.getInt("id_pengguna");
+            }
+            dbModel.rs.close();
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }   
+        if(id != 0) return false;
+        else return true;
+    }
+    
+    
+    @FXML
+    void btnDaftar(ActionEvent event) throws IOException, SQLException {
+        try {
+            if(cekEmail()){
+                int id = 0;
+                int cek = 0;
+                dbModel.InsertOrUpdate("insert into DataPengguna (nama, email, password,usia) values ('"+inputNama.getText()+"','"+inputEmail.getText()+"','"+inputPassword.getText()+"','"+inputUsia.getText()+"')");
+                dbModel.rs = dbModel.resultset("select id_pengguna from DataPengguna where email ='" +inputEmail.getText()+"'");
+                while (dbModel.rs.next()) {
+                   id = dbModel.rs.getInt("id_pengguna");
+                }
+                dbModel.rs.close();
+                cek  = dbModel.InsertOrUpdate("insert into Berat_badan (id_pengguna) values ('"+id+"')");
+                if (cek > 0) {
+                    System.out.println("user registered");
+                }
+                Stage stage1 = (Stage) btnDaftar.getScene().getWindow();
+                stage1.close();
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/User.fxml"));
+                Parent root1 = (Parent) fxmlLoader.load();
+                UserController userController = (UserController)fxmlLoader.getController();
+                userController.GetUser(id);
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root1));  
+                stage.show();
+                dbModel.statement.close(); 
+            }else{
+                a.setAlertType(Alert.AlertType.INFORMATION);
+                a.setHeaderText("Register Gagal");
+                a.setContentText("Email telah terdaftar");
+                // show the dialog 
+                a.show(); 
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
-       
-       } catch (SQLException e) {
-            e.printStackTrace();
-        }     
+        
     }
     
     @FXML
     void btnLogin(ActionEvent event) {
-            try {
+        try {
+            Stage stage1 = (Stage) btnDaftar.getScene().getWindow();
+            stage1.close();
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Scene.fxml"));
             Parent root1 = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
@@ -77,7 +120,6 @@ public class DaftarController {
             e.printStackTrace();
         }
     }
-
 
     @FXML
     void inputNama(ActionEvent event) {
@@ -93,6 +135,14 @@ public class DaftarController {
     void inputPassword(ActionEvent event) {
 
     }
-    
-    
+
+    @FXML
+    void inputUsia(ActionEvent event) {
+
+    } 
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        
+    }
 }

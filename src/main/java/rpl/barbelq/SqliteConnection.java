@@ -13,12 +13,7 @@ import java.sql.DriverManager;
  * @author ALDO
  */
 class SqliteConnection {
-    private SqliteConnection(){
-        
-    }
-    public static SqliteConnection getInstance() {
-        return new SqliteConnection();
-    }
+
     public static Connection Connector() {
         try {
             Class.forName("org.sqlite.JDBC");

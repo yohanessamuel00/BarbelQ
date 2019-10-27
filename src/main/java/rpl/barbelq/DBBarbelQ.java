@@ -9,15 +9,23 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  *
  * @author ALDO
  */
-class LoginModel {
+class DBBarbelQ {
      Connection conection;
-     public LoginModel () {
+     Statement statement;
+     ResultSet rs=null;
+     public DBBarbelQ () {
         conection = SqliteConnection.Connector();
+        try{
+            statement = conection.createStatement();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
         if (conection == null) {
         System.out.println("connection not successful");
         System.exit(1);}
@@ -54,5 +62,24 @@ class LoginModel {
             preparedStatement.close();
             resultSet.close();
         }
+    }
+    
+    public int InsertOrUpdate(String query){
+        int hasil=0;
+        try{
+            hasil = statement.executeUpdate(query);           
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return hasil;
+    }
+    
+    public ResultSet resultset(String query){
+        try{
+            rs = statement.executeQuery(query);
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return rs;
     }
 }
