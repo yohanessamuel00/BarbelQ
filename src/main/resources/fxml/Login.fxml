@@ -9,7 +9,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1360.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rpl.barbelq.DaftarController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1360.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rpl.barbelq.LoginController">
    <children>
       <StackPane prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
          <children>
@@ -25,12 +25,12 @@
             </HBox>
             <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="568.0">
                <children>
-                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="693.0" prefWidth="338.0" style="-fx-background-color: #2188ff;">
+                  <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="568.0" prefWidth="338.0" style="-fx-background-color: #2188ff;">
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
                      <children>
-                        <VBox alignment="CENTER" prefHeight="548.0" prefWidth="318.0">
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                            <children>
                               <ImageView fitHeight="147.0" fitWidth="158.0">
                                  <image>
@@ -51,62 +51,23 @@
                      <children>
                         <HBox alignment="TOP_RIGHT">
                            <children>
-                              <VBox prefHeight="200.0" prefWidth="100.0">
+                              <VBox prefHeight="125.0" prefWidth="109.0">
                                  <children>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #2188ff; -fx-font-weight: bold;" text="BarbelQ" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold; -fx-fill: #2188ff;" text="Weight Tracker" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #2188ff; -fx-font-weight: bold;" text="Weight Tracker" wrappingWidth="108.24462890625" />
                                  </children>
                               </VBox>
                            </children>
                         </HBox>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 2em; -fx-font-weight: bold; -fx-fill: #2188ff;" text="Sign Up">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 2em; -fx-font-weight: bold; -fx-fill: #2188ff;" text="Login">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
                         </Text>
                         <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
                            <children>
-                              <Label prefHeight="21.0" prefWidth="70.0" text="Nama">
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin></Label>
-                              <TextField fx:id="inputNama" onAction="#inputNama" prefHeight="31.0" prefWidth="208.0" promptText="nama" style="-fx-background-color: transparent;">
-                                 <HBox.margin>
-                                    <Insets top="5.0" />
-                                 </HBox.margin>
-                              </TextField>
-                           </children>
-                           <VBox.margin>
-                              <Insets top="30.0" />
-                           </VBox.margin>
-                        </HBox>
-                        <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
-                           <children>
-                              <Label prefHeight="26.0" prefWidth="77.0" text="Usia">
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                                 <padding>
-                                    <Insets top="5.0" />
-                                 </padding>
-                              </Label>
-                              <TextField fx:id="inputUsia" onAction="#inputUsia" prefHeight="26.0" prefWidth="201.0" promptText="usia" style="-fx-background-color: transparent;">
-                                 <HBox.margin>
-                                    <Insets top="5.0" />
-                                 </HBox.margin>
-                                 <padding>
-                                    <Insets top="5.0" />
-                                 </padding>
-                              </TextField>
-                           </children>
-                           <VBox.margin>
-                              <Insets top="30.0" />
-                           </VBox.margin>
-                        </HBox>
-                        <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
-                           <children>
                               <Label prefHeight="21.0" prefWidth="70.0" text="Email" />
-                              <TextField fx:id="inputEmail" onAction="#inputEmail" prefHeight="31.0" prefWidth="208.0" promptText="example@examp.com" style="-fx-background-color: transparent;">
+                              <TextField fx:id="txtEmail" prefHeight="31.0" prefWidth="208.0" promptText="example@examp.com" style="-fx-background-color: transparent;">
                                  <HBox.margin>
                                     <Insets top="5.0" />
                                  </HBox.margin>
@@ -123,7 +84,7 @@
                                     <Insets top="5.0" />
                                  </HBox.margin>
                               </Label>
-                              <PasswordField fx:id="inputPassword" onAction="#inputPassword" promptText="password" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
+                              <PasswordField fx:id="txtPassword" promptText="password" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
                                  <HBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </HBox.margin>
@@ -133,19 +94,24 @@
                               <Insets top="30.0" />
                            </VBox.margin>
                         </HBox>
-                        <Button fx:id="btnDaftar" mnemonicParsing="false" onAction="#btnDaftar" prefWidth="180.0" style="-fx-background-color: #2188ff; -fx-background-radius: 100px; -fx-text-fill: white;" text="Signup">
+                        <Label fx:id="label" text="Label">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Button mnemonicParsing="false" onAction="#Login" prefWidth="180.0" style="-fx-background-color: #2188ff; -fx-background-radius: 100px; -fx-text-fill: white;" text="Login">
                            <VBox.margin>
                               <Insets top="30.0" />
                            </VBox.margin>
                         </Button>
                         <HBox alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="Already have an account ?">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="Need an account ?">
                                  <HBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </HBox.margin>
                               </Text>
-                              <Hyperlink fx:id="btnLogin" onAction="#btnLogin" style="-fx-text-fill: #2188ff; -fx-border-image-width: 0px 0px 0px; -fx-font-weight: bold;" text="Login">
+                              <Hyperlink fx:id="btnDaftar" onAction="#buttoncomOnAction" style="-fx-text-fill: #2188ff; -fx-border-image-width: 0px 0px 0px; -fx-font-weight: bold;" text="Signup">
                                  <HBox.margin>
                                     <Insets bottom="6.0" left="10.0" right="10.0" top="10.0" />
                                  </HBox.margin>

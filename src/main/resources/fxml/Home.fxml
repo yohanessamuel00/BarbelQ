@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.effect.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1360.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rpl.barbelq.HomeController">
+   <children>
+      <StackPane prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox prefHeight="748.0" prefWidth="493.0" style="-fx-background-color: #fe4451;" />
+                  <VBox prefHeight="748.0" prefWidth="848.0">
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="568.0">
+               <children>
+                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="568.0" prefWidth="338.0" style="-fx-background-color: #fe4451;">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="548.0" prefWidth="317.0">
+                           <children>
+                              <ImageView fitHeight="147.0" fitWidth="158.0">
+                                 <image>
+                                    <Image url="@../logo/logo.png" />
+                                 </image>
+                              </ImageView>
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Just Do It" textAlignment="CENTER" wrappingWidth="157.4677734375" />
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Nothing Impossible" textAlignment="CENTER" wrappingWidth="155.82177734375" />
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Impossible Is Nothing" textAlignment="CENTER" wrappingWidth="155.82177734375" />
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="We Try Harder" textAlignment="CENTER" wrappingWidth="155.82177734375" />
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Make Believe" textAlignment="CENTER" wrappingWidth="155.82177734375" />
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="LET'S GOOOOOOO" textAlignment="CENTER" wrappingWidth="155.82177734375" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="568.0" prefWidth="693.0" style="-fx-background-color: white;">
+                     <children>
+                        <HBox alignment="TOP_RIGHT">
+                           <children>
+                              <VBox prefHeight="135.0" prefWidth="109.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #fe4451; -fx-font-weight: bold;" text="BarbelQ" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #fe4451; -fx-font-weight: bold;" text="Weight Tracker" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 2em; -fx-font-weight: bold; -fx-fill: #fe4451;" text="Welcome to BarbelQ">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #fe4451;" text="Input your Height and Weight " />
+                        <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
+                           <children>
+                              <Label prefHeight="21.0" prefWidth="70.0" text="Height" />
+                              <TextField fx:id="inputTinggi" onAction="#inputTinggi" prefHeight="31.0" prefWidth="208.0" promptText="height:cm" style="-fx-background-color: transparent;">
+                                 <HBox.margin>
+                                    <Insets top="5.0" />
+                                 </HBox.margin>
+                              </TextField>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="30.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
+                           <children>
+                              <Label prefHeight="21.0" prefWidth="70.0" text="Weight" />
+                              <TextField fx:id="inputBerat" onAction="#inputBerat" prefHeight="31.0" prefWidth="208.0" promptText="weight:cm" style="-fx-background-color: transparent;">
+                                 <HBox.margin>
+                                    <Insets top="5.0" />
+                                 </HBox.margin>
+                              </TextField>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="30.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <Button fx:id="btnSubmit" mnemonicParsing="false" onAction="#handleSubmit" prefWidth="180.0" style="-fx-background-color: #fe4451; -fx-background-radius: 100px; -fx-text-fill: white;" text="Submit">
+                           <VBox.margin>
+                              <Insets top="30.0" />
+                           </VBox.margin>
+                        </Button>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </VBox>
+               </children>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </HBox>
+         </children>
+      </StackPane>
+   </children>
+</AnchorPane>

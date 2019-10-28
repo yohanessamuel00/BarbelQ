@@ -27,7 +27,8 @@ import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
-public class UserController implements Initializable {
+public class HomeController implements Initializable {
+    DBBarbelQ dbModel = new DBBarbelQ();
     
     private int session;
     
@@ -45,23 +46,26 @@ public class UserController implements Initializable {
     private TextField inputBerat;
     
     @FXML
-    void btnSubmit(ActionEvent event) throws IOException, SQLException {
-        Connection connection = SqliteConnection.Connector();
-        try {
+    void handleSubmit(ActionEvent event) throws SQLException, IOException {
+        try{
+            int cek = 0;
             String berat = inputBerat.getText();
             String tinggi = inputTinggi.getText();
-            Statement statement = connection.createStatement();
-            
-            int status2 = statement.executeUpdate("update DataPengguna set tinggi = '" +tinggi+ "'" + 
-                " where id_pengguna =  "+session+"");
-            int status = statement.executeUpdate("update Berat_badan set berat_badan = '" +berat+ "'" + 
-                " where id_pengguna =  "+session+"");
-            
-            if (status > 0 && status2 > 0) {
+            dbModel.InsertOrUpdate("update DataPengguna set tinggi = '" +tinggi+ "' where id_pengguna =  "+session+"");
+            dbModel.InsertOrUpdate("update Berat_badan set berat_badan = '" +berat+ "' where id_pengguna =  "+session+"");
+            if (cek > 0) {
                 System.out.println("Data Berhasil Masuk");
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            dbModel.statement.close();
+            Stage stage1 = (Stage) btnSubmit.getScene().getWindow();
+            stage1.close();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/PrimaryHome.fxml"));
+            Parent root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root1));  
+            stage.show();
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
         }
         
     }

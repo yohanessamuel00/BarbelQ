@@ -85,9 +85,9 @@ public class DaftarController implements Initializable {
                 }
                 Stage stage1 = (Stage) btnDaftar.getScene().getWindow();
                 stage1.close();
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/User.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Home.fxml"));
                 Parent root1 = (Parent) fxmlLoader.load();
-                UserController userController = (UserController)fxmlLoader.getController();
+                HomeController userController = (HomeController)fxmlLoader.getController();
                 userController.GetUser(id);
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root1));  
@@ -111,7 +111,7 @@ public class DaftarController implements Initializable {
         try {
             Stage stage1 = (Stage) btnDaftar.getScene().getWindow();
             stage1.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Scene.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
             Parent root1 = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
             stage.setScene(new Scene(root1));  
