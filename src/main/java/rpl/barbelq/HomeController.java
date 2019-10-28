@@ -53,18 +53,13 @@ public class HomeController implements Initializable {
             if (cek > 0) {
                 System.out.println("Data Berhasil Masuk");
             }
-            dbModel.rs = dbModel.resultset("select id_pengguna from DataPengguna where email ='" +session+"'");
-            while (dbModel.rs.next()) {
-                id = dbModel.rs.getInt("id_pengguna");
-            }
-            dbModel.rs.close();
             dbModel.statement.close();
             Stage stage1 = (Stage) btnSubmit.getScene().getWindow();
             stage1.close();
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/PrimaryHome.fxml"));
             Parent root1 = (Parent) fxmlLoader.load();
             PrimaryHomeController primaryHome = (PrimaryHomeController)fxmlLoader.getController();
-            primaryHome.GetUser(id);
+            primaryHome.GetUser(session);
             Stage stage = new Stage();
             stage.setScene(new Scene(root1));  
             stage.show();
@@ -81,8 +76,8 @@ public class HomeController implements Initializable {
     } 
     
     public void GetUser(int user) {
-  // TODO Auto-generated method stub
-    session = user;
+        // TODO Auto-generated method stub
+        session = user;
     }
     
     @FXML
