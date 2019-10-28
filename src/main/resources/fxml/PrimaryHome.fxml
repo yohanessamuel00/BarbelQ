@@ -1,24 +1,136 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.chart.*?>
-<?import javafx.scene.media.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.shape.*?>
 <?import javafx.scene.image.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.effect.*?>
+<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="768.0" prefWidth="1360.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rpl.barbelq.PrimaryHomeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1280.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rpl.barbelq.PrimaryHomeController">
    <children>
-      <StackPane prefHeight="768.0" prefWidth="1360.0">
-         <children>
-            <HBox prefHeight="768.0" prefWidth="1360.0" />
-         </children>
-      </StackPane>
+      <StackPane prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+      <TabPane prefHeight="700.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Home">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+          <Tab text="Overview">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+            <Tab text="Setting">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <HBox prefHeight="736.0" prefWidth="1360.0">
+                           <children>
+                              <VBox prefHeight="748.0" prefWidth="493.0" style="-fx-background-color: #fe4451;" />
+                              <VBox prefHeight="748.0" prefWidth="848.0">
+                                 <effect>
+                                    <DropShadow />
+                                 </effect>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="736.0" prefWidth="1359.0">
+                           <children>
+                              <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="568.0" prefWidth="693.0" style="-fx-background-color: white;">
+                                 <children>
+                                    <HBox alignment="TOP_RIGHT">
+                                       <children>
+                                          <VBox prefHeight="135.0" prefWidth="109.0">
+                                             <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #fe4451; -fx-font-weight: bold;" text="BarbelQ" />
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #fe4451; -fx-font-weight: bold;" text="Weight Tracker" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 2em; -fx-font-weight: bold; -fx-fill: #fe4451;" text="Edit Profile">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </Text>
+                                    <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="302.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
+                                       <children>
+                                          <Label prefHeight="21.0" prefWidth="94.0" text="Change Nama" />
+                                          <TextField fx:id="Changename" prefHeight="31.0" prefWidth="208.0" promptText="nama" style="-fx-background-color: transparent;">
+                                             <HBox.margin>
+                                                <Insets top="5.0" />
+                                             </HBox.margin>
+                                          </TextField>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets top="30.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="300.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
+                                       <children>
+                                          <Label prefHeight="21.0" prefWidth="91.0" text="Change Usia" />
+                                          <TextField fx:id="Changeusia" prefHeight="31.0" prefWidth="208.0" promptText="usia" style="-fx-background-color: transparent;">
+                                             <HBox.margin>
+                                                <Insets top="5.0" />
+                                             </HBox.margin>
+                                          </TextField>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets top="30.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="57.0" prefWidth="300.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
+                                       <children>
+                                          <Label prefHeight="21.0" prefWidth="93.0" text="Change Email">
+                                             <HBox.margin>
+                                                <Insets top="30.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <TextField fx:id="Changeemail" prefHeight="31.0" prefWidth="208.0" promptText="email" style="-fx-background-color: transparent;">
+                                             <HBox.margin>
+                                                <Insets top="30.0" />
+                                             </HBox.margin>
+                                          </TextField>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="304.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
+                                       <children>
+                                          <Label prefHeight="21.0" prefWidth="98.0" text="Change Password" />
+                                          <PasswordField fx:id="Changepassword" prefHeight="25.0" prefWidth="213.0" promptText="password" style="-fx-background-color: transparent;" />
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets top="30.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <Button mnemonicParsing="false" onAction="#handleUpdate" prefWidth="180.0" style="-fx-background-color: #fe4451; -fx-background-radius: 100px; -fx-text-fill: white;" text="Update">
+                                       <VBox.margin>
+                                          <Insets top="30.0" />
+                                       </VBox.margin>
+                                    </Button>
+                                    <Button fx:id="btnLogout" mnemonicParsing="false" onAction="#handleLogout" prefWidth="180.0" style="-fx-background-color: #fe4451; -fx-background-radius: 100px; -fx-text-fill: white;" text="LogOut">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Button>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
    </children>
 </AnchorPane>

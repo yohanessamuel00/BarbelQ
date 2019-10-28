@@ -7,7 +7,6 @@ package rpl.barbelq;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -49,7 +48,6 @@ public class DaftarController implements Initializable {
     @FXML
     private TextField inputUsia;
     
-    @SuppressWarnings("empty-statement")
     private boolean cekEmail(){
         int id = 0;
         String email = inputEmail.getText();
@@ -62,24 +60,26 @@ public class DaftarController implements Initializable {
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }   
-        if(id != 0) return false;
-        else return true;
+        return id == 0;
+    }
+    
+    private boolean cekField(){
+        return !(inputNama.getText().equals("") || inputUsia.getText().equals("") || inputEmail.getText().equals("") || inputPassword.getText().equals(""));
     }
     
     
     @FXML
     void btnDaftar(ActionEvent event) throws IOException, SQLException {
         try {
-            if(cekEmail()){
+            if(cekEmail() && cekField()){
                 int id = 0;
-                int cek = 0;
                 dbModel.InsertOrUpdate("insert into DataPengguna (nama, email, password,usia) values ('"+inputNama.getText()+"','"+inputEmail.getText()+"','"+inputPassword.getText()+"','"+inputUsia.getText()+"')");
                 dbModel.rs = dbModel.resultset("select id_pengguna from DataPengguna where email ='" +inputEmail.getText()+"'");
                 while (dbModel.rs.next()) {
                    id = dbModel.rs.getInt("id_pengguna");
                 }
                 dbModel.rs.close();
-                cek  = dbModel.InsertOrUpdate("insert into Berat_badan (id_pengguna) values ('"+id+"')");
+                int cek  = dbModel.InsertOrUpdate("insert into Berat_badan (id_pengguna) values ('"+id+"')");
                 if (cek > 0) {
                     System.out.println("user registered");
                 }
@@ -95,10 +95,13 @@ public class DaftarController implements Initializable {
                 dbModel.statement.close(); 
             }else{
                 a.setAlertType(Alert.AlertType.INFORMATION);
-                a.setHeaderText("Register Gagal");
-                a.setContentText("Email telah terdaftar");
+                a.setTitle("Register Gagal");
+                a.setHeaderText(null);
+                if(cekField()== false) a.setContentText("Field Tidak Boleh Kosong");
+                else a.setContentText("Email telah terdaftar");
+                
                 // show the dialog 
-                a.show(); 
+                a.showAndWait(); 
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -116,8 +119,8 @@ public class DaftarController implements Initializable {
             Stage stage = new Stage();
             stage.setScene(new Scene(root1));  
             stage.show();
-        } catch(Exception e) {
-            e.printStackTrace();
+        } catch(IOException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -143,6 +146,6 @@ public class DaftarController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        
+       
     }
 }

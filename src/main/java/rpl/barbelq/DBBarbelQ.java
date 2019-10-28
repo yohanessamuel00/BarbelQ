@@ -6,6 +6,7 @@
 package rpl.barbelq;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,17 +19,17 @@ import java.sql.Statement;
 class DBBarbelQ {
      Connection conection;
      Statement statement;
-     ResultSet rs=null;
+     ResultSet rs = null;
      public DBBarbelQ () {
-        conection = SqliteConnection.Connector();
         try{
+            Class.forName("org.sqlite.JDBC");
+            conection =DriverManager.getConnection("jdbc:sqlite:BarbelQ.db");
             statement = conection.createStatement();
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-        if (conection == null) {
-        System.out.println("connection not successful");
-        System.exit(1);}
+        }catch(ClassNotFoundException | SQLException e){
+            System.out.println(e.getMessage());
+            System.out.println("connection not successful");
+            System.exit(1);
+        }   
     }
   
     public boolean isDbConnected() {
@@ -36,31 +37,26 @@ class DBBarbelQ {
             return !conection.isClosed();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return false;
         }
     }
     public boolean isLogin(String user, String pass) throws SQLException {
         PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
         String query = "select * from DataPengguna where email = ? and password = ?";
         try {    
             preparedStatement = conection.prepareStatement(query);
             preparedStatement.setString(1, user);
             preparedStatement.setString(2, pass);
     
-            resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-               return true;
-            }else {
-                return false;
-            }
-        } catch (Exception e) {
+            rs = preparedStatement.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
             return false;
             // TODO: handle exception
         } finally {
             preparedStatement.close();
-            resultSet.close();
+            rs.close();
         }
     }
     

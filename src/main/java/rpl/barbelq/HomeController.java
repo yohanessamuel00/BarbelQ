@@ -12,9 +12,7 @@ package rpl.barbelq;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,8 +22,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import javafx.scene.Node;
-import javafx.scene.layout.Pane;
 
 public class HomeController implements Initializable {
     DBBarbelQ dbModel = new DBBarbelQ();
@@ -49,6 +45,7 @@ public class HomeController implements Initializable {
     void handleSubmit(ActionEvent event) throws SQLException, IOException {
         try{
             int cek = 0;
+            int id = 0;
             String berat = inputBerat.getText();
             String tinggi = inputTinggi.getText();
             dbModel.InsertOrUpdate("update DataPengguna set tinggi = '" +tinggi+ "' where id_pengguna =  "+session+"");
@@ -56,11 +53,18 @@ public class HomeController implements Initializable {
             if (cek > 0) {
                 System.out.println("Data Berhasil Masuk");
             }
+            dbModel.rs = dbModel.resultset("select id_pengguna from DataPengguna where email ='" +session+"'");
+            while (dbModel.rs.next()) {
+                id = dbModel.rs.getInt("id_pengguna");
+            }
+            dbModel.rs.close();
             dbModel.statement.close();
             Stage stage1 = (Stage) btnSubmit.getScene().getWindow();
             stage1.close();
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/PrimaryHome.fxml"));
             Parent root1 = (Parent) fxmlLoader.load();
+            PrimaryHomeController primaryHome = (PrimaryHomeController)fxmlLoader.getController();
+            primaryHome.GetUser(id);
             Stage stage = new Stage();
             stage.setScene(new Scene(root1));  
             stage.show();

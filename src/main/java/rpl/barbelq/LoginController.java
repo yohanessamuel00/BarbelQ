@@ -2,9 +2,7 @@ package rpl.barbelq;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -36,13 +34,10 @@ public class LoginController implements Initializable {
             stage.setScene(new Scene(root1));  
             stage.show();
         } catch(IOException e) {
-            System.out.println(e.getMessage());;
+            System.out.println(e.getMessage());
         }
     }
     
-    @FXML
-    private Label label;
-   
     @FXML
     private TextField txtEmail;
    
@@ -53,9 +48,9 @@ public class LoginController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         if (dbModel.isDbConnected()) {
-            label.setText("Connected");
+            System.out.println("Connected");
         } else {
-            label.setText("Not Connected");
+            System.out.println("Not Connected");
         }
     } 
    
@@ -64,19 +59,18 @@ public class LoginController implements Initializable {
         try {
             if (dbModel.isLogin(txtEmail.getText(), txtPassword.getText())) {
                 int id = 0;
+                dbModel.rs = dbModel.resultset("select id_pengguna from DataPengguna where email ='" +txtEmail.getText()+"'");
+                while (dbModel.rs.next()) {
+                   id = dbModel.rs.getInt("id_pengguna");
+                }
+                dbModel.rs.close();
                 Stage stage1 = (Stage) btnDaftar.getScene().getWindow();
                 stage1.close();
                 Stage primaryStage = new Stage();
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Home.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/PrimaryHome.fxml"));
                 Parent root1 = (Parent) fxmlLoader.load();
-                Statement statement = dbModel.conection.createStatement();
-                ResultSet rs = statement.executeQuery("select id_pengguna from DataPengguna where email ='" +txtEmail.getText()+"'");
-                while (rs.next()) {
-                    id = rs.getInt("id_pengguna");
-                }
-                rs.close();
-                HomeController userController = (HomeController)fxmlLoader.getController();
-                userController.GetUser(id);
+                PrimaryHomeController primaryHome = (PrimaryHomeController)fxmlLoader.getController();
+                primaryHome.GetUser(id);
                 Scene scene = new Scene(root1);
                 scene.getStylesheets().add("/styles/Styles.css");
                 primaryStage.setScene(scene);
@@ -84,20 +78,17 @@ public class LoginController implements Initializable {
             } else {
                 // set alert type 
                 a.setAlertType(AlertType.INFORMATION);
-                a.setHeaderText("Login Gagal");
+                a.setTitle("Login Gagal");
+                a.setHeaderText(null);
                 a.setContentText("Email atau Password Salah");
                 // show the dialog 
-                txtEmail.clear();
-                txtPassword.clear();
-                a.show(); 
+                a.showAndWait();
             }
-        } catch (SQLException e) {
-            label.setText("username and password is not correct");
+        } catch (SQLException | IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
+        // TODO Auto-generated catch block
+        
     }   
 }
