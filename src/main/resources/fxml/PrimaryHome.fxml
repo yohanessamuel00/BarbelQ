@@ -13,11 +13,76 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+
 <AnchorPane id="AnchorPane" prefHeight="768.0" prefWidth="1360.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rpl.barbelq.PrimaryHomeController">
    <children>
       <StackPane prefHeight="768.0" prefWidth="1360.0">
          <children>
-            <HBox prefHeight="768.0" prefWidth="1360.0" />
+            <HBox prefHeight="768.0" prefWidth="1360.0">
+               <children>
+                  <TabPane prefHeight="768.0" prefWidth="1368.0" style="-fx-background-color: white; -fx-rotate: right;" tabClosingPolicy="UNAVAILABLE" tabMinHeight="100.0" tabMinWidth="655.0">
+                    <tabs>
+                      <Tab style="-fx-background-color: #fe4451; -fx-background-radius: 200px; -fx-font-weight: Bold;" text="Home">
+                           <content>
+                              <HBox alignment="CENTER" style="-fx-background-color: WHITE;">
+                                 <children>
+                                    <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="657.0" prefWidth="643.0">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="YOUR IDEAL BODY WEIGHT">
+                                             <VBox.margin>
+                                                <Insets top="50.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <TextArea maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="23.0" prefWidth="60.0">
+                                             <VBox.margin>
+                                                <Insets top="50.0" />
+                                             </VBox.margin>
+                                          </TextArea>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="SUGGESTION FOR YOU">
+                                             <VBox.margin>
+                                                <Insets top="50.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <TextArea maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="142.0" prefWidth="573.0">
+                                             <VBox.margin>
+                                                <Insets top="50.0" />
+                                             </VBox.margin>
+                                          </TextArea>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </content>
+                        </Tab>
+                      <Tab style="-fx-background-color: #2188ff; -fx-background-radius: 200px; -fx-font-weight: bold;" text="Overview">
+                           <content>
+                              <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <LineChart>
+                                      <xAxis>
+                                        <CategoryAxis side="BOTTOM" />
+                                      </xAxis>
+                                      <yAxis>
+                                        <NumberAxis side="LEFT" />
+                                      </yAxis>
+                                    </LineChart>
+                                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                                       <children>
+                                          <Button mnemonicParsing="false" style="-fx-background-color: #2188ff; -fx-background-radius: 200px; -fx-text-fill: white;" text="Tambah">
+                                             <font>
+                                                <Font size="24.0" />
+                                             </font>
+                                          </Button>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </VBox>
+                           </content>
+                        </Tab>
+                    </tabs>
+                  </TabPane>
+               </children>
+            </HBox>
          </children>
       </StackPane>
    </children>
