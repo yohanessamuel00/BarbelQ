@@ -70,7 +70,7 @@ public class LoginController implements Initializable {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/PrimaryHome.fxml"));
                 Parent root1 = (Parent) fxmlLoader.load();
                 PrimaryHomeController primaryHome = (PrimaryHomeController)fxmlLoader.getController();
-                primaryHome.GetUser(id);
+                primaryHome.GetUser(id  );
                 Scene scene = new Scene(root1);
                 scene.getStylesheets().add("/styles/Styles.css");
                 primaryStage.setScene(scene);

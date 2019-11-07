@@ -8,6 +8,7 @@ package rpl.barbelq;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -52,7 +53,8 @@ public class PrimaryHomeController implements Initializable {
     }    
 
     @FXML
-    private void handleUpdate(ActionEvent event) {
+    private void handleUpdate(ActionEvent event) throws SQLException {
+        int id = 0;
         if(!Changename.getText().isEmpty()) {
             dbModel.InsertOrUpdate("update DataPengguna set nama = '" +Changename.getText()+ "' where id_pengguna =  "+session+"");
             Changename.setText("");
@@ -62,19 +64,36 @@ public class PrimaryHomeController implements Initializable {
             Changeusia.setText("");
         }
         if(!Changeemail.getText().isEmpty()) {
-            dbModel.InsertOrUpdate("update DataPengguna set email = '" +Changeemail.getText()+ "' where id_pengguna =  "+session+"");
+            dbModel.rs = dbModel.resultset("select * from DataPengguna where email ='"+Changeemail.getText()+"'");
+            while(dbModel.rs.next()){
+                id = dbModel.rs.getInt("id_pengguna");
+            }
+            dbModel.rs.close();
+            if(id == 0){
+               dbModel.InsertOrUpdate("update DataPengguna set email = '" +Changeemail.getText()+ "' where id_pengguna =  "+session+""); 
+            }
             Changeemail.setText("");
         }
         if(!Changepassword.getText().isEmpty()) {
             dbModel.InsertOrUpdate("update DataPengguna set password = '" +Changepassword.getText()+ "' where id_pengguna =  "+session+"");
             Changepassword.setText("");
         }
-        a.setAlertType(Alert.AlertType.INFORMATION);
-        a.setTitle("BarbelQ");
-        a.setHeaderText(null);
-        a.setContentText("Update Berhasil");
-        // show the dialog 
-        a.show();
+        if(id!=0){
+            a.setAlertType(Alert.AlertType.INFORMATION);
+            a.setTitle("BarbelQ");
+            a.setHeaderText(null);
+            a.setContentText("Email telah Digunakan");
+            // show the dialog 
+            a.show(); 
+        }else{
+            a.setAlertType(Alert.AlertType.INFORMATION);
+            a.setTitle("BarbelQ");
+            a.setHeaderText(null);
+            a.setContentText("Update Berhasil");
+            // show the dialog 
+            a.show(); 
+        }
+        
     }
 
     @FXML
