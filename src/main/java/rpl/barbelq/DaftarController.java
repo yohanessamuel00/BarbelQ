@@ -73,10 +73,12 @@ public class DaftarController implements Initializable {
         try {
             if(cekEmail() && cekField()){
                 int id = 0;
+                String namaUser = "";
                 dbModel.InsertOrUpdate("insert into DataPengguna (nama, email, password,usia) values ('"+inputNama.getText()+"','"+inputEmail.getText()+"','"+inputPassword.getText()+"','"+inputUsia.getText()+"')");
-                dbModel.rs = dbModel.resultset("select id_pengguna from DataPengguna where email ='" +inputEmail.getText()+"'");
+                dbModel.rs = dbModel.resultset("select id_pengguna, nama from DataPengguna where email ='" +inputEmail.getText()+"'");
                 while (dbModel.rs.next()) {
                    id = dbModel.rs.getInt("id_pengguna");
+                   namaUser = dbModel.rs.getString("nama");
                 }
                 dbModel.rs.close();
                 int cek  = dbModel.InsertOrUpdate("insert into Berat_badan (id_pengguna) values ('"+id+"')");
@@ -88,7 +90,7 @@ public class DaftarController implements Initializable {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Home.fxml"));
                 Parent root1 = (Parent) fxmlLoader.load();
                 HomeController userController = (HomeController)fxmlLoader.getController();
-                userController.GetUser(id);
+                userController.GetUser(id,namaUser);
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root1));  
                 stage.show();

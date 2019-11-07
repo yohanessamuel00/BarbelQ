@@ -27,6 +27,7 @@ public class HomeController implements Initializable {
     DBBarbelQ dbModel = new DBBarbelQ();
     
     private int session;
+    private String namaUser;
     
     @FXML
     private TextField inputTinggi;
@@ -59,7 +60,7 @@ public class HomeController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/PrimaryHome.fxml"));
             Parent root1 = (Parent) fxmlLoader.load();
             PrimaryHomeController primaryHome = (PrimaryHomeController)fxmlLoader.getController();
-            primaryHome.GetUser(session);
+            primaryHome.GetUser(session,namaUser);
             Stage stage = new Stage();
             stage.setScene(new Scene(root1));  
             stage.show();
@@ -75,9 +76,10 @@ public class HomeController implements Initializable {
     
     } 
     
-    public void GetUser(int user) {
+    public void GetUser(int user, String nama) {
         // TODO Auto-generated method stub
         session = user;
+        namaUser = nama;
     }
     
     @FXML

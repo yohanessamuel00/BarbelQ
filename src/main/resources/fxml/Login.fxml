@@ -94,12 +94,7 @@
                               <Insets top="30.0" />
                            </VBox.margin>
                         </HBox>
-                        <Label fx:id="label" text="Label">
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </Label>
-                        <Button mnemonicParsing="false" onAction="#Login" prefWidth="180.0" style="-fx-background-color: #2188ff; -fx-background-radius: 100px; -fx-text-fill: white;" text="Login">
+                        <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#Login" prefWidth="180.0" style="-fx-background-color: #2188ff; -fx-background-radius: 100px; -fx-text-fill: white;" text="Login">
                            <VBox.margin>
                               <Insets top="30.0" />
                            </VBox.margin>

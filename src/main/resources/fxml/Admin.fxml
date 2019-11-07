@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane minHeight="500.0" minWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rpl.barbelq.AdminController">
+   <bottom>
+      <FlowPane BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Database Saran">
+               <padding>
+                  <Insets bottom="4.0" left="5.0" right="4.0" top="4.0" />
+               </padding>
+            </Label>
+         </children>
+      </FlowPane>
+   </bottom>
+   <center>
+      <TableView fx:id="tabelSaran" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <columns>
+            <TableColumn fx:id="" prefWidth="75.0" text="ID" />
+            <TableColumn fx:id="1" prefWidth="324.0" text="Aktivitas" />
+            <TableColumn fx:id="2" prefWidth="349.0" text="Makanan" />
+            <TableColumn fx:id="3" prefWidth="251.0" text="Pengguna" />
+         </columns>
+      </TableView>
+   </center>
+   <top>
+      <VBox BorderPane.alignment="CENTER">
+         <children>
+            <MenuBar>
+               <menus>
+                  <Menu mnemonicParsing="false" text="File">
+                     <items>
+                        <MenuItem fx:id="menuClose" mnemonicParsing="false" text="Close" />
+                     </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Help">
+                     <items>
+                        <MenuItem fx:id="menuAbout" mnemonicParsing="false" text="About" />
+                     </items>
+                  </Menu>
+               </menus>
+            </MenuBar>
+            <ToolBar prefHeight="40.0" prefWidth="200.0">
+               <items>
+                  <Button fx:id="btnTambah" mnemonicParsing="false" text="Tambah" />
+               </items>
+            </ToolBar>
+         </children>
+      </VBox>
+   </top>
+</BorderPane>
