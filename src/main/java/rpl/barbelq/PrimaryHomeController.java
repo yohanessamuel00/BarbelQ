@@ -39,101 +39,76 @@ public class PrimaryHomeController implements Initializable {
     private int session;
     private String nama;
     private String name,usia,email,password,tinggi;
-    private String cek,cek1;
+    private String cek;
     
     @FXML
-    private TextField Changename;
-    @FXML
-    private TextField Changeusia;
-    @FXML
-    private TextField Changeemail;
+    private TextField Changename, Changeusia, Changeemail, Changetinggi, inpBerat;
     @FXML
     private PasswordField Changepassword;
     @FXML
     private Button btnLogout;
-     @FXML
-    private Button btnUpdate;
     @FXML
-    private TextField Changetinggi;
+    private Label label1,namaUser, namaUser2, namaUser3;
     @FXML
-    private TextField inpBerat;
+    private HBox hbox1,hbox2,hbox3,hbox4,hbox5;
     @FXML
-    private Label label1;
+    private Button btnEdit;
     @FXML
-    private Label namaUser;
+    private Button btnCancel;
     @FXML
-    private Label namaUser2;
-    @FXML
-    private Label namaUser3;
-    @FXML
-    private HBox hbox1;
-    @FXML
-    private HBox hbox2;
-    @FXML
-    private HBox hbox3;
-    @FXML
-    private HBox hbox4;
-    @FXML
-    private HBox hbox5;
-    @FXML
-    private Hyperlink edit1;
-    @FXML
-    private Hyperlink cancel1;
-    @FXML
-    private Hyperlink edit2;
-    @FXML
-    private Hyperlink cancel2;
-    @FXML
-    private Hyperlink edit3;
-    @FXML
-    private Hyperlink cancel3;
-    @FXML
-    private Hyperlink edit4;
-    @FXML
-    private Hyperlink cancel4;
-    @FXML
-    private Hyperlink edit5;
-    @FXML
-    private Hyperlink cancel5;
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-        
-    }   
+    private Button Update;
     
-    private void coba1(String a, String b){
-        if(cek.equals("nama")){
-             Changename.setText(b);
-             Changename.disableProperty().set(true);
-             cancel1.disableProperty().set(true);
-             hbox1.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
-        }
+    
+    private boolean cekEmail(TextField email) {
+        String cekEmail="";
+        try{
+            dbModel.rs =dbModel.resultset("select email from DataPengguna where id_pengguna ='" +session+"'");
+            if(dbModel.rs.next()) {
+                cekEmail = dbModel.rs.getString("email");
+            }
+            dbModel.rs.close();
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }   
+        return cekEmail.equals(email.getText());
     }
-    
-    private String coba(String a){
-        if(cek.equals("nama")){
-             return Changename.getText();
+    @FXML
+    private void btnUpdate(ActionEvent event) {
+        if(!Changename.getText().isEmpty() && !Changeusia.getText().isEmpty() && !Changeemail.getText().isEmpty() && !Changepassword.getText().isEmpty() && !Changetinggi.getText().isEmpty()){
+            if(!cekEmail(Changeemail)){
+                dbModel.InsertOrUpdate("update DataPengguna set nama= '" +Changename.getText()+ "',email = '" +Changeemail.getText()+ "',password= '" +Changepassword.getText()+ "',usia= '" +Changeusia.getText()+ "',tinggi= '" +Changetinggi.getText()+ "' where id_pengguna =  "+session+"");
+                btnEdit.disableProperty().set(false);
+                Update.disableProperty().set(true);
+                btnCancel.disableProperty().set(true);
+                namaUser.setText(Changename.getText());
+                namaUser2.setText(Changename.getText());
+                namaUser3.setText(Changename.getText());
+                tutupField();
+                hbox1.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
+                hbox2.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
+                hbox3.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
+                hbox4.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
+                hbox5.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
+                a.setAlertType(Alert.AlertType.INFORMATION);
+                a.setTitle("BarbelQ");
+                a.setHeaderText(null);
+                a.setContentText("Update Berhasil");
+                    // show the dialog 
+                a.show();
+            }else{
+                a.setAlertType(Alert.AlertType.INFORMATION);
+                a.setTitle("BarbelQ");
+                a.setHeaderText(null);
+                a.setContentText("Email Telah Terdaftar");
+                a.show();
+            }   
         }else{
-            return "";
+            a.setAlertType(Alert.AlertType.INFORMATION);
+            a.setTitle("BarbelQ");
+            a.setHeaderText(null);
+            a.setContentText("Data Tidak Boleh Kosong");
+            a.show();
         }
-    }
-    
-    @FXML
-    private void handleUpdate(ActionEvent event) {
-        if(!Changename.getText().isEmpty() || !Changeusia.getText().isEmpty() || !Changeemail.getText().isEmpty() || !Changepassword.getText().isEmpty() || !Changetinggi.getText().isEmpty()){
-            dbModel.InsertOrUpdate("update DataPengguna set "+cek+" = '" +coba(cek)+ "' where id_pengguna =  "+session+"");
-            coba1(cek,coba(cek));
-        }
-        a.setAlertType(Alert.AlertType.INFORMATION);
-        a.setTitle("BarbelQ");
-        a.setHeaderText(null);
-        a.setContentText("Update Berhasil");
-        // show the dialog 
-        a.show();
-        btnUpdate.disableProperty().set(true);
     }
 
     @FXML
@@ -150,6 +125,7 @@ public class PrimaryHomeController implements Initializable {
             System.out.println(e.getMessage());
         }
     }
+    
  ///////////////////////////////////////////////////////////////////////////////////////////////   
     @FXML
     void handleTambah(ActionEvent event) throws SQLException {
@@ -159,146 +135,19 @@ public class PrimaryHomeController implements Initializable {
         a.setContentText("Apakah Anda Yakin Menambah Data");
         Optional<ButtonType> result = a.showAndWait();
         if(result.get() == ButtonType.OK){
-            dbModel.InsertOrUpdate("insert into Berat_badan(berat_badan,id_pengguna) values ('" +inpBerat.getText()+ "','"+session+"')");
-            inpBerat.setText("");
+            if(Double.parseDouble(inpBerat.getText()) < 10 || Double.parseDouble(inpBerat.getText()) > 100){
+                a.setAlertType(Alert.AlertType.INFORMATION);
+                a.setTitle("BarbelQ");
+                a.setHeaderText(null);
+                a.setContentText("Data Tidak Valid");
+                a.show();
+            }else{
+               dbModel.InsertOrUpdate("insert into Berat_badan(berat_badan,id_pengguna) values ('" +inpBerat.getText()+ "','"+session+"')");
+                inpBerat.setText(""); 
+            }  
         }
     }
     
-    @FXML
-    void handleedit1(ActionEvent event) {
-        Changename.setText("");
-        Changename.disableProperty().set(false);
-        cancel1.disableProperty().set(false);
-        hbox1.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: red;");
-        btnUpdate.disableProperty().set(false);
-        edit2.disableProperty().set(true);
-        edit3.disableProperty().set(true);
-        edit4.disableProperty().set(true);
-        edit5.disableProperty().set(true);
-        cek = "nama";
-        
-    }
-    
-    @FXML
-    void handlecancel1(ActionEvent event) {
-        Changename.setText(name);
-        Changename.disableProperty().set(true);
-        cancel1.disableProperty().set(true);
-        hbox1.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
-        btnUpdate.disableProperty().set(true);
-        edit2.disableProperty().set(false);
-        edit3.disableProperty().set(false);
-        edit4.disableProperty().set(false);
-        edit5.disableProperty().set(false);
-    }
-
-    @FXML
-    void handleedit2(ActionEvent event) {
-        Changeusia.setText("");
-        Changeusia.disableProperty().set(false);
-        cancel2.disableProperty().set(false);
-        hbox2.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: red;");
-        btnUpdate.disableProperty().set(false);
-        edit1.disableProperty().set(true);
-        edit3.disableProperty().set(true);
-        edit4.disableProperty().set(true);
-        edit5.disableProperty().set(true);
-        cek = "usia";
-    }
-    
-    @FXML
-    void handlecancel2(ActionEvent event) {
-        Changeusia.setText(usia);
-        Changeusia.disableProperty().set(true);
-        cancel2.disableProperty().set(true);
-        hbox2.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
-        btnUpdate.disableProperty().set(true);
-        edit1.disableProperty().set(false);
-        edit3.disableProperty().set(false);
-        edit4.disableProperty().set(false);
-        edit5.disableProperty().set(false);
-    }
-    
-    @FXML
-    void handleedit3(ActionEvent event) {
-        Changeemail.setText("");
-        Changeemail.disableProperty().set(false);
-        cancel3.disableProperty().set(false);
-        hbox3.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: red;");
-        btnUpdate.disableProperty().set(false);
-        edit1.disableProperty().set(true);
-        edit2.disableProperty().set(true);
-        edit4.disableProperty().set(true);
-        edit5.disableProperty().set(true);
-        cek = "email";
-    }
-    
-    @FXML
-    void handlecancel3(ActionEvent event) {
-        Changeemail.setText(email);
-        Changeemail.disableProperty().set(true);
-        cancel3.disableProperty().set(true);
-        hbox3.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
-        btnUpdate.disableProperty().set(true);
-        edit1.disableProperty().set(false);
-        edit2.disableProperty().set(false);
-        edit4.disableProperty().set(false);
-        edit5.disableProperty().set(false);
-    }
-    
-    @FXML
-    void handleedit4(ActionEvent event) {
-        Changepassword.setText("");
-        Changepassword.disableProperty().set(false);
-        cancel4.disableProperty().set(false);
-        hbox4.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: red;");
-        btnUpdate.disableProperty().set(false);
-        edit1.disableProperty().set(true);
-        edit2.disableProperty().set(true);
-        edit3.disableProperty().set(true);
-        edit5.disableProperty().set(true);
-        cek = "password";
-    }
-    
-    @FXML
-    void handlecancel4(ActionEvent event) {
-        Changepassword.setText(password);
-        Changepassword.disableProperty().set(true);
-        cancel4.disableProperty().set(true);
-        hbox4.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
-        btnUpdate.disableProperty().set(true);
-        edit1.disableProperty().set(false);
-        edit2.disableProperty().set(false);
-        edit3.disableProperty().set(false);
-        edit5.disableProperty().set(false);
-    }
-    
-    @FXML
-    void handleedit5(ActionEvent event) {
-        Changetinggi.setText("");
-        Changetinggi.disableProperty().set(false);
-        cancel5.disableProperty().set(false);
-        hbox5.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: red;");
-        btnUpdate.disableProperty().set(false);
-        edit1.disableProperty().set(true);
-        edit2.disableProperty().set(true);
-        edit3.disableProperty().set(true);
-        edit4.disableProperty().set(true);
-        cek = "tinggi";
-    }
-    
-    @FXML
-    void handlecancel5(ActionEvent event) {
-        Changetinggi.setText(tinggi);
-        Changetinggi.disableProperty().set(true);
-        cancel5.disableProperty().set(true);
-        hbox5.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
-        btnUpdate.disableProperty().set(true);
-        edit1.disableProperty().set(true);
-        edit2.disableProperty().set(true);
-        edit3.disableProperty().set(true);
-        edit4.disableProperty().set(true);
-    }
 //////////////////////////////////////////////////////////////////////////////////////////////////// 
     public void GetUser(int user, String nama1) throws SQLException {
         // TODO Auto-generated method stub
@@ -320,15 +169,75 @@ public class PrimaryHomeController implements Initializable {
             Changetinggi.setText(dbModel.rs.getString("tinggi")); 
             tinggi = Changetinggi.getText();
         }
-        String tinggi = "";
         dbModel.rs = dbModel.resultset("select tinggi from DataPengguna where id_pengguna ='" +session+"'");
         if (dbModel.rs.next()) {
-            tinggi = dbModel.rs.getString("tinggi");
+            String tinggi = dbModel.rs.getString("tinggi");
+            double hasil = Double.parseDouble(tinggi);
+            label1.setText(String.valueOf(hasil - 110));
         }
         dbModel.rs.close();
         double hasil = Double.parseDouble(tinggi);
         label1.setText(String.valueOf(hasil - 110));
     }
+    
+     /**
+     * Initializes the controller class.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // TODO
+        
+    }   
+    
+    private void bukaField(){
+        Changename.disableProperty().set(false);
+        Changeusia.disableProperty().set(false);
+        Changeemail.disableProperty().set(false);
+        Changepassword.disableProperty().set(false);
+        Changetinggi.disableProperty().set(false);
+        hbox1.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: red;");
+        hbox2.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: red;");
+        hbox3.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: red;");
+        hbox4.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: red;");
+        hbox5.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: red;");
+        Changeemail.setText("");
+    }
+    
+    private void tutupField(){
+        Changename.disableProperty().set(true);
+        Changeusia.disableProperty().set(true);
+        Changeemail.disableProperty().set(true);
+        Changepassword.disableProperty().set(true);
+        Changetinggi.disableProperty().set(true);
+        
+    }
+    
+    @FXML
+    private void handleEdit(ActionEvent event) {
+        btnEdit.disableProperty().set(true);
+        Update.disableProperty().set(false);
+        btnCancel.disableProperty().set(false);
+        bukaField();
+    }
+
+    @FXML
+    private void handlecancel(ActionEvent event) {
+        btnEdit.disableProperty().set(false);
+        Update.disableProperty().set(true);
+        btnCancel.disableProperty().set(true);
+        tutupField();
+        hbox1.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
+        hbox2.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
+        hbox3.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
+        hbox4.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
+        hbox5.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
+        Changename.setText(name);
+        Changeusia.setText(usia);
+        Changeemail.setText(email);
+        Changepassword.setText(password);
+        Changetinggi.setText(tinggi);
+    }
+
     
 }
 

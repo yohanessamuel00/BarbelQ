@@ -50,7 +50,6 @@ public class DaftarController implements Initializable {
     
     private boolean cekEmail(){
         int id = 0;
-        String email = inputEmail.getText();
         try{
             dbModel.rs =dbModel.resultset("select id_pengguna from DataPengguna where email ='" +inputEmail.getText()+"'");
             while(dbModel.rs.next()) {
