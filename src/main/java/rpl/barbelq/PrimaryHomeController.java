@@ -39,7 +39,7 @@ public class PrimaryHomeController implements Initializable {
     private int session;
     private String nama;
     private String name,usia,email,password,tinggi;
-    private String cek;
+    private String cek,ambil;
     
     @FXML
     private TextField Changename, Changeusia, Changeemail, Changetinggi, inpBerat;
@@ -60,23 +60,29 @@ public class PrimaryHomeController implements Initializable {
     
     
     private boolean cekEmail(TextField email) {
-        String cekEmail="";
+        boolean hasil = true;
         try{
-            dbModel.rs =dbModel.resultset("select email from DataPengguna where id_pengguna ='" +session+"'");
-            if(dbModel.rs.next()) {
-                cekEmail = dbModel.rs.getString("email");
+            dbModel.rs =dbModel.resultset("select email from DataPengguna");
+            while(dbModel.rs.next()) {
+                String cekEmail = dbModel.rs.getString("email");
+                if(email.getText().equals(cekEmail)){
+                    hasil = true;
+                    break;
+                }else{
+                    hasil = false;
+                }
             }
             dbModel.rs.close();
         }catch(SQLException e){
             System.out.println(e.getMessage());
-        }   
-        return cekEmail.equals(email.getText());
+        }
+        return hasil;
     }
     @FXML
     private void btnUpdate(ActionEvent event) {
         if(!Changename.getText().isEmpty() && !Changeusia.getText().isEmpty() && !Changeemail.getText().isEmpty() && !Changepassword.getText().isEmpty() && !Changetinggi.getText().isEmpty()){
-            if(!cekEmail(Changeemail)){
-                dbModel.InsertOrUpdate("update DataPengguna set nama= '" +Changename.getText()+ "',email = '" +Changeemail.getText()+ "',password= '" +Changepassword.getText()+ "',usia= '" +Changeusia.getText()+ "',tinggi= '" +Changetinggi.getText()+ "' where id_pengguna =  "+session+"");
+            dbModel.InsertOrUpdate("update DataPengguna set nama= '" +Changename.getText()+ "',password= '" +Changepassword.getText()+ "',usia= '" +Changeusia.getText()+ "',tinggi= '" +Changetinggi.getText()+ "' where id_pengguna =  "+session+"");
+            if(ambil.equals(Changeemail.getText())){
                 btnEdit.disableProperty().set(false);
                 Update.disableProperty().set(true);
                 btnCancel.disableProperty().set(true);
@@ -93,15 +99,45 @@ public class PrimaryHomeController implements Initializable {
                 a.setTitle("BarbelQ");
                 a.setHeaderText(null);
                 a.setContentText("Update Berhasil");
-                    // show the dialog 
                 a.show();
+                name = Changename.getText();
+                usia = Changeusia.getText();
+                email = Changeemail.getText();
+                password = Changepassword.getText();
+                tinggi = Changetinggi.getText();
             }else{
-                a.setAlertType(Alert.AlertType.INFORMATION);
-                a.setTitle("BarbelQ");
-                a.setHeaderText(null);
-                a.setContentText("Email Telah Terdaftar");
-                a.show();
-            }   
+                if(cekEmail(Changeemail)){
+                    a.setAlertType(Alert.AlertType.INFORMATION);
+                    a.setTitle("BarbelQ");
+                    a.setHeaderText(null);
+                    a.setContentText("Email Sudah Digunakan");
+                    a.show();
+                }else{
+                    dbModel.InsertOrUpdate("update DataPengguna set email = '"+Changeemail.getText()+"' where id_pengguna = "+session+" ");
+                    btnEdit.disableProperty().set(false);
+                    Update.disableProperty().set(true);
+                    btnCancel.disableProperty().set(true);
+                    namaUser.setText(Changename.getText());
+                    namaUser2.setText(Changename.getText());
+                    namaUser3.setText(Changename.getText());
+                    tutupField();
+                    hbox1.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
+                    hbox2.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
+                    hbox3.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
+                    hbox4.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
+                    hbox5.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
+                    a.setAlertType(Alert.AlertType.INFORMATION);
+                    a.setTitle("BarbelQ");
+                    a.setHeaderText(null);
+                    a.setContentText("Update Berhasil");
+                    a.show();
+                    name = Changename.getText();
+                    usia = Changeusia.getText();
+                    email = Changeemail.getText();
+                    password = Changepassword.getText();
+                    tinggi = Changetinggi.getText();
+                }
+            }  
         }else{
             a.setAlertType(Alert.AlertType.INFORMATION);
             a.setTitle("BarbelQ");
@@ -200,7 +236,7 @@ public class PrimaryHomeController implements Initializable {
         hbox3.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: red;");
         hbox4.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: red;");
         hbox5.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: red;");
-        Changeemail.setText("");
+//        Changeemail.setText("");
     }
     
     private void tutupField(){
@@ -218,6 +254,8 @@ public class PrimaryHomeController implements Initializable {
         Update.disableProperty().set(false);
         btnCancel.disableProperty().set(false);
         bukaField();
+        ambil = email;
+        
     }
 
     @FXML
