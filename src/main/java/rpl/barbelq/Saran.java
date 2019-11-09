@@ -5,8 +5,8 @@
  */
 package rpl.barbelq;
 
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 
 /**
  *
@@ -17,7 +17,7 @@ public class Saran {
     private SimpleStringProperty kategori;
     private SimpleStringProperty aktivitas;
     private SimpleStringProperty makanan;
-    private int id_saran;
+    private SimpleIntegerProperty id_saran;
     public Saran(){
     }
     
@@ -27,14 +27,13 @@ public class Saran {
         this.kategori = new SimpleStringProperty(kategori);
     }
 
-    public int getId_saran() {
-        return id_saran;
-    }
-
-    public void setId_saran(int id_saran) {
+    
+    /**
+     * @param id_saran the id_saran to set
+     */
+    public void setId_saran(SimpleIntegerProperty id_saran) {
         this.id_saran = id_saran;
     }
-
     
     /**
      * @return the kategori
@@ -83,5 +82,14 @@ public class Saran {
     public String toString() {
         return getMakanan() + " " + getAktivitas() + " " + getKategori();
     }
+
+    /**
+     * @return the id_saran
+     */
+    public int getId_saran() {
+        return id_saran.get();
+    }
+
+    
     
 }
