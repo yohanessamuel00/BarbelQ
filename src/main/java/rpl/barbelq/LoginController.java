@@ -17,29 +17,13 @@ import javafx.stage.Stage;
 public class LoginController implements Initializable {
     
     DBBarbelQ dbModel = new DBBarbelQ();
+    Alert a = new Alert(AlertType.NONE);
     
     @FXML
     private Hyperlink btnDaftar;
     
     @FXML
     private Button btnLogin;
-    
-    Alert a = new Alert(AlertType.NONE);
-    
-    @FXML
-    private void buttoncomOnAction(ActionEvent event) throws IOException{
-        try {
-            Stage stage1 = (Stage) btnDaftar.getScene().getWindow();
-            stage1.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Daftar.fxml"));
-            Parent root1 = (Parent) fxmlLoader.load();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root1));  
-            stage.show();
-        } catch(IOException e) {
-            System.out.println(e.getMessage());
-        }
-    }
     
     @FXML
     private TextField txtEmail;
@@ -56,12 +40,24 @@ public class LoginController implements Initializable {
             System.out.println("Not Connected");
         }
     } 
-   
-     
+    
+    @FXML
+    private void buttoncomOnAction(ActionEvent event) throws IOException{
+        try {
+            Stage stage1 = (Stage) btnDaftar.getScene().getWindow();
+            stage1.close();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Daftar.fxml"));
+            Parent root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root1));  
+            stage.show();
+        } catch(IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
     public void Login (ActionEvent event) {
         try {
-            ///////////////////////////// Untuk Admin
-            //atau !=
             if(!"".equals(txtPassword.getText()) && !"".equals(txtEmail.getText())){
                 if(txtEmail.getText().equals("admin") && txtPassword.getText().equals("admin")){
                     Stage stage1 = (Stage) btnLogin.getScene().getWindow();
@@ -99,7 +95,6 @@ public class LoginController implements Initializable {
                         a.setTitle("Login Gagal");
                         a.setHeaderText(null);
                         a.setContentText("Email atau Password Salah");
-                // show the dialog 
                         a.showAndWait();
                     }
                 }
@@ -115,8 +110,6 @@ public class LoginController implements Initializable {
             // TODO Auto-generated catch block
             System.out.println(e.getMessage());
         }
-        // TODO Auto-generated catch block
-        
-    }   
-
+    } 
+    
 }

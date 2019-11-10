@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
@@ -14,7 +22,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1280.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rpl.barbelq.PrimaryHomeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1280.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rpl.barbelq.PrimaryHomeController">
    <children>
       <TabPane prefHeight="700.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
@@ -33,8 +41,7 @@
                            </children>
                         </HBox>
                         <Group />
-                        <Label layoutX="1072.0" prefHeight="43.0" prefWidth="101.0" style="-fx-text-fill: #2188ff; -fx-font-weight: bold;" text="Selamat Datang, " />
-                        <Label fx:id="namaUser" layoutX="1172.0" layoutY="13.0" prefHeight="17.0" prefWidth="107.0" style="-fx-text-fill: #2188ff; -fx-font-weight: bold;" text="Label" />
+                        <Label fx:id="namaUser" layoutX="1217.0" layoutY="53.0" prefHeight="25.0" prefWidth="64.0" style="-fx-text-fill: #2188ff; -fx-font-weight: bold;" text="Label" />
                         <HBox alignment="CENTER" layoutX="-3.0" layoutY="73.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="513.0" prefWidth="1288.0">
                            <children>
                               <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="532.0" prefWidth="319.0" style="-fx-background-color: #2188ff;">
@@ -42,8 +49,7 @@
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
                                  <children>
-                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="Berat Badan Ideal Anda : " />
-                                    <Label fx:id="label1" style="-fx-font-weight: bold;" text="Label" />
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="Berat Badan Ideal Anda " />
                                  </children>
                               </HBox>
                               <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="568.0" prefWidth="693.0" style="-fx-background-color: white;">
@@ -96,6 +102,17 @@
                               <DropShadow />
                            </effect>
                         </HBox>
+                        <Label fx:id="label1" layoutX="232.0" layoutY="339.0" prefHeight="79.0" prefWidth="116.0" style="-fx-font-weight: bold; -fx-font-size: 3em;" text="Label">
+                           <font>
+                              <Font size="47.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="345.0" layoutY="355.0" prefHeight="62.0" prefWidth="137.0" style="-fx-font-size: 2em; -fx-font-weight: bold;" text="Kg" />
+                        <ImageView fitHeight="42.0" fitWidth="48.0" layoutX="1219.0" layoutY="4.0">
+                           <image>
+                              <Image url="@../logo/man-user.png" />
+                           </image>
+                        </ImageView>
                      </children></AnchorPane>
             </content>
           </Tab>
@@ -104,8 +121,12 @@
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <Group layoutX="10.0" layoutY="10.0" />
-                        <Label fx:id="namaUser2" layoutX="1172.0" layoutY="13.0" prefHeight="17.0" prefWidth="107.0" style="-fx-text-fill: #fe4451; -fx-font-weight: bold; -fx-text-fill: #2188ff;" text="Label" />
-                        <Label layoutX="1072.0" prefHeight="43.0" prefWidth="101.0" style="-fx-text-fill: #fe4451; -fx-font-weight: bold; -fx-text-fill: #2188ff;" text="Selamat Datang, " />
+                        <Label fx:id="namaUser2" layoutX="1217.0" layoutY="53.0" prefHeight="25.0" prefWidth="64.0" style="-fx-text-fill: #fe4451; -fx-font-weight: bold; -fx-text-fill: #2188ff;" text="Label" />
+                        <ImageView fitHeight="42.0" fitWidth="48.0" layoutX="1219.0" layoutY="4.0">
+                           <image>
+                              <Image url="@../logo/man-user.png" />
+                           </image>
+                        </ImageView>
                      </children></AnchorPane>
             </content>
           </Tab>
@@ -228,13 +249,17 @@
                         </HBox>
                         <Group>
                            <children>
-                              <Label layoutX="1072.0" prefHeight="43.0" prefWidth="101.0" style="-fx-text-fill: #2188ff; -fx-font-weight: bold;" text="Selamat Datang, " />
-                              <Label fx:id="namaUser3" layoutX="1172.0" layoutY="13.0" prefHeight="17.0" prefWidth="107.0" style="-fx-text-fill: #2188ff; -fx-font-weight: bold;" text="Label" />
+                              <Label fx:id="namaUser3" layoutX="1217.0" layoutY="53.0" prefHeight="25.0" prefWidth="64.0" style="-fx-text-fill: #2188ff; -fx-font-weight: bold;" text="Label" />
                            </children>
                         </Group>
                         <Button fx:id="btnCancel" disable="true" layoutX="777.0" layoutY="484.0" mnemonicParsing="false" onAction="#handlecancel" prefHeight="25.0" prefWidth="171.0" style="-fx-background-color: #2188ff; -fx-background-radius: 100px; -fx-text-fill: white;" text="Cancel" />
                         <Button fx:id="btnEdit" layoutX="408.0" layoutY="484.0" mnemonicParsing="false" onAction="#handleEdit" prefWidth="173.0" style="-fx-background-color: transparent; -fx-background-color: #2188ff; -fx-background-radius: 100px; -fx-text-fill: white;" text="Edit" />
                         <Button fx:id="btnLogout" layoutX="1060.0" layoutY="624.0" mnemonicParsing="false" onAction="#handleLogout" prefWidth="180.0" style="-fx-background-color: #2188ff; -fx-background-radius: 100px; -fx-text-fill: white;" text="LogOut" />
+                        <ImageView fitHeight="42.0" fitWidth="48.0" layoutX="1219.0" layoutY="4.0">
+                           <image>
+                              <Image url="@../logo/man-user.png" />
+                           </image>
+                        </ImageView>
                      </children>
                   </AnchorPane>
                </content>
