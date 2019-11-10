@@ -26,7 +26,13 @@ public class Saran {
         this.aktivitas = new SimpleStringProperty(aktivitas);
         this.kategori = new SimpleStringProperty(kategori);
     }
-
+    
+    /**
+     * @return the id_saran
+     */
+    public int getId_saran() {
+        return id_saran.get();
+    }
     
     /**
      * @param id_saran the id_saran to set
@@ -36,19 +42,19 @@ public class Saran {
     }
     
     /**
-     * @return the kategori
+     * @return the makanan
      */
-    public String getKategori() {
-        return kategori.get();
+    public String getMakanan() {
+        return makanan.get();
     }
 
     /**
-     * @param kategori the kategori to set
+     * @param makanan the makanan to set
      */
-    public void setKategori(String kategori) {
-        this.kategori = new SimpleStringProperty(kategori);
+    public void setMakanan(String makanan) {
+        this.makanan = new SimpleStringProperty(makanan);
     }
-
+    
     /**
      * @return the aktivitas
      */
@@ -64,32 +70,22 @@ public class Saran {
     }
 
     /**
-     * @return the makanan
+     * @return the kategori
      */
-    public String getMakanan() {
-        return makanan.get();
+    public String getKategori() {
+        return kategori.get();
     }
 
     /**
-     * @param makanan the makanan to set
+     * @param kategori the kategori to set
      */
-    public void setMakanan(String makanan) {
-        this.makanan = new SimpleStringProperty(makanan);
+    public void setKategori(String kategori) {
+        this.kategori = new SimpleStringProperty(kategori);
     }
-
     
     @Override
     public String toString() {
         return getMakanan() + " " + getAktivitas() + " " + getKategori();
     }
 
-    /**
-     * @return the id_saran
-     */
-    public int getId_saran() {
-        return id_saran.get();
-    }
-
-    
-    
 }

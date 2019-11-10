@@ -30,7 +30,7 @@
                   <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
                      <children>
                         <Label prefHeight="21.0" prefWidth="70.0" text="Aktivitas" />
-                        <TextField prefHeight="31.0" prefWidth="208.0" promptText="aktivitas" style="-fx-background-color: transparent;">
+                        <TextField fx:id="txtubahAktivitas" prefHeight="31.0" prefWidth="208.0" promptText="aktivitas" style="-fx-background-color: transparent;">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
@@ -43,7 +43,7 @@
                   <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
                      <children>
                         <Label prefHeight="21.0" prefWidth="70.0" text="Makanan" />
-                        <TextField prefHeight="31.0" prefWidth="208.0" promptText="makanan" style="-fx-background-color: transparent;">
+                        <TextField fx:id="txtubahMakanan" prefHeight="31.0" prefWidth="208.0" promptText="makanan" style="-fx-background-color: transparent;">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
@@ -56,7 +56,7 @@
                   <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
                      <children>
                         <Label prefHeight="21.0" prefWidth="70.0" text="Kategori" />
-                        <TextField prefHeight="31.0" prefWidth="208.0" promptText="kategori" style="-fx-background-color: transparent;">
+                        <TextField fx:id="txtubahKategori" prefHeight="31.0" prefWidth="208.0" promptText="kategori" style="-fx-background-color: transparent;">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
@@ -71,6 +71,7 @@
                         <Insets top="40.0" />
                      </VBox.margin>
                   </Button>
+                  <Button fx:id="btnBatal" mnemonicParsing="false" onAction="#handleBatal" text="Batal" />
                </children>
                <effect>
                   <DropShadow />
@@ -165,7 +166,7 @@
          <center>
             <TableView fx:id="tabelSaran" prefHeight="632.0" prefWidth="705.0" BorderPane.alignment="CENTER">
                <columns>
-                  <TableColumn fx:id="colidSaran" prefWidth="75.0" text="No" />
+                  <TableColumn fx:id="colidSaran" prefWidth="75.0" text="No" visible="false" />
                   <TableColumn fx:id="colAktivitas" prefWidth="183.0" text="Aktivitas" />
                   <TableColumn fx:id="colMakanan" prefWidth="235.0" text="Makanan" />
                   <TableColumn fx:id="colKategori" prefWidth="253.0" text="Kategori" />
@@ -183,6 +184,6 @@
             <DropShadow />
          </effect>
       </BorderPane>
-      <Button layoutX="1056.0" layoutY="645.0" mnemonicParsing="false" prefWidth="200.0" style="-fx-background-color: #2188ff; -fx-background-radius: 100px;" text="Logout" textFill="WHITE" />
+      <Button fx:id="btnLogout" layoutX="1056.0" layoutY="645.0" mnemonicParsing="false" onAction="#handleLogout" prefWidth="200.0" style="-fx-background-color: #2188ff; -fx-background-radius: 100px;" text="Logout" textFill="WHITE" />
    </children>
 </AnchorPane>
