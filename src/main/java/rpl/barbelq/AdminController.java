@@ -28,7 +28,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -90,8 +89,9 @@ public class AdminController implements Initializable {
     @FXML
     private AnchorPane Pendaftaran,crudAdmin;
     @FXML
-    private TextField namaAdmin,usiaAdmin,emailAdmin,passwordAdmin,signupAdmin,cancelAdmin,daftarAdmin;
-    
+    private Button signupAdmin,cancelAdmin,daftarAdmin;
+    @FXML
+    private TextField namaAdmin,usiaAdmin,emailAdmin,passwordAdmin;
     /**
      * Initializes the controller class.
      *
@@ -161,7 +161,6 @@ public class AdminController implements Initializable {
                 tabelSaran.disableProperty().set(true);
                 cxMenu.hide();
                 final Saran srn = tabelSaran.getSelectionModel().getSelectedItem();
-                id = srn.getId_saran();
                 try {
                     dbModel.rs = dbModel.resultset("Select * from Saran where id_saran = "+srn.getId_saran()+" ");
                     if(dbModel.rs.next()){
@@ -188,11 +187,13 @@ public class AdminController implements Initializable {
             if(cekData(txtubahAktivitas,txtubahMakanan)){
                 bantuAlert(null, "Data Tidak Boleh Sama");
             }else{
+                final Saran srn1 = tabelSaran.getSelectionModel().getSelectedItem();
                 int index = tabelSaran.getSelectionModel().getSelectedIndex();
                 ObservableList<Saran> saran = tabelSaran.getItems();
                 dbModel.InsertOrUpdate("update Saran set makanan= '"+txtubahMakanan.getText()+"',aktivitas= '"+txtubahAktivitas.getText()+"',kategori= '"+cbKategoriUbah.getValue()+"' where id_saran ="+id+" ");
 
                 Saran srn = new Saran();
+                srn.setId_saran(new SimpleIntegerProperty(srn1.getId_saran()));
                 srn.setAktivitas(txtubahAktivitas.getText());
                 srn.setMakanan(txtubahMakanan.getText());
                 srn.setKategori(cbKategoriUbah.getValue());
@@ -223,7 +224,7 @@ public class AdminController implements Initializable {
                     hsl = dbModel.rs.getInt("hasil");
                 }
                 dbModel.rs.close();
-
+                System.out.println(hsl);
                 Saran srn = new Saran();
                 srn.setId_saran(new SimpleIntegerProperty(hsl));
                 srn.setAktivitas(txtaktivitas.getText());
@@ -283,7 +284,14 @@ public class AdminController implements Initializable {
     @FXML
     private void btnSignupAdmin(ActionEvent event) {
         dbModel.InsertOrUpdate("insert into DataPengguna(nama,email,password,usia,level) values('"+namaAdmin.getText()+"','"+emailAdmin.getText()+"','"+passwordAdmin.getText()+"',"+usiaAdmin.getText()+",2)");
-        bantuAlert(null, "Data Berhasil Dimasukkan");
+        a.setAlertType(Alert.AlertType.INFORMATION);
+        a.setTitle("BarbelQ");
+        a.setHeaderText(null);
+        a.setContentText("Data Berhasil Dimasukkan");
+        a.showAndWait();
+        Pendaftaran.visibleProperty().set(false);
+        crudAdmin.visibleProperty().set(true);
+        
     }
 
     @FXML
