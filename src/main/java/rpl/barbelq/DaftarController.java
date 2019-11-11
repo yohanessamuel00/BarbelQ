@@ -73,7 +73,7 @@ public class DaftarController implements Initializable {
             if(cekEmail() && cekField()){
                 int id = 0;
                 String namaUser = "";
-                dbModel.InsertOrUpdate("insert into DataPengguna (nama, email, password,usia) values ('"+inputNama.getText()+"','"+inputEmail.getText()+"','"+inputPassword.getText()+"','"+inputUsia.getText()+"')");
+                dbModel.InsertOrUpdate("insert into DataPengguna (nama, email, password,usia,level) values ('"+inputNama.getText()+"','"+inputEmail.getText()+"','"+inputPassword.getText()+"','"+inputUsia.getText()+"',1)");
                 dbModel.rs = dbModel.resultset("select id_pengguna, nama from DataPengguna where email ='" +inputEmail.getText()+"'");
                 while (dbModel.rs.next()) {
                    id = dbModel.rs.getInt("id_pengguna");

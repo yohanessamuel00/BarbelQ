@@ -56,31 +56,31 @@ public class PrimaryHomeController implements Initializable {
     private Button btnCancel;
     @FXML
     private Button Update;
+    @FXML
+    private Label rataRata, minimal, maksimal;
     
     
     @FXML
-    private void btnUpdate(ActionEvent event) {
+    private void btnUpdate(ActionEvent event) throws SQLException {
         if(!Changename.getText().isEmpty() && !Changeusia.getText().isEmpty() && !Changeemail.getText().isEmpty() && !Changepassword.getText().isEmpty() && !Changetinggi.getText().isEmpty()){
-            dbModel.InsertOrUpdate("update DataPengguna set nama= '" +Changename.getText()+ "',password= '" +Changepassword.getText()+ "',usia= '" +Changeusia.getText()+ "',tinggi= '" +Changetinggi.getText()+ "' where id_pengguna =  "+session+"");
-            if(ambil.equals(Changeemail.getText())){
-                bantuUpdate();
+            if(Double.parseDouble(Changetinggi.getText()) < 145 || Double.parseDouble(Changetinggi.getText()) > 200){
+                bantuAlert("Data Tidak Valid", "Min Tinggi = 145 cm dan Max Tinggi = 200");
             }else{
-                if(cekEmail(Changeemail)){
-                    a.setAlertType(Alert.AlertType.INFORMATION);
-                    a.setTitle("BarbelQ");
-                    a.setHeaderText(null);
-                    a.setContentText("Email Sudah Digunakan");
-                    a.show();
-                }else{
+                dbModel.InsertOrUpdate("update DataPengguna set nama= '" +Changename.getText()+ "',password= '" +Changepassword.getText()+ "',usia= '" +Changeusia.getText()+ "',tinggi= '" +Changetinggi.getText()+ "' where id_pengguna =  "+session+"");
+                if(ambil.equals(Changeemail.getText())){
                     bantuUpdate();
+                }else{
+                    if(cekEmail(Changeemail)){
+                        bantuAlert(null, "Email Sudah Digunakan");
+                    }else{
+                        dbModel.InsertOrUpdate("update DataPengguna set email ='"+Changeemail.getText()+"'where id_pengguna =  "+session+"");
+                        bantuUpdate();
+                    }
                 }
+                updateTinggi();
             }  
         }else{
-            a.setAlertType(Alert.AlertType.INFORMATION);
-            a.setTitle("BarbelQ");
-            a.setHeaderText(null);
-            a.setContentText("Data Tidak Boleh Kosong");
-            a.show();
+            bantuAlert(null, "Data Tidak Boleh Kosong");
         }
     }
 
@@ -98,26 +98,27 @@ public class PrimaryHomeController implements Initializable {
             System.out.println(e.getMessage());
         }
     }
-    
- ///////////////////////////////////////////////////////////////////////////////////////////////   
+      
     @FXML
     void handleTambah(ActionEvent event) throws SQLException {
-        a.setAlertType(Alert.AlertType.CONFIRMATION);
-        a.setTitle("BarbelQ");
-        a.setHeaderText(null);
-        a.setContentText("Apakah Anda Yakin Menambah Data");
-        Optional<ButtonType> result = a.showAndWait();
-        if(result.get() == ButtonType.OK){
-            if(Double.parseDouble(inpBerat.getText()) < 10 || Double.parseDouble(inpBerat.getText()) > 100){
-                a.setAlertType(Alert.AlertType.INFORMATION);
-                a.setTitle("BarbelQ");
-                a.setHeaderText(null);
-                a.setContentText("Data Tidak Valid");
-                a.show();
-            }else{
-               dbModel.InsertOrUpdate("insert into Berat_badan(berat_badan,id_pengguna) values ('" +inpBerat.getText()+ "','"+session+"')");
-                inpBerat.setText(""); 
-            }  
+        if(inpBerat.getText().isEmpty()){
+            bantuAlert(null, "Data Masih kosong");
+        }else{
+            a.setAlertType(Alert.AlertType.CONFIRMATION);
+            a.setTitle("BarbelQ");
+            a.setHeaderText(null);
+            a.setContentText("Apakah Anda Yakin Menambah Data");
+            Optional<ButtonType> result = a.showAndWait();
+            if(result.get() == ButtonType.OK){
+                if(Double.parseDouble(inpBerat.getText()) < 10 || Double.parseDouble(inpBerat.getText()) > 500){
+                    bantuAlert(null, "Data Tidak Valid");
+                }else{
+                    dbModel.InsertOrUpdate("insert into Berat_badan(berat_badan,id_pengguna) values ('" +inpBerat.getText()+ "','"+session+"')");
+                    inpBerat.setText(""); 
+                    cekdataBerat();
+                    bantuAlert(null, "Data Berhasil Dimasukkan");
+                }  
+            } 
         }
     }
     
@@ -151,6 +152,7 @@ public class PrimaryHomeController implements Initializable {
     
 //////////////////////////////////////////////////////////////////////////////////////////////////// 
     public void GetUser(int user, String nama1) throws SQLException {
+        
         // TODO Auto-generated method stub
         session = user;
         nama = " " + nama1;
@@ -167,19 +169,40 @@ public class PrimaryHomeController implements Initializable {
             email = Changeemail.getText();
             Changepassword.setText(dbModel.rs.getString("password"));
             password = Changepassword.getText();
-            Changetinggi.setText(dbModel.rs.getString("tinggi")); 
+            Changetinggi.setText(String.valueOf(dbModel.rs.getDouble("tinggi"))); 
             tinggi = Changetinggi.getText();
         }
-        dbModel.rs = dbModel.resultset("select tinggi from DataPengguna where id_pengguna ='" +session+"'");
-        if (dbModel.rs.next()) {
-            String tinggi = dbModel.rs.getString("tinggi");
-            double hasil = (Double.parseDouble(tinggi) - 100) - ((Double.parseDouble(tinggi) - 100) * 0.1);
-            System.out.println(hasil);
-            label1.setText(String.valueOf(hasil));
-        }
+        System.out.println(session);
         dbModel.rs.close();
+        updateTinggi();
+        cekdataBerat();
+    }
+    
+    private void bantuAlert(String header, String isi){
+        a.setAlertType(Alert.AlertType.INFORMATION);
+        a.setTitle("BarbelQ");
+        a.setHeaderText(header);
+        a.setContentText(isi);
+        a.show();
+    }
+    
+    private void updateTinggi(){
+        double tampilTinggi = Double.parseDouble(tinggi);
+        double hasil = (tampilTinggi - 100) - ((tampilTinggi - 100) * 0.1);
+        label1.setText(String.valueOf(hasil));
     }
       
+    private void cekdataBerat() throws SQLException{
+        dbModel.rs = dbModel.resultset("select avg(berat_badan) as rata, min(berat_badan) as minimal, max(berat_badan) as maksimal from Berat_badan where id_pengguna ='"+session+"'");
+        if(dbModel.rs.next()){
+            double pembulatan = Math.round((dbModel.rs.getDouble("rata")));
+            rataRata.setText(String.valueOf(pembulatan));
+            minimal.setText(String.valueOf(dbModel.rs.getDouble("minimal")));
+            maksimal.setText(String.valueOf(dbModel.rs.getDouble("maksimal")));
+        }
+
+        dbModel.rs.close();
+    }
     
     private void bukaField(){
         Changename.disableProperty().set(false);
@@ -236,11 +259,7 @@ public class PrimaryHomeController implements Initializable {
         hbox3.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
         hbox4.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
         hbox5.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
-        a.setAlertType(Alert.AlertType.INFORMATION);
-        a.setTitle("BarbelQ");
-        a.setHeaderText(null);
-        a.setContentText("Update Berhasil");
-        a.show();
+        bantuAlert(null, "Update Berhasil");
         name = Changename.getText();
         usia = Changeusia.getText();
         email = Changeemail.getText();
@@ -250,6 +269,8 @@ public class PrimaryHomeController implements Initializable {
     
      /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {

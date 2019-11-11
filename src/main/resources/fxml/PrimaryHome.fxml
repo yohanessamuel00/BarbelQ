@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.*?>
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
@@ -17,12 +9,15 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1280.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rpl.barbelq.PrimaryHomeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1280.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rpl.barbelq.PrimaryHomeController">
    <children>
       <TabPane prefHeight="700.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
@@ -49,7 +44,21 @@
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
                                  <children>
-                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="Berat Badan Ideal Anda " />
+                                    <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="135.0" prefWidth="172.0">
+                                       <children>
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="Berat Badan Ideal Anda " wrappingWidth="171.75341796875" />
+                                          <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
+                                             <children>
+                                                <Label fx:id="label1" prefHeight="66.0" prefWidth="113.0" style="-fx-font-weight: bold; -fx-font-size: 3em;" text="Label">
+                                                   <font>
+                                                      <Font size="47.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label prefHeight="100.0" prefWidth="40.0" style="-fx-font-size: 2em; -fx-font-weight: bold;" text="Kg" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
                                  </children>
                               </HBox>
                               <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="568.0" prefWidth="693.0" style="-fx-background-color: white;">
@@ -102,17 +111,24 @@
                               <DropShadow />
                            </effect>
                         </HBox>
-                        <Label fx:id="label1" layoutX="232.0" layoutY="339.0" prefHeight="79.0" prefWidth="116.0" style="-fx-font-weight: bold; -fx-font-size: 3em;" text="Label">
-                           <font>
-                              <Font size="47.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="345.0" layoutY="355.0" prefHeight="62.0" prefWidth="137.0" style="-fx-font-size: 2em; -fx-font-weight: bold;" text="Kg" />
                         <ImageView fitHeight="42.0" fitWidth="48.0" layoutX="1219.0" layoutY="4.0">
                            <image>
                               <Image url="@../logo/man-user.png" />
                            </image>
                         </ImageView>
+                        <HBox layoutX="142.0" layoutY="353.0" prefHeight="154.0" prefWidth="307.0">
+                           <children>
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="Rata-rata" wrappingWidth="124.87890625" />
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="Min" wrappingWidth="104.5908203125" />
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="Max" wrappingWidth="40.5908203125" />
+                           </children>
+                        </HBox>
+                        <Label fx:id="rataRata" layoutX="140.0" layoutY="369.0" prefHeight="54.0" prefWidth="81.0" style="-fx-font-weight: bold; -fx-font-size: 2em;" text="Label" />
+                        <Label fx:id="minimal" layoutX="245.0" layoutY="369.0" prefHeight="54.0" prefWidth="85.0" style="-fx-font-weight: bold; -fx-font-size: 2em;" text="Label" />
+                        <Label fx:id="maksimal" layoutX="349.0" layoutY="371.0" prefHeight="45.0" prefWidth="92.0" style="-fx-font-weight: bold; -fx-font-size: 2em;" text="Label" />
+                        <Label layoutX="219.0" layoutY="379.0" prefHeight="54.0" prefWidth="37.0" style="-fx-font-weight: bold; -fx-font-size: 1em;" text="Kg" />
+                        <Label layoutX="323.0" layoutY="379.0" prefHeight="54.0" prefWidth="24.0" style="-fx-font-weight: bold; -fx-font-size: 1em;" text="Kg" />
+                        <Label layoutX="431.0" layoutY="381.0" prefHeight="45.0" prefWidth="22.0" style="-fx-font-weight: bold; -fx-font-size: 1em;" text="Kg" />
                      </children></AnchorPane>
             </content>
           </Tab>

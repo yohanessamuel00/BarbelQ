@@ -28,12 +28,14 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 /**
@@ -68,10 +70,11 @@ public class AdminController implements Initializable {
 
     @FXML
     private TextField txtmakanan;
+    @FXML
     private TextField txtubahAktivitas;
     
     @FXML
-    private TextField txtubahMakanan,txtubahKategori;
+    private TextField txtubahMakanan;
     
     @FXML
     private Label namaUser;
@@ -80,12 +83,14 @@ public class AdminController implements Initializable {
     private Button btnBatal,btnLogout;
     
     @FXML
-    private ComboBox<String> cbKategori;
+    private ComboBox<String> cbKategori, cbKategoriUbah;
     
     
     ObservableList<String> options = FXCollections.observableArrayList("1","2","3","4","5","6");
     @FXML
-    private ComboBox<String> cbKategoriUbah;
+    private AnchorPane Pendaftaran,crudAdmin;
+    @FXML
+    private TextField namaAdmin,usiaAdmin,emailAdmin,passwordAdmin,signupAdmin,cancelAdmin,daftarAdmin;
     
     /**
      * Initializes the controller class.
@@ -164,7 +169,7 @@ public class AdminController implements Initializable {
                         txtubahAktivitas.setText("");
                         txtubahMakanan.promptTextProperty().set(dbModel.rs.getString("makanan"));
                         txtubahMakanan.setText("");
-                        cbKategoriUbah.promptTextProperty().set(dbModel.rs.getString("kategori"));
+                        cbKategoriUbah.setValue("");
                     }
                     dbModel.rs.close();
                 } catch (SQLException ex) {
@@ -178,18 +183,10 @@ public class AdminController implements Initializable {
     @FXML
     void handleUbah(ActionEvent event) throws SQLException {
         if(txtubahAktivitas.getText().equals("") || txtubahMakanan.getText().equals("") || cbKategoriUbah.getValue().isEmpty()){
-            a.setAlertType(Alert.AlertType.INFORMATION);
-            a.setTitle("BarbelQ");
-            a.setHeaderText(null);
-            a.setContentText("Field Tidak Boleh Kosong");
-            a.show();
+            bantuAlert(null,"Field Tidak Boleh Kosong");
         }else{
             if(cekData(txtubahAktivitas,txtubahMakanan)){
-                a.setAlertType(Alert.AlertType.INFORMATION);
-                a.setTitle("BarbelQ");
-                a.setHeaderText(null);
-                a.setContentText("Data Tidak Boleh Sama");
-                a.show(); 
+                bantuAlert(null, "Data Tidak Boleh Sama");
             }else{
                 int index = tabelSaran.getSelectionModel().getSelectedIndex();
                 ObservableList<Saran> saran = tabelSaran.getItems();
@@ -201,6 +198,10 @@ public class AdminController implements Initializable {
                 srn.setKategori(cbKategoriUbah.getValue());
 
                 saran.set(index, srn);
+                
+                txtaktivitas.setText("");
+                txtmakanan.setText("");
+                cbKategori.setValue("");
                 tabelSaran.disableProperty().set(false);
                 tampilTambah.visibleProperty().set(true);
             }
@@ -210,18 +211,10 @@ public class AdminController implements Initializable {
     @FXML
     void handleTambah(ActionEvent event) throws SQLException {
         if(txtaktivitas.getText().equals("") || txtmakanan.getText().equals("") || cbKategori.getValue().isEmpty()){
-            a.setAlertType(Alert.AlertType.INFORMATION);
-            a.setTitle("BarbelQ");
-            a.setHeaderText(null);
-            a.setContentText("Field Tidak Boleh Kosong");
-            a.show();
+            bantuAlert(null, "Field Tidak Boleh Kosong");
         }else{
             if(cekData(txtaktivitas,txtmakanan)){
-                a.setAlertType(Alert.AlertType.INFORMATION);
-                a.setTitle("BarbelQ");
-                a.setHeaderText(null);
-                a.setContentText("Data Tidak Boleh Sama");
-                a.show(); 
+                bantuAlert(null, "Data Tidak Boleh Sama");
             }else{
                 dbModel.InsertOrUpdate("insert into Saran(makanan,aktivitas,kategori) values('"+txtmakanan.getText()+"','"+txtaktivitas.getText()+"','"+cbKategori.getValue()+"')");
                 int hsl = 0;
@@ -240,16 +233,21 @@ public class AdminController implements Initializable {
                 tabelSaran.getItems().add(srn);
                 txtaktivitas.setText("");
                 txtmakanan.setText("");
-
-                a.setAlertType(Alert.AlertType.INFORMATION);
-                a.setTitle("BarbelQ");
-                a.setHeaderText(null);
-                a.setContentText("Update Berhasil");
-                a.show();
+                cbKategori.setValue("");
+                
+                bantuAlert(null, "Update Berhasil");
             }
         } 
     }
-
+    
+    private void bantuAlert(String header, String isi){
+        a.setAlertType(Alert.AlertType.INFORMATION);
+        a.setTitle("BarbelQ");
+        a.setHeaderText(header);
+        a.setContentText(isi);
+        a.show();
+    }
+    
     @FXML
     private void handleBatal(ActionEvent event) {
         tampilTambah.visibleProperty().set(true);
@@ -283,7 +281,26 @@ public class AdminController implements Initializable {
     }
 
     @FXML
-    private void handlecombo(ActionEvent event) {
+    private void btnSignupAdmin(ActionEvent event) {
+        dbModel.InsertOrUpdate("insert into DataPengguna(nama,email,password,usia,level) values('"+namaAdmin.getText()+"','"+emailAdmin.getText()+"','"+passwordAdmin.getText()+"',"+usiaAdmin.getText()+",2)");
+        bantuAlert(null, "Data Berhasil Dimasukkan");
+    }
+
+    @FXML
+    private void btnCancelAdmin(ActionEvent event) {
+        crudAdmin.visibleProperty().set(true);
+        Pendaftaran.visibleProperty().set(false);
+    }
+
+    @FXML
+    private void btnDaftarAdmin(ActionEvent event) {
+        crudAdmin.visibleProperty().set(false);
+        Pendaftaran.visibleProperty().set(true);
+    }
+
+    public void GetUser(String nama) {
+        // TODO Auto-generated method stub
+        namaUser.setText(nama);
     }
 
 }

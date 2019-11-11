@@ -45,11 +45,11 @@ public class HomeController implements Initializable {
     
     @FXML
     void handleSubmit(ActionEvent event) throws SQLException, IOException {
-        if(Integer.parseInt(inputTinggi.getText()) < 80 || Integer.parseInt(inputTinggi.getText()) > 250 || Integer.parseInt(inputBerat.getText()) < 10 || Integer.parseInt(inputBerat.getText()) > 500 ){
+        if(Double.parseDouble(inputTinggi.getText()) < 145 || Double.parseDouble(inputTinggi.getText()) > 250 || Double.parseDouble(inputBerat.getText()) < 10 || Double.parseDouble(inputBerat.getText()) > 500 ){
             a.setAlertType(Alert.AlertType.INFORMATION);
             a.setTitle("BarbelQ");
             a.setHeaderText("Data Tidak Valid");
-            a.setContentText("Min Tinggi = 80 cm Dan Max Tinggi = 250 cm\nMin Berat = 10 kg Dan Max Berat = 500 kg");
+            a.setContentText("Min Tinggi = 145 cm Dan Max Tinggi = 250 cm\nMin Berat = 10 kg Dan Max Berat = 500 kg");
             a.show();    
         }else{
             try{

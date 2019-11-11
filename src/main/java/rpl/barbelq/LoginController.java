@@ -59,44 +59,48 @@ public class LoginController implements Initializable {
     public void Login (ActionEvent event) {
         try {
             if(!"".equals(txtPassword.getText()) && !"".equals(txtEmail.getText())){
-                if(txtEmail.getText().equals("admin") && txtPassword.getText().equals("admin")){
+                if(dbModel.isLogin(txtEmail.getText(), txtPassword.getText())){
+                    int id = 0;
+                    String nama = "";
+                    int level = 0;
+                    dbModel.rs = dbModel.resultset("select id_pengguna,nama,level from DataPengguna where email ='" +txtEmail.getText()+"'");
+                    if(dbModel.rs.next()){
+                        id = dbModel.rs.getInt("id_pengguna");
+                        nama = dbModel.rs.getString("nama");
+                        level = dbModel.rs.getInt("level");
+                    }
+                    dbModel.rs.close();
                     Stage stage1 = (Stage) btnLogin.getScene().getWindow();
                     stage1.close();
-                    Stage primaryStage = new Stage();
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Admin.fxml"));
-                    Parent root1 = (Parent) fxmlLoader.load();
-                    Scene scene = new Scene(root1);
-                    scene.getStylesheets().add("/styles/Styles.css");
-                    primaryStage.setScene(scene);
-                    primaryStage.show();   
-                }else{
-                    if(dbModel.isLogin(txtEmail.getText(), txtPassword.getText())){
-                        int session = 0;
-                        String namaUser = "";
-                        dbModel.rs = dbModel.resultset("select id_pengguna, nama from DataPengguna where email ='" +txtEmail.getText()+"'");
-                        if (dbModel.rs.next()) {
-                            session = dbModel.rs.getInt("id_pengguna");
-                            namaUser = dbModel.rs.getString("nama");
-                        }
-                        dbModel.rs.close();
-                        Stage stage1 = (Stage) btnLogin.getScene().getWindow();
-                        stage1.close();
+                    if(level == 1){
                         Stage primaryStage = new Stage();
                         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/PrimaryHome.fxml"));
                         Parent root1 = (Parent) fxmlLoader.load();
                         PrimaryHomeController primaryHome = (PrimaryHomeController)fxmlLoader.getController();
-                        primaryHome.GetUser(session, namaUser);
+                        primaryHome.GetUser(id, nama);
                         Scene scene = new Scene(root1);
                         scene.getStylesheets().add("/styles/Styles.css");
                         primaryStage.setScene(scene);
                         primaryStage.show(); 
                     }else{
-                        a.setAlertType(AlertType.INFORMATION);
-                        a.setTitle("Login Gagal");
-                        a.setHeaderText(null);
-                        a.setContentText("Email atau Password Salah");
-                        a.showAndWait();
+                        Stage primaryStage = new Stage();
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Admin.fxml"));
+                        Parent root1 = (Parent) fxmlLoader.load();
+                        AdminController admin = (AdminController)fxmlLoader.getController();
+                        admin.GetUser(nama);
+                        Scene scene = new Scene(root1);
+                        scene.getStylesheets().add("/styles/Styles.css");
+                        primaryStage.setScene(scene);
+                        primaryStage.show();   
                     }
+                    
+                    
+                }else{
+                    a.setAlertType(AlertType.INFORMATION);
+                    a.setTitle("Login Gagal");
+                    a.setHeaderText(null);
+                    a.setContentText("Email atau Password Salah");
+                    a.showAndWait();
                 }
             }else{
                a.setAlertType(AlertType.INFORMATION);
