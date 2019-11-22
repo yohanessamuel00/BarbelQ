@@ -45,29 +45,38 @@ public class HomeController implements Initializable {
     
     @FXML
     void handleSubmit(ActionEvent event) throws SQLException, IOException {
-        if(Double.parseDouble(inputTinggi.getText()) < 145 || Double.parseDouble(inputTinggi.getText()) > 250 || Double.parseDouble(inputBerat.getText()) < 10 || Double.parseDouble(inputBerat.getText()) > 500 ){
+        if(inputTinggi.getText().isEmpty() || inputBerat.getText().isEmpty()){
             a.setAlertType(Alert.AlertType.INFORMATION);
             a.setTitle("BarbelQ");
-            a.setHeaderText("Data Tidak Valid");
-            a.setContentText("Min Tinggi = 145 cm Dan Max Tinggi = 250 cm\nMin Berat = 10 kg Dan Max Berat = 500 kg");
-            a.show();    
+            a.setHeaderText(null);
+            a.setContentText("Field Tidak BOleh Kosong");
+            a.show();
         }else{
-            try{
-                dbModel.InsertOrUpdate("update DataPengguna set tinggi = '" +inputTinggi.getText()+ "' where id_pengguna =  "+session+"");
-                dbModel.InsertOrUpdate("update Berat_badan set berat_badan = '" +inputBerat.getText()+ "' where id_pengguna =  "+session+"");
-                Stage stage1 = (Stage) btnSubmit.getScene().getWindow();
-                stage1.close();
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/PrimaryHome.fxml"));
-                Parent root1 = (Parent) fxmlLoader.load();
-                PrimaryHomeController primaryHome = (PrimaryHomeController)fxmlLoader.getController();
-                primaryHome.GetUser(session,namaUser);
-                Stage stage = new Stage();
-                stage.setScene(new Scene(root1));  
-                stage.show();
-            }catch(SQLException e){
-                System.out.println(e.getMessage());
-            } 
-        }  
+            if(Double.parseDouble(inputTinggi.getText()) < 145 || Double.parseDouble(inputTinggi.getText()) > 250 || Double.parseDouble(inputBerat.getText()) < 10 || Double.parseDouble(inputBerat.getText()) > 500 ){
+                a.setAlertType(Alert.AlertType.INFORMATION);
+                a.setTitle("BarbelQ");
+                a.setHeaderText("Data Tidak Valid");
+                a.setContentText("Min Tinggi = 145 cm Dan Max Tinggi = 250 cm\nMin Berat = 10 kg Dan Max Berat = 500 kg");
+                a.show();    
+            }else{
+                try{
+                    dbModel.InsertOrUpdate("update DataPengguna set tinggi = '" +inputTinggi.getText()+ "' where id_pengguna =  "+session+"");
+                    dbModel.InsertOrUpdate("update Berat_badan set berat_badan = '" +inputBerat.getText()+ "' where id_pengguna =  "+session+"");
+                    Stage stage1 = (Stage) btnSubmit.getScene().getWindow();
+                    stage1.close();
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/PrimaryHome.fxml"));
+                    Parent root1 = (Parent) fxmlLoader.load();
+                    PrimaryHomeController primaryHome = (PrimaryHomeController)fxmlLoader.getController();
+                    primaryHome.GetUser(session,namaUser);
+                    Stage stage = new Stage();
+                    stage.setScene(new Scene(root1));  
+                    stage.show();
+                }catch(SQLException e){
+                    System.out.println(e.getMessage());
+                } 
+            }  
+        }
+        
     }
 
     @Override

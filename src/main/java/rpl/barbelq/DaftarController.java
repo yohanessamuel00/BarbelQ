@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,9 +19,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 /**
@@ -30,6 +34,7 @@ public class DaftarController implements Initializable {
     DBBarbelQ dbModel = new DBBarbelQ();
     Alert a = new Alert(Alert.AlertType.NONE);
     
+    private String usia="0",bulan="0";
     @FXML
     private Button btnDaftar;
     
@@ -37,16 +42,33 @@ public class DaftarController implements Initializable {
     private Hyperlink btnLogin;
 
     @FXML
-    private TextField inputEmail;
-
-    @FXML
-    private TextField inputNama;
+    private TextField inputEmail,inputNama,inputUsia,usiaBulanRemaja;
 
     @FXML
     private PasswordField inputPassword;
     
     @FXML
-    private TextField inputUsia;
+    private HBox usiaRemajadanDewasa,usiaBayi;
+    
+    @FXML
+    private ComboBox<String> cbUsiabayi;
+    ObservableList<String> options = FXCollections.observableArrayList("1","2","3","4","5","6","7","8","9","10","11");
+    @FXML
+    private ComboBox<String> cbJenisKelamin;
+    ObservableList<String> options2 = FXCollections.observableArrayList("Laki-Laki","Perempuan");
+    @FXML
+    private ComboBox<String> cbKategori;
+    ObservableList<String> options3 = FXCollections.observableArrayList("Bayi","Anak-Anak","Remaja/Dewasa");
+    
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+       cbUsiabayi.setItems(options);
+       cbUsiabayi.setValue("");
+       cbJenisKelamin.setItems(options2);
+       cbJenisKelamin.setValue("");
+       cbKategori.setItems(options3);
+       cbKategori.setValue("");
+    }
     
     private boolean cekEmail(){
         int id = 0;
@@ -61,19 +83,32 @@ public class DaftarController implements Initializable {
         }   
         return id == 0;
     }
+    private boolean cekinputUsia(){
+        if(!cbUsiabayi.getValue().isEmpty()){
+            bulan = cbUsiabayi.getValue();
+        }
+        if(cbKategori.getValue().equals("Anak-Anak") && !inputUsia.getText().isEmpty()){
+            usia = inputUsia.getText();
+            bulan = usiaBulanRemaja.getText();
+        }
+        if(cbKategori.getValue().equals("Remaja/Dewasa") && !inputUsia.getText().isEmpty() ){
+            usia = inputUsia.getText();
+        }
+        return (cbUsiabayi.getValue().isEmpty() || inputUsia.getText().isEmpty());
+    }
     
     private boolean cekField(){
-        return !(inputNama.getText().equals("") || inputUsia.getText().equals("") || inputEmail.getText().equals("") || inputPassword.getText().equals(""));
+        return !(inputNama.getText().isEmpty() || inputEmail.getText().isEmpty() || inputPassword.getText().isEmpty() || cbJenisKelamin.getValue().isEmpty() || cbKategori.getValue().isEmpty());
     }
     
     
     @FXML
     void btnDaftar(ActionEvent event) throws IOException, SQLException {
         try {
-            if(cekEmail() && cekField()){
+            if(cekEmail() && cekField() && cekinputUsia()){
                 int id = 0;
                 String namaUser = "";
-                dbModel.InsertOrUpdate("insert into DataPengguna (nama, email, password,usia,level) values ('"+inputNama.getText()+"','"+inputEmail.getText()+"','"+inputPassword.getText()+"','"+inputUsia.getText()+"',1)");
+                dbModel.InsertOrUpdate("insert into DataPengguna(nama, email, password,kategori,usiaTahun,usiaBulan,jenis_kelamin,level) values('"+inputNama.getText()+"', '"+inputEmail.getText()+"','"+inputPassword.getText()+"' ,'"+cbKategori.getValue()+"','"+usia+"' ,'"+bulan+"' ,'"+cbJenisKelamin.getValue()+"', '1')");
                 dbModel.rs = dbModel.resultset("select id_pengguna, nama from DataPengguna where email ='" +inputEmail.getText()+"'");
                 while (dbModel.rs.next()) {
                    id = dbModel.rs.getInt("id_pengguna");
@@ -126,27 +161,25 @@ public class DaftarController implements Initializable {
     }
 
     @FXML
-    void inputNama(ActionEvent event) {
-
+    private void handleKategori(ActionEvent event) {
+        if(cbKategori.getValue().equals("Bayi")){
+            inputUsia.setText("");
+            usiaBayi.visibleProperty().set(true);
+            usiaRemajadanDewasa.visibleProperty().set(false);
+            usiaBulanRemaja.visibleProperty().set(false); 
+        }
+        if(cbKategori.getValue().equals("Anak-Anak")){
+            usiaBayi.visibleProperty().set(false);
+            usiaRemajadanDewasa.visibleProperty().set(true);
+            usiaBulanRemaja.visibleProperty().set(true);
+            cbUsiabayi.setValue("");
+        }
+        if(cbKategori.getValue().equals("Remaja/Dewasa")){
+            usiaBayi.visibleProperty().set(false);
+            usiaRemajadanDewasa.visibleProperty().set(true);
+            usiaBulanRemaja.visibleProperty().set(false);
+            cbUsiabayi.setValue("");
+        }
     }
 
-    @FXML
-    void inputEmail(ActionEvent event) {
-
-    }
-
-    @FXML
-    void inputPassword(ActionEvent event) {
-
-    }
-
-    @FXML
-    void inputUsia(ActionEvent event) {
-
-    } 
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-       
-    }
 }

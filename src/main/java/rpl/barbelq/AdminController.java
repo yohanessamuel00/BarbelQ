@@ -190,7 +190,7 @@ public class AdminController implements Initializable {
                 final Saran srn1 = tabelSaran.getSelectionModel().getSelectedItem();
                 int index = tabelSaran.getSelectionModel().getSelectedIndex();
                 ObservableList<Saran> saran = tabelSaran.getItems();
-                dbModel.InsertOrUpdate("update Saran set makanan= '"+txtubahMakanan.getText()+"',aktivitas= '"+txtubahAktivitas.getText()+"',kategori= '"+cbKategoriUbah.getValue()+"' where id_saran ="+id+" ");
+                dbModel.InsertOrUpdate("update Saran set makanan= '"+txtubahMakanan.getText()+"',aktivitas= '"+txtubahAktivitas.getText()+"',kategori= '"+cbKategoriUbah.getValue()+"' where id_saran ="+srn1.getId_saran()+" ");
 
                 Saran srn = new Saran();
                 srn.setId_saran(new SimpleIntegerProperty(srn1.getId_saran()));
