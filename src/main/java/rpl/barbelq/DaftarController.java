@@ -23,7 +23,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 /**
@@ -35,38 +34,27 @@ public class DaftarController implements Initializable {
     Alert a = new Alert(Alert.AlertType.NONE);
     
     private String usia="0",bulan="0";
+    
     @FXML
     private Button btnDaftar;
-    
     @FXML
     private Hyperlink btnLogin;
-
     @FXML
-    private TextField inputEmail,inputNama,inputUsia,usiaBulanRemaja;
-
+    private TextField inputNama,inputUsiaTahun,inputUsiaBulan,inputEmail;
     @FXML
     private PasswordField inputPassword;
-    
-    @FXML
-    private HBox usiaRemajadanDewasa,usiaBayi;
-    
-    @FXML
-    private ComboBox<String> cbUsiabayi;
-    ObservableList<String> options = FXCollections.observableArrayList("1","2","3","4","5","6","7","8","9","10","11");
     @FXML
     private ComboBox<String> cbJenisKelamin;
-    ObservableList<String> options2 = FXCollections.observableArrayList("Laki-Laki","Perempuan");
+    ObservableList<String> options = FXCollections.observableArrayList("Laki-Laki","Perempuan");
     @FXML
     private ComboBox<String> cbKategori;
-    ObservableList<String> options3 = FXCollections.observableArrayList("Bayi","Anak-Anak","Remaja/Dewasa");
-    
+    ObservableList<String> options2 = FXCollections.observableArrayList("Bayi","Anak-Anak","Remaja/Dewasa");
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-       cbUsiabayi.setItems(options);
-       cbUsiabayi.setValue("");
-       cbJenisKelamin.setItems(options2);
+       cbJenisKelamin.setItems(options);
        cbJenisKelamin.setValue("");
-       cbKategori.setItems(options3);
+       cbKategori.setItems(options2);
        cbKategori.setValue("");
     }
     
@@ -74,7 +62,7 @@ public class DaftarController implements Initializable {
         int id = 0;
         try{
             dbModel.rs =dbModel.resultset("select id_pengguna from DataPengguna where email ='" +inputEmail.getText()+"'");
-            while(dbModel.rs.next()) {
+            if(dbModel.rs.next()) {
                 id = dbModel.rs.getInt("id_pengguna");
             }
             dbModel.rs.close();
@@ -84,17 +72,17 @@ public class DaftarController implements Initializable {
         return id == 0;
     }
     private boolean cekinputUsia(){
-        if(!cbUsiabayi.getValue().isEmpty()){
-            bulan = cbUsiabayi.getValue();
+        if(cbKategori.getValue().equals("Bayi") && !inputUsiaBulan.getText().isEmpty()){
+            bulan = inputUsiaBulan.getText();
         }
-        if(cbKategori.getValue().equals("Anak-Anak") && !inputUsia.getText().isEmpty()){
-            usia = inputUsia.getText();
-            bulan = usiaBulanRemaja.getText();
+        if(cbKategori.getValue().equals("Anak-Anak") && !inputUsiaTahun.getText().isEmpty()){
+            usia = inputUsiaTahun.getText();
+            bulan = inputUsiaBulan.getText();
         }
-        if(cbKategori.getValue().equals("Remaja/Dewasa") && !inputUsia.getText().isEmpty() ){
-            usia = inputUsia.getText();
+        if(cbKategori.getValue().equals("Remaja/Dewasa") && !inputUsiaTahun.getText().isEmpty() ){
+            usia = inputUsiaTahun.getText();
         }
-        return (cbUsiabayi.getValue().isEmpty() || inputUsia.getText().isEmpty());
+        return (!inputUsiaTahun.getText().isEmpty() || !inputUsiaBulan.getText().isEmpty());
     }
     
     private boolean cekField(){
@@ -133,7 +121,7 @@ public class DaftarController implements Initializable {
                 a.setAlertType(Alert.AlertType.INFORMATION);
                 a.setTitle("Register Gagal");
                 a.setHeaderText(null);
-                if(cekField()== false) a.setContentText("Field Tidak Boleh Kosong");
+                if(cekField()== false ||cekinputUsia() == false) a.setContentText("Field Tidak Boleh Kosong");
                 else a.setContentText("Email telah terdaftar");
                 
                 // show the dialog 
@@ -163,22 +151,16 @@ public class DaftarController implements Initializable {
     @FXML
     private void handleKategori(ActionEvent event) {
         if(cbKategori.getValue().equals("Bayi")){
-            inputUsia.setText("");
-            usiaBayi.visibleProperty().set(true);
-            usiaRemajadanDewasa.visibleProperty().set(false);
-            usiaBulanRemaja.visibleProperty().set(false); 
+            inputUsiaTahun.disableProperty().set(true);
+            inputUsiaBulan.disableProperty().set(false);
         }
         if(cbKategori.getValue().equals("Anak-Anak")){
-            usiaBayi.visibleProperty().set(false);
-            usiaRemajadanDewasa.visibleProperty().set(true);
-            usiaBulanRemaja.visibleProperty().set(true);
-            cbUsiabayi.setValue("");
+            inputUsiaTahun.disableProperty().set(false);
+            inputUsiaBulan.disableProperty().set(false);
         }
         if(cbKategori.getValue().equals("Remaja/Dewasa")){
-            usiaBayi.visibleProperty().set(false);
-            usiaRemajadanDewasa.visibleProperty().set(true);
-            usiaBulanRemaja.visibleProperty().set(false);
-            cbUsiabayi.setValue("");
+            inputUsiaTahun.disableProperty().set(false);
+            inputUsiaBulan.disableProperty().set(true);
         }
     }
 

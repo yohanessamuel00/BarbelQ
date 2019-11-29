@@ -21,6 +21,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -42,11 +43,9 @@ public class PrimaryHomeController implements Initializable {
     Alert a = new Alert(Alert.AlertType.NONE);
     
     private int session;
-    private String nama,usiaTahun,usiaBulan,Kategori,jKelamin,email,password,tinggi;
+    private String nama,usiaTahun="0",usiaBulan="0",Kategori,jKelamin,email,password,tinggi;
     private String ambil;
     
-    @FXML
-    private TextField Changename, Changeusia, Changeemail, Changetinggi, inpBerat;
     @FXML
     private PasswordField Changepassword;
     @FXML
@@ -58,19 +57,25 @@ public class PrimaryHomeController implements Initializable {
     @FXML
     private Label rataRata, minimal, maksimal;
     @FXML
-    private TextField usiaAnakBulan;
+    private HBox hboxNama,hboxUsia,hboxKategori,hboxJenisKelamin,hboxEmail,hboxPassword,hboxTinggi;
     @FXML
-    private ComboBox<String> cbKategoriupdate;
+    private TextField inpBerat;
+    @FXML
+    private TextField Changename,ChangeusiaTahun,ChangeusiaBulan,Changeemail,Changetinggi;
+    @FXML
+    private ComboBox<String> ChangecbKategori;
     ObservableList<String> options = FXCollections.observableArrayList("Bayi","Anak-Anak","Remaja/Dewasa");
     @FXML
-    private ComboBox<String> cbUsiaBayi;
-    ObservableList<String> options2 = FXCollections.observableArrayList("1","2","3","4","5","6","7","8","9","10","11");
+    private ComboBox<String> ChangecbJenisKelamin;
+    ObservableList<String> options2 = FXCollections.observableArrayList("Laki-Laki","Perempuan");
     @FXML
-    private ComboBox<String> cbJenisKelamin;
-    ObservableList<String> options3 = FXCollections.observableArrayList("Bayi","Anak-Anak","Remaja/Dewasa");
+    private ComboBox<String> cbTampilData;
+    ObservableList<String> options3 = FXCollections.observableArrayList("5","10","15","All");
     @FXML
-    private HBox hboxNama,hboxKategori,hboxUsiaBayi,hboxUsiaAnakDewasa,hboxJenisKelamin,hboxEmail,hboxPassword,hboxTinggi;
-    
+    private LineChart<String,Double> grafikBerat;
+    XYChart.Series<String,Double> simpanSemuaData;
+    XYChart.Series<String,Double> tampilGrafik;
+    XYChart.Series<String,Double> tampilGrafikBeratIdeal;
      /**
      * Initializes the controller class.
      * @param url
@@ -79,36 +84,36 @@ public class PrimaryHomeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        cbKategoriupdate.setItems(options);
-        cbKategoriupdate.setValue("");
-        cbUsiaBayi.setItems(options2);
-        cbUsiaBayi.setValue("");
-        cbJenisKelamin.setItems(options3);
-        cbJenisKelamin.setValue("");
+        ChangecbKategori.setItems(options);
+        ChangecbKategori.setValue("");
+        ChangecbJenisKelamin.setItems(options2);
+        ChangecbJenisKelamin.setValue("");
+        cbTampilData.setItems(options3);
+        cbTampilData.setValue("5");
     } 
     
     @FXML
     private void btnUpdate(ActionEvent event) throws SQLException {
-//        if(!Changename.getText().isEmpty() && !Changeusia.getText().isEmpty() && !Changeemail.getText().isEmpty() && !Changepassword.getText().isEmpty() && !Changetinggi.getText().isEmpty()){
-//            if(Double.parseDouble(Changetinggi.getText()) < 145 || Double.parseDouble(Changetinggi.getText()) > 200){
-//                bantuAlert("Data Tidak Valid", "Min Tinggi = 145 cm dan Max Tinggi = 200");
-//            }else{
-//                dbModel.InsertOrUpdate("update DataPengguna set nama= '" +Changename.getText()+ "',password= '" +Changepassword.getText()+ "',usia= '" +Changeusia.getText()+ "',tinggi= '" +Changetinggi.getText()+ "' where id_pengguna =  "+session+"");
-//                if(ambil.equals(Changeemail.getText())){
-//                    bantuUpdate();
-//                }else{
-//                    if(cekEmail(Changeemail)){
-//                        bantuAlert(null, "Email Sudah Digunakan");
-//                    }else{
-//                        dbModel.InsertOrUpdate("update DataPengguna set email ='"+Changeemail.getText()+"'where id_pengguna =  "+session+"");
-//                        bantuUpdate();
-//                    }
-//                }
-//                hitungBeratIdeal();
-//            }  
-//        }else{
-//            bantuAlert(null, "Data Tidak Boleh Kosong");
-//        }
+        if(!Changename.getText().isEmpty() && !ChangecbKategori.getValue().isEmpty() && cekinputUsia() && !ChangecbJenisKelamin.getValue().isEmpty() && !Changeemail.getText().isEmpty() && !Changepassword.getText().isEmpty() && !Changetinggi.getText().isEmpty()){
+            if(Double.parseDouble(Changetinggi.getText()) < 145 || Double.parseDouble(Changetinggi.getText()) > 200){
+                bantuAlert("Data Tidak Valid", "Min Tinggi = 145 cm dan Max Tinggi = 200");
+            }else{
+                dbModel.InsertOrUpdate("update DataPengguna set nama= '" +Changename.getText()+ "',kategori = '"+ChangecbKategori.getValue()+"',usiaTahun = '"+ChangeusiaTahun.getText()+"',usiaBulan = '"+ChangeusiaBulan.getText()+"',jenis_kelamin = '"+ChangecbJenisKelamin.getValue()+"',password= '" +Changepassword.getText()+ "',tinggi= '" +Changetinggi.getText()+ "' where id_pengguna =  "+session+"");
+                if(ambil.equals(Changeemail.getText())){
+                    bantuUpdate();
+                }else{
+                    if(cekEmail(Changeemail)){
+                        bantuAlert(null, "Email Sudah Digunakan");
+                    }else{
+                        dbModel.InsertOrUpdate("update DataPengguna set email ='"+Changeemail.getText()+"'where id_pengguna =  "+session+"");
+                        bantuUpdate();
+                    }
+                }
+                hitungBeratIdeal();
+            }  
+        }else{
+            bantuAlert(null, "Data Tidak Boleh Kosong");
+        }
     }
 
     @FXML
@@ -140,23 +145,24 @@ public class PrimaryHomeController implements Initializable {
                 if(Double.parseDouble(inpBerat.getText()) < 10 || Double.parseDouble(inpBerat.getText()) > 500){
                     bantuAlert(null, "Data Tidak Valid");
                 }else{
-                    dbModel.rs = dbModel.resultset("select tanggal from Berat_badan where id_pengguna ='" +session+"'");
                     Date d = new Date();
                     SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");
-                    while(dbModel.rs.next()) {
-                        if(ft.format(d).equals(dbModel.rs.getString("tanggal"))){
-                            dbModel.InsertOrUpdate("update Berat_Badan set berat_badan = '" +inpBerat.getText()+ "' where  id_pengguna = '"+session+"' and tanggal = date('now')");
-                            inpBerat.setText(""); 
-                            cekdataBerat();
-                            bantuAlert(null, "Data Berhasil Dimasukkan");
-                        }else{
-                            dbModel.InsertOrUpdate("insert into Berat_badan(berat_badan,id_pengguna,tanggal) values ('" +inpBerat.getText()+ "','"+session+"',date('now'))");
-                            inpBerat.setText(""); 
-                            cekdataBerat();
-                            bantuAlert(null, "Data Berhasil Dimasukkan");
-                        }
+                    dbModel.rs = dbModel.resultset("select tanggal from Berat_badan where id_pengguna ='" +session+"' and tanggal = '"+ft.format(d)+"'");
+                    if(dbModel.rs.next()) {
+                        dbModel.InsertOrUpdate("update Berat_Badan set berat_badan = '" +inpBerat.getText()+ "' where  id_pengguna = '"+session+"' and tanggal = '"+ft.format(d)+"'");
+                        inpBerat.setText(""); 
+                        cekdataBerat();
+                        bantuAlert(null, "Data Berhasil Dimasukkan");
+                    }else{
+                        dbModel.InsertOrUpdate("insert into Berat_badan(berat_badan,id_pengguna,tanggal) values ('" +inpBerat.getText()+ "','"+session+"',date('now','localtime'))");
+                        inpBerat.setText(""); 
+                        cekdataBerat();
+                        
+                        bantuAlert(null, "Data Berhasil Dimasukkan");
                     }
                     dbModel.rs.close();
+                    cbTampilData.setValue("5");
+                    tampilGrafik();
                 }  
             } 
         }
@@ -179,23 +185,18 @@ public class PrimaryHomeController implements Initializable {
         tutupField();
         hboxNama.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
         hboxKategori.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
-        hboxUsiaBayi.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
-        hboxUsiaAnakDewasa.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
+        hboxUsia.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
         hboxJenisKelamin.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
         hboxEmail.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
         hboxPassword.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
         hboxTinggi.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
         Changename.setText(nama);
-        cbKategoriupdate.setValue(Kategori);
-        if(Kategori.equals("Bayi")){
-            cbUsiaBayi.setValue(usiaBulan);
-        }if(Kategori.equals("Anak-Anak")){
-            Changeusia.setText(usiaTahun);
-            usiaAnakBulan.setText(usiaBulan);
-        }if(Kategori.equals("Remaja/Dewasa")){
-            Changeusia.setText(usiaTahun);
+        ChangecbKategori.setValue(Kategori);
+        if(Kategori.equals("Bayi") || Kategori.equals("Anak-Anak") || Kategori.equals("Remaja/Dewasa")){
+            ChangeusiaTahun.setText(usiaTahun);
+            ChangeusiaBulan.setText(usiaBulan);
         }
-        cbJenisKelamin.setValue(jKelamin);
+        ChangecbJenisKelamin.setValue(jKelamin);
         Changeemail.setText(email);
         Changepassword.setText(password);
         Changetinggi.setText(tinggi);
@@ -203,28 +204,19 @@ public class PrimaryHomeController implements Initializable {
     
     @FXML
     private void handleKategori(ActionEvent event) {
-        if(cbKategoriupdate.getValue().equals("Bayi")){
-            hboxUsiaBayi.visibleProperty().set(true);
-            hboxUsiaAnakDewasa.visibleProperty().set(false);
-            usiaAnakBulan.visibleProperty().set(false);
-        }if(cbKategoriupdate.getValue().equals("Anak-Anak")){
-            hboxUsiaBayi.visibleProperty().set(false);
-            hboxUsiaAnakDewasa.visibleProperty().set(true);
-            usiaAnakBulan.visibleProperty().set(true);
-        }if(cbKategoriupdate.getValue().equals("Remaja/Dewasa")){
-            hboxUsiaBayi.visibleProperty().set(false);
-            hboxUsiaAnakDewasa.visibleProperty().set(true);
-            usiaAnakBulan.visibleProperty().set(false);
+        if(ChangecbKategori.getValue().equals("Bayi")){
+            cekKategori(true,false,"0","0");  
+        }if(ChangecbKategori.getValue().equals("Anak-Anak")){
+            cekKategori(false,false,"0","0");
+        }if(ChangecbKategori.getValue().equals("Remaja/Dewasa")){
+            cekKategori(false,true,"0","0");
         }
     }
     
-    private void handleGrafix(ActionEvent event) {
-//        grafikBerat.getData().clear();
-//        XYChart.Series<String,Number> series1 = new XYChart.Series<String,Number>();
-//        series1.getData().add(new XYChart.Data<String,Number>("Aldo",200));
-//        series1.getData().add(new XYChart.Data<String,Number>("Yosam",300));
-//        series1.getData().add(new XYChart.Data<String,Number>("Krisna",550));
-//        grafikBerat.getData().add(series1);
+    @FXML
+    private void handleTampilData(ActionEvent event) throws SQLException {
+        bantuUpdate1();
+        
     }
   
     
@@ -239,26 +231,14 @@ public class PrimaryHomeController implements Initializable {
         nama = nama1;
         dbModel.rs = dbModel.resultset("select * from DataPengguna where id_pengguna ='" +session+"'");
         if (dbModel.rs.next()) {
-            cbKategoriupdate.setValue(dbModel.rs.getString("kategori"));
-            if(cbKategoriupdate.getValue().equals("Bayi")){
-                hboxUsiaBayi.visibleProperty().set(true);
-                cbUsiaBayi.setValue(dbModel.rs.getString("usiaBulan"));
-            }
-            if(cbKategoriupdate.getValue().equals("Anak-Anak")){
-                hboxUsiaAnakDewasa.visibleProperty().set(true);
-                usiaAnakBulan.visibleProperty().set(true);
-                Changeusia.setText(dbModel.rs.getString("usiaTahun"));
-                usiaAnakBulan.setText(dbModel.rs.getString("usiaBulan"));
-            }
-            if(cbKategoriupdate.getValue().equals("Remaja/Dewasa")){
-                hboxUsiaAnakDewasa.visibleProperty().set(true);
-                Changeusia.setText(dbModel.rs.getString("usiaTahun"));
-            }
+            ChangecbKategori.setValue(dbModel.rs.getString("kategori"));
             Kategori = dbModel.rs.getString("kategori");
+            ChangeusiaTahun.setText(dbModel.rs.getString("usiaTahun"));
             usiaTahun = dbModel.rs.getString("usiaTahun");
+            ChangeusiaBulan.setText(dbModel.rs.getString("usiaBulan"));
             usiaBulan = dbModel.rs.getString("usiaBulan");
-            cbJenisKelamin.setValue(dbModel.rs.getString("jenis_kelamin"));
-            jKelamin =  cbJenisKelamin.getValue();
+            ChangecbJenisKelamin.setValue(dbModel.rs.getString("jenis_kelamin"));
+            jKelamin =  ChangecbJenisKelamin.getValue();
             Changeemail.setText(dbModel.rs.getString("email")); 
             email = Changeemail.getText();
             Changepassword.setText(dbModel.rs.getString("password"));
@@ -270,6 +250,81 @@ public class PrimaryHomeController implements Initializable {
         dbModel.rs.close();
         hitungBeratIdeal();
         cekdataBerat();
+        tampilGrafik();
+    }
+    
+    private void tampilGrafik() throws SQLException{
+        simpanSemuaData = new XYChart.Series();
+        tampilGrafik = new XYChart.Series();
+        tampilGrafik.setName("Berat User");
+        grafikBerat.getData().clear();
+        dbModel.resultset("select * from Berat_badan where id_pengguna = "+session+"");
+        while(dbModel.rs.next()){
+            simpanSemuaData.getData().add(new XYChart.Data(dbModel.rs.getString("tanggal"),dbModel.rs.getDouble("berat_badan")));
+        }
+        dbModel.rs.close();
+        int total = simpanSemuaData.getData().size();
+        if(total < 5){
+            for(int i = total-total;i<total;i++){
+                tampilGrafik.getData().add(simpanSemuaData.getData().get(i));
+            }
+            grafikBerat.getData().add(tampilGrafik);
+            garisBeratBadanIdeal(total);
+        }else{
+            for(int i = total-5;i<total;i++){
+                tampilGrafik.getData().add(simpanSemuaData.getData().get(i));
+            }
+            
+            grafikBerat.getData().add(tampilGrafik);
+            garisBeratBadanIdeal(5);
+        }
+        
+    }
+    
+    private void garisBeratBadanIdeal(int total){
+        tampilGrafikBeratIdeal = new XYChart.Series();
+        tampilGrafikBeratIdeal.setName("Berat Ideal");
+        for(int i=0;i<total;i++){
+            tampilGrafikBeratIdeal.getData().add(new XYChart.Data(tampilGrafik.getData().get(i).getXValue(),Double.parseDouble(label1.getText())));
+        }
+        grafikBerat.getData().add(tampilGrafikBeratIdeal);
+        
+    }
+    
+    private void bantuUpdate1() throws SQLException{
+        tampilGrafik = new XYChart.Series();
+        tampilGrafik.setName("Berat User");
+        grafikBerat.getData().clear();
+        int total = simpanSemuaData.getData().size();
+        if(cbTampilData.getValue().equals("5") && total >= 5){
+            for(int i = total-5;i<total;i++){
+                tampilGrafik.getData().add(simpanSemuaData.getData().get(i));
+            }
+            grafikBerat.getData().add(tampilGrafik);
+            garisBeratBadanIdeal(5);
+        }
+        if(cbTampilData.getValue().equals("10") && total >= 10){
+            for(int i = total-10;i<total;i++){
+                tampilGrafik.getData().add(simpanSemuaData.getData().get(i));
+            }
+            grafikBerat.getData().add(tampilGrafik);
+            garisBeratBadanIdeal(10);
+        }
+        if(cbTampilData.getValue().equals("15") && total >= 15){
+            for(int i = total-15;i<total;i++){
+                tampilGrafik.getData().add(simpanSemuaData.getData().get(i));
+            }
+            grafikBerat.getData().add(tampilGrafik);
+            garisBeratBadanIdeal(15);
+        }
+        if(cbTampilData.getValue().equals("All") || total < 5){
+            for(int i = total-total;i<total;i++){
+                tampilGrafik.getData().add(simpanSemuaData.getData().get(i));
+            }
+            grafikBerat.getData().add(tampilGrafik);
+            garisBeratBadanIdeal(total);
+        }
+        
     }
     
     private void bantuAlert(String header, String isi){
@@ -295,12 +350,12 @@ public class PrimaryHomeController implements Initializable {
             label1.setText(hasil);
             
         }
-        if(Kategori.equals("Remaja/Orang Dewasa") && jKelamin.equals("Laki-Laki")){
+        if(Kategori.equals("Remaja/Dewasa") && jKelamin.equals("Laki-Laki")){
             double tampilTinggi = Double.parseDouble(tinggi);
             double hasil = (tampilTinggi - 100) - ((tampilTinggi - 100) * 0.1);
             label1.setText(String.valueOf(hasil));
         }
-        if(Kategori.equals("Remaja/Orang Dewasa") &&jKelamin.equals("Perempuan")){
+        if(Kategori.equals("Remaja/Dewasa") &&jKelamin.equals("Perempuan")){
             double tampilTinggi = Double.parseDouble(tinggi);
             double hasil = (tampilTinggi - 100) - ((tampilTinggi - 100) * 0.1);
             label1.setText(String.valueOf(hasil));
@@ -315,24 +370,33 @@ public class PrimaryHomeController implements Initializable {
             minimal.setText(String.valueOf(dbModel.rs.getDouble("minimal")));
             maksimal.setText(String.valueOf(dbModel.rs.getDouble("maksimal")));
         }
-
         dbModel.rs.close();
+    }
+    
+    private boolean cekinputUsia(){
+        return (!ChangeusiaTahun.getText().isEmpty() || !ChangeusiaBulan.getText().isEmpty());
     }
     
     private void bukaField(){
         Changename.disableProperty().set(false);
-        cbKategoriupdate.disableProperty().set(false);
-        Changeusia.disableProperty().set(false);
-        cbUsiaBayi.disableProperty().set(false);
-        usiaAnakBulan.disableProperty().set(false);
-        cbJenisKelamin.disableProperty().set(false);
+        ChangecbKategori.disableProperty().set(false);
+        if(Kategori.equals("Bayi")){
+            ChangeusiaTahun.disableProperty().set(true);
+            ChangeusiaBulan.disableProperty().set(false);
+        }if(Kategori.equals("Anak-Anak")){
+            ChangeusiaTahun.disableProperty().set(false);
+            ChangeusiaBulan.disableProperty().set(false);
+        }if(Kategori.equals("Remaja/Dewasa")){
+            ChangeusiaTahun.disableProperty().set(false);
+            ChangeusiaBulan.disableProperty().set(true);
+        }
+        ChangecbJenisKelamin.disableProperty().set(false);
         Changeemail.disableProperty().set(false);
-        Changepassword.disableProperty().set(false);
+        Changepassword.disableProperty().set(false);   
         Changetinggi.disableProperty().set(false);
         hboxNama.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: red;");
         hboxKategori.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: red;");
-        hboxUsiaBayi.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: red;");
-        hboxUsiaAnakDewasa.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: red;");
+        hboxUsia.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: red;");
         hboxJenisKelamin.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: red;");
         hboxEmail.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: red;");
         hboxPassword.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: red;");
@@ -341,11 +405,10 @@ public class PrimaryHomeController implements Initializable {
     
     private void tutupField(){
         Changename.disableProperty().set(true);
-        cbKategoriupdate.disableProperty().set(true);
-        Changeusia.disableProperty().set(true);
-        cbUsiaBayi.disableProperty().set(true);
-        usiaAnakBulan.disableProperty().set(true);
-        cbJenisKelamin.disableProperty().set(true);
+        ChangecbKategori.disableProperty().set(true);
+        ChangeusiaTahun.disableProperty().set(true);
+        ChangeusiaBulan.disableProperty().set(true);
+        ChangecbJenisKelamin.disableProperty().set(true);
         Changeemail.disableProperty().set(true);
         Changepassword.disableProperty().set(true);
         Changetinggi.disableProperty().set(true);
@@ -370,33 +433,37 @@ public class PrimaryHomeController implements Initializable {
         }
         return hasil;
     }
-//    
-//    private void bantuUpdate(){
-//        btnEdit.disableProperty().set(false);
-//        Update.disableProperty().set(true);
-//        btnCancel.disableProperty().set(true);
-//        namaUser.setText(Changename.getText());
-//        namaUser2.setText(Changename.getText());
-//        namaUser3.setText(Changename.getText());
-//        tutupField();
-//        hbox1.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
-//        hbox2.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
-//        hbox3.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
-//        hbox4.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
-//        hbox5.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
-//        bantuAlert(null, "Update Berhasil");
-//        name = Changename.getText();
-//        usia = Changeusia.getText();
-//        email = Changeemail.getText();
-//        password = Changepassword.getText();
-//        tinggi = Changetinggi.getText();
-//    }
-//    
-//    
-//
-//
-//    
+     private void cekKategori(boolean tahun, boolean bulan, String setData, String setdata2){
+        ChangeusiaTahun.setText(setData);
+        ChangeusiaBulan.setText(setdata2);
+        ChangeusiaTahun.disableProperty().set(tahun);
+        ChangeusiaBulan.disableProperty().set(bulan);
+    }
+     
+    private void bantuUpdate(){
+        btnEdit.disableProperty().set(false);
+        Update.disableProperty().set(true);
+        btnCancel.disableProperty().set(true);
+        namaUser.setText(Changename.getText());
+        namaUser2.setText(Changename.getText());
+        namaUser3.setText(Changename.getText());
+        tutupField();
+        hboxNama.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
+        hboxKategori.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
+        hboxUsia.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
+        hboxJenisKelamin.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
+        hboxEmail.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
+        hboxPassword.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
+        hboxTinggi.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
+        bantuAlert(null, "Update Berhasil");
+        nama = Changename.getText();
+        Kategori = ChangecbKategori.getValue();
+        usiaTahun = ChangeusiaTahun.getText();
+        usiaBulan = ChangeusiaBulan.getText();
+        jKelamin = ChangecbJenisKelamin.getValue();
+        email = Changeemail.getText();
+        password = Changepassword.getText();
+        tinggi = Changetinggi.getText();
+    }
 
-
-    
 }

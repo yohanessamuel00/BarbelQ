@@ -73,11 +73,11 @@
                         </Text>
                         <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
                            <children>
-                              <Label prefHeight="21.0" prefWidth="70.0" text="Nama">
+                              <Label prefHeight="21.0" prefWidth="78.0" text="Nama">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin></Label>
-                              <TextField fx:id="inputNama" prefHeight="31.0" prefWidth="208.0" promptText="nama" style="-fx-background-color: transparent;">
+                              <TextField fx:id="inputNama" prefHeight="25.0" prefWidth="203.0" promptText="nama" style="-fx-background-color: transparent;">
                                  <HBox.margin>
                                     <Insets top="5.0" />
                                  </HBox.margin>
@@ -94,15 +94,15 @@
                                     <Insets bottom="0.5" />
                                  </HBox.margin>
                               </Label>
-                              <ComboBox fx:id="cbKategori" maxHeight="-Infinity" onAction="#handleKategori" prefHeight="20.0" prefWidth="219.0" />
+                              <ComboBox fx:id="cbKategori" maxHeight="-Infinity" onAction="#handleKategori" prefHeight="25.0" prefWidth="245.0" />
                            </children>
                            <VBox.margin>
                               <Insets top="30.0" />
                            </VBox.margin>
                         </HBox>
-                        <HBox fx:id="usiaRemajadanDewasa" alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;" visible="false">
+                        <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
                            <children>
-                              <Label prefHeight="26.0" prefWidth="77.0" text="Usia">
+                              <Label prefHeight="25.0" prefWidth="78.0" text="Usia">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
@@ -110,14 +110,10 @@
                                     <Insets top="5.0" />
                                  </padding>
                               </Label>
-                              <TextField fx:id="inputUsia" prefHeight="26.0" prefWidth="201.0" promptText="usia" style="-fx-background-color: transparent;">
-                                 <HBox.margin>
-                                    <Insets top="5.0" />
-                                 </HBox.margin>
-                                 <padding>
-                                    <Insets top="5.0" />
-                                 </padding>
-                              </TextField>
+                              <TextField fx:id="inputUsiaTahun" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="61.0" promptText="usia" style="-fx-background-color: transparent;" />
+                              <Label prefHeight="17.0" prefWidth="48.0" text="Tahun" />
+                              <TextField fx:id="inputUsiaBulan" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="52.0" promptText="usia" style="-fx-background-color: transparent;" />
+                              <Label prefHeight="17.0" prefWidth="43.0" text="Bulan" />
                            </children>
                            <VBox.margin>
                               <Insets top="30.0" />
@@ -130,7 +126,7 @@
                                     <Insets bottom="0.5" />
                                  </HBox.margin>
                               </Label>
-                              <ComboBox fx:id="cbJenisKelamin" maxHeight="-Infinity" prefHeight="20.0" prefWidth="219.0" />
+                              <ComboBox fx:id="cbJenisKelamin" maxHeight="-Infinity" prefHeight="25.0" prefWidth="250.0" />
                            </children>
                            <VBox.margin>
                               <Insets top="30.0" />
@@ -138,8 +134,8 @@
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
                            <children>
-                              <Label prefHeight="21.0" prefWidth="70.0" text="Email" />
-                              <TextField fx:id="inputEmail" prefHeight="31.0" prefWidth="208.0" promptText="example@examp.com" style="-fx-background-color: transparent;">
+                              <Label prefHeight="21.0" prefWidth="80.0" text="Email" />
+                              <TextField fx:id="inputEmail" prefHeight="25.0" prefWidth="201.0" promptText="example@examp.com" style="-fx-background-color: transparent;">
                                  <HBox.margin>
                                     <Insets top="5.0" />
                                  </HBox.margin>
@@ -151,12 +147,12 @@
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
                            <children>
-                              <Label prefHeight="17.0" prefWidth="66.0" text="Password">
+                              <Label prefHeight="17.0" prefWidth="107.0" text="Password">
                                  <HBox.margin>
                                     <Insets top="5.0" />
                                  </HBox.margin>
                               </Label>
-                              <PasswordField fx:id="inputPassword" prefHeight="25.0" prefWidth="184.0" promptText="password" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
+                              <PasswordField fx:id="inputPassword" prefHeight="25.0" prefWidth="221.0" promptText="password" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
                                  <HBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </HBox.margin>
@@ -200,16 +196,5 @@
             </HBox>
          </children>
       </StackPane>
-      <HBox fx:id="usiaBayi" alignment="CENTER_RIGHT" layoutX="671.0" layoutY="296.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
-         <children>
-            <Label prefHeight="26.0" prefWidth="118.0" text="Usia">
-               <HBox.margin>
-                  <Insets bottom="0.5" />
-               </HBox.margin>
-            </Label>
-            <ComboBox fx:id="cbUsiabayi" maxHeight="-Infinity" prefHeight="20.0" prefWidth="219.0" />
-         </children>
-      </HBox>
-      <TextField fx:id="usiaBulanRemaja" layoutX="955.0" layoutY="297.0" prefHeight="25.0" prefWidth="45.0" style="-fx-border-width: 5px 0px 2px 0px;" visible="false" />
    </children>
 </AnchorPane>

@@ -2,14 +2,20 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Group?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -135,8 +141,43 @@
           </Tab>
           <Tab text="Overview">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: grey; -fx-background-color: #DBDAD6;">
                      <children>
+                        <VBox alignment="CENTER" layoutX="891.0" layoutY="3.0" prefHeight="661.0" prefWidth="389.0" style="-fx-background-color: white;">
+                           <children>
+                              <TableView prefHeight="200.0" prefWidth="200.0">
+                                 <columns>
+                                    <TableColumn prefWidth="205.0" text="Tanggal" />
+                                    <TableColumn minWidth="0.0" prefWidth="183.0" text="Berat Badan" />
+                                 </columns>
+                                 <VBox.margin>
+                                    <Insets bottom="20.0" />
+                                 </VBox.margin>
+                              </TableView>
+                              <VBox maxWidth="-Infinity" prefHeight="79.0" prefWidth="333.0" style="-fx-background-radius: 20px; -fx-background-color: #DBDAD6;">
+                                 <children>
+                                    <Label style="-fx-font-weight: bold;" text="Suggestion">
+                                       <VBox.margin>
+                                          <Insets left="15.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox maxWidth="-Infinity" prefHeight="79.0" prefWidth="333.0" style="-fx-background-radius: 20px; -fx-background-color: #DBDAD6;">
+                                 <VBox.margin>
+                                    <Insets top="20.0" />
+                                 </VBox.margin>
+                              </VBox>
+                              <VBox maxWidth="-Infinity" prefHeight="79.0" prefWidth="333.0" style="-fx-background-radius: 20px; -fx-background-color: #DBDAD6;">
+                                 <VBox.margin>
+                                    <Insets top="20.0" />
+                                 </VBox.margin>
+                              </VBox>
+                           </children>
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                        </VBox>
                         <Group layoutX="10.0" layoutY="10.0" />
                         <Label fx:id="namaUser2" layoutX="1217.0" layoutY="53.0" prefHeight="25.0" prefWidth="64.0" style="-fx-text-fill: #fe4451; -fx-font-weight: bold; -fx-text-fill: #2188ff;" text="Label" />
                         <ImageView fitHeight="42.0" fitWidth="48.0" layoutX="1219.0" layoutY="4.0">
@@ -144,6 +185,53 @@
                               <Image url="@../logo/man-user.png" />
                            </image>
                         </ImageView>
+                        <LineChart fx:id="grafikBerat" animated="false" layoutX="14.0" layoutY="87.0" prefHeight="335.0" prefWidth="849.0">
+                           <effect>
+                              <InnerShadow />
+                           </effect>
+                           <xAxis>
+                              <CategoryAxis side="BOTTOM" />
+                           </xAxis>
+                           <yAxis>
+                              <NumberAxis side="LEFT" />
+                           </yAxis>
+                        </LineChart>
+                        <VBox layoutX="61.0" layoutY="462.0" prefHeight="125.0" prefWidth="165.0" style="-fx-background-radius: 20px; -fx-background-color: white;">
+                           <children>
+                              <Label style="-fx-font-weight: bold;" text="Now" />
+                           </children>
+                           <padding>
+                              <Insets left="15.0" />
+                           </padding>
+                        </VBox>
+                        <VBox layoutX="274.0" layoutY="462.0" prefHeight="125.0" prefWidth="165.0" style="-fx-background-radius: 20px; -fx-background-color: white;">
+                           <children>
+                              <Label style="-fx-font-weight: bold;" text="Current" />
+                           </children>
+                           <padding>
+                              <Insets left="15.0" />
+                           </padding>
+                        </VBox>
+                        <VBox layoutX="475.0" layoutY="462.0" prefHeight="125.0" prefWidth="165.0" style="-fx-background-radius: 20px; -fx-background-color: white;">
+                           <children>
+                              <Label style="-fx-font-weight: bold;" text="Remaining" />
+                           </children>
+                           <padding>
+                              <Insets left="15.0" />
+                           </padding>
+                        </VBox>
+                        <VBox layoutX="681.0" layoutY="462.0" prefHeight="125.0" prefWidth="165.0" style="-fx-background-radius: 20px; -fx-background-color: white;">
+                           <children>
+                              <Label style="-fx-font-weight: bold;" text="BMI" />
+                              <Label style="-fx-font-weight: bold;" text="Number" />
+                           </children>
+                           <padding>
+                              <Insets left="15.0" />
+                           </padding>
+                        </VBox>
+                        <Label layoutX="61.0" layoutY="70.0" style="-fx-font-weight: bold;" text="Weight Overview" />
+                        <ComboBox fx:id="cbTampilData" layoutX="792.0" layoutY="31.0" onAction="#handleTampilData" prefHeight="31.0" prefWidth="54.0" />
+                        <Label layoutX="614.0" layoutY="38.0" text="Banyak Data Yang Ditampilkan :" />
                      </children></AnchorPane>
             </content>
           </Tab>
@@ -183,7 +271,7 @@
                                     <HBox fx:id="hboxNama" alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="258.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px; -fx-border-color: black;">
                                        <children>
                                           <Label prefHeight="21.0" prefWidth="111.0" text="Nama" />
-                                          <TextField fx:id="Changename" disable="true" prefHeight="25.0" prefWidth="191.0" promptText="nama" style="-fx-background-color: transparent;">
+                                          <TextField fx:id="Changename" disable="true" prefHeight="25.0" prefWidth="215.0" promptText="nama" style="-fx-background-color: transparent;">
                                              <HBox.margin>
                                                 <Insets top="5.0" />
                                              </HBox.margin>
@@ -200,20 +288,19 @@
                                                 <Insets bottom="0.5" />
                                              </HBox.margin>
                                           </Label>
-                                          <ComboBox fx:id="cbKategoriupdate" disable="true" maxHeight="-Infinity" onAction="#handleKategori" prefHeight="25.0" prefWidth="169.0" />
+                                          <ComboBox fx:id="ChangecbKategori" disable="true" maxHeight="-Infinity" onAction="#handleKategori" prefHeight="25.0" prefWidth="205.0" />
                                        </children>
                                        <VBox.margin>
                                           <Insets />
                                        </VBox.margin>
                                     </HBox>
-                                    <HBox fx:id="hboxUsiaAnakDewasa" alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="258.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px; -fx-border-color: black;" visible="false">
+                                    <HBox fx:id="hboxUsia" alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="258.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px; -fx-border-color: black;">
                                        <children>
-                                          <Label prefHeight="21.0" prefWidth="118.0" text="Usia" />
-                                          <TextField fx:id="Changeusia" disable="true" prefHeight="25.0" prefWidth="192.0" promptText="usia" style="-fx-background-color: transparent;">
-                                             <HBox.margin>
-                                                <Insets top="5.0" />
-                                             </HBox.margin>
-                                          </TextField>
+                                          <Label prefHeight="21.0" prefWidth="80.0" text="Usia" />
+                                          <TextField fx:id="ChangeusiaTahun" alignment="CENTER_RIGHT" disable="true" prefHeight="25.0" prefWidth="51.0" promptText="usia" style="-fx-background-color: transparent;" />
+                                          <Label prefHeight="17.0" prefWidth="41.0" text="Tahun" />
+                                          <TextField fx:id="ChangeusiaBulan" alignment="CENTER_RIGHT" disable="true" prefHeight="25.0" prefWidth="51.0" promptText="usia" style="-fx-background-color: transparent;" />
+                                          <Label prefHeight="17.0" prefWidth="41.0" text="Bulan" />
                                        </children>
                                        <VBox.margin>
                                           <Insets top="30.0" />
@@ -226,7 +313,7 @@
                                                 <Insets bottom="0.5" />
                                              </HBox.margin>
                                           </Label>
-                                          <ComboBox fx:id="cbJenisKelamin" disable="true" maxHeight="-Infinity" prefHeight="25.0" prefWidth="162.0" />
+                                          <ComboBox fx:id="ChangecbJenisKelamin" disable="true" maxHeight="-Infinity" prefHeight="25.0" prefWidth="194.0" />
                                        </children>
                                        <VBox.margin>
                                           <Insets top="30.0" />
@@ -239,7 +326,7 @@
                                                 <Insets />
                                              </HBox.margin>
                                           </Label>
-                                          <TextField fx:id="Changeemail" disable="true" prefHeight="25.0" prefWidth="191.0" promptText="email" style="-fx-background-color: transparent;">
+                                          <TextField fx:id="Changeemail" disable="true" prefHeight="25.0" prefWidth="208.0" promptText="email" style="-fx-background-color: transparent;">
                                              <HBox.margin>
                                                 <Insets top="1.0" />
                                              </HBox.margin>
@@ -252,7 +339,7 @@
                                     <HBox fx:id="hboxPassword" alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="33.0" prefWidth="258.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px; -fx-border-color: black;">
                                        <children>
                                           <Label prefHeight="21.0" prefWidth="111.0" text="Password" />
-                                          <PasswordField fx:id="Changepassword" disable="true" prefHeight="25.0" prefWidth="188.0" promptText="password" style="-fx-background-color: transparent;" />
+                                          <PasswordField fx:id="Changepassword" disable="true" prefHeight="25.0" prefWidth="206.0" promptText="password" style="-fx-background-color: transparent;" />
                                        </children>
                                        <VBox.margin>
                                           <Insets top="30.0" />
@@ -265,7 +352,7 @@
                                                 <Insets />
                                              </HBox.margin>
                                           </Label>
-                                          <TextField fx:id="Changetinggi" disable="true" prefHeight="25.0" prefWidth="176.0" promptText="tinggi:cm" style="-fx-background-color: transparent;">
+                                          <TextField fx:id="Changetinggi" disable="true" prefHeight="25.0" prefWidth="206.0" promptText="tinggi:cm" style="-fx-background-color: transparent;">
                                              <HBox.margin>
                                                 <Insets top="1.0" />
                                              </HBox.margin>
@@ -303,21 +390,6 @@
                               <Image url="@../logo/man-user.png" />
                            </image>
                         </ImageView>
-                        <Group layoutX="550.0" layoutY="263.0">
-                           <children>
-                              <HBox fx:id="hboxUsiaBayi" alignment="CENTER_RIGHT" layoutX="1.0" prefHeight="32.0" prefWidth="258.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-width: 0px 0px 2px 0px;" visible="false">
-                                 <children>
-                                    <Label prefHeight="26.0" prefWidth="100.0" text="Usia">
-                                       <HBox.margin>
-                                          <Insets bottom="0.5" />
-                                       </HBox.margin>
-                                    </Label>
-                                    <ComboBox fx:id="cbUsiaBayi" disable="true" prefHeight="25.0" prefWidth="166.0" />
-                                 </children>
-                              </HBox>
-                              <TextField fx:id="usiaAnakBulan" disable="true" layoutX="259.0" layoutY="2.0" prefHeight="29.0" prefWidth="36.0" visible="false" />
-                           </children>
-                        </Group>
                         <Group />
                      </children>
                   </AnchorPane>

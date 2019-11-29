@@ -56,64 +56,55 @@ public class LoginController implements Initializable {
         }
     }
     
+    private void panggilHalaman(String namaHal, int id, String nama) throws IOException, SQLException{
+        Stage primaryStage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/"+namaHal+".fxml"));
+        Parent root1 = (Parent) fxmlLoader.load();
+        PrimaryHomeController primaryHome = (PrimaryHomeController)fxmlLoader.getController();
+        primaryHome.GetUser(id, nama);
+        Scene scene = new Scene(root1);
+        scene.getStylesheets().add("/styles/Styles.css");
+        primaryStage.setScene(scene);
+        primaryStage.show(); 
+    }
     public void Login (ActionEvent event) {
         try {
             if(!"".equals(txtPassword.getText()) && !"".equals(txtEmail.getText())){
                 if(dbModel.isLogin(txtEmail.getText(), txtPassword.getText())){
-                    int id = 0;
-                    String nama = "";
-                    int level = 0;
                     dbModel.rs = dbModel.resultset("select id_pengguna,nama,level from DataPengguna where email ='" +txtEmail.getText()+"'");
                     if(dbModel.rs.next()){
-                        id = dbModel.rs.getInt("id_pengguna");
-                        nama = dbModel.rs.getString("nama");
-                        level = dbModel.rs.getInt("level");
-                    }
+                        int id = dbModel.rs.getInt("id_pengguna");
+                        String nama = dbModel.rs.getString("nama");
+                        int level = dbModel.rs.getInt("level");
+                        
+                        Stage stage1 = (Stage) btnLogin.getScene().getWindow();
+                        stage1.close();
+                        if(level == 1){
+                            panggilHalaman("PrimaryHome", id, nama);
+                        
+                        }else{
+                            panggilHalaman("Admin", id, nama);
+                        }
+                    }   
                     dbModel.rs.close();
-                    Stage stage1 = (Stage) btnLogin.getScene().getWindow();
-                    stage1.close();
-                    if(level == 1){
-                        Stage primaryStage = new Stage();
-                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/PrimaryHome.fxml"));
-                        Parent root1 = (Parent) fxmlLoader.load();
-                        PrimaryHomeController primaryHome = (PrimaryHomeController)fxmlLoader.getController();
-                        primaryHome.GetUser(id, nama);
-                        Scene scene = new Scene(root1);
-                        scene.getStylesheets().add("/styles/Styles.css");
-                        primaryStage.setScene(scene);
-                        primaryStage.show(); 
-                    }else{
-                        Stage primaryStage = new Stage();
-                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Admin.fxml"));
-                        Parent root1 = (Parent) fxmlLoader.load();
-                        AdminController admin = (AdminController)fxmlLoader.getController();
-                        admin.GetUser(nama);
-                        Scene scene = new Scene(root1);
-                        scene.getStylesheets().add("/styles/Styles.css");
-                        primaryStage.setScene(scene);
-                        primaryStage.show();   
-                    }
-                    
-                    
                 }else{
-                    a.setAlertType(AlertType.INFORMATION);
-                    a.setTitle("Login Gagal");
-                    a.setHeaderText(null);
-                    a.setContentText("Email atau Password Salah");
-                    a.showAndWait();
+                    bantuAlert(null, "Email atau Password Salah");
                 }
             }else{
-               a.setAlertType(AlertType.INFORMATION);
-                a.setTitle("Login Gagal");
-                a.setHeaderText(null);
-                a.setContentText("Email dan Password Tidak Boleh Kosong");
-                // show the dialog 
-                a.showAndWait(); 
+                bantuAlert(null, "Email dan Password Tidak Boleh Kosong");
             }
         } catch (SQLException | IOException e) {
             // TODO Auto-generated catch block
             System.out.println(e.getMessage());
         }
-    } 
+    }
+    
+    private void bantuAlert(String header, String isi){
+        a.setAlertType(Alert.AlertType.INFORMATION);
+        a.setTitle("BarbelQ");
+        a.setHeaderText(header);
+        a.setContentText(isi);
+        a.show();
+    }
     
 }

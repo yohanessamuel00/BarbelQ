@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.effect.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1360.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rpl.barbelq.HomeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1360.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rpl.barbelq.HomeController">
    <children>
       <StackPane prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
          <children>
@@ -68,7 +72,7 @@
                         <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
                            <children>
                               <Label prefHeight="21.0" prefWidth="70.0" text="Height" />
-                              <TextField fx:id="inputTinggi" onAction="#inputTinggi" prefHeight="31.0" prefWidth="208.0" promptText="height:cm" style="-fx-background-color: transparent;">
+                              <TextField fx:id="inputTinggi" prefHeight="31.0" prefWidth="208.0" promptText="height:cm" style="-fx-background-color: transparent;">
                                  <HBox.margin>
                                     <Insets top="5.0" />
                                  </HBox.margin>
@@ -81,7 +85,7 @@
                         <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
                            <children>
                               <Label prefHeight="21.0" prefWidth="70.0" text="Weight" />
-                              <TextField fx:id="inputBerat" onAction="#inputBerat" prefHeight="31.0" prefWidth="208.0" promptText="weight:cm" style="-fx-background-color: transparent;">
+                              <TextField fx:id="inputBerat" prefHeight="31.0" prefWidth="208.0" promptText="weight:cm" style="-fx-background-color: transparent;">
                                  <HBox.margin>
                                     <Insets top="5.0" />
                                  </HBox.margin>
