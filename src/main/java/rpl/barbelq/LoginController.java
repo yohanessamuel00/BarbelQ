@@ -15,19 +15,15 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 public class LoginController implements Initializable {
-    
     DBBarbelQ dbModel = new DBBarbelQ();
     Alert a = new Alert(AlertType.NONE);
     
     @FXML
     private Hyperlink btnDaftar;
-    
     @FXML
     private Button btnLogin;
-    
     @FXML
     private TextField txtEmail;
-   
     @FXML
     private PasswordField txtPassword;
    
@@ -56,37 +52,29 @@ public class LoginController implements Initializable {
         }
     }
     
-    private void panggilHalaman(String namaHal, int id, String nama) throws IOException, SQLException{
-        Stage primaryStage = new Stage();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/"+namaHal+".fxml"));
-        Parent root1 = (Parent) fxmlLoader.load();
-        PrimaryHomeController primaryHome = (PrimaryHomeController)fxmlLoader.getController();
-        primaryHome.GetUser(id, nama);
-        Scene scene = new Scene(root1);
-        scene.getStylesheets().add("/styles/Styles.css");
-        primaryStage.setScene(scene);
-        primaryStage.show(); 
-    }
+    @FXML
     public void Login (ActionEvent event) {
         try {
             if(!"".equals(txtPassword.getText()) && !"".equals(txtEmail.getText())){
                 if(dbModel.isLogin(txtEmail.getText(), txtPassword.getText())){
                     dbModel.rs = dbModel.resultset("select id_pengguna,nama,level from DataPengguna where email ='" +txtEmail.getText()+"'");
+                    int id =0;
+                    String nama ="";
+                    int level = 0;
                     if(dbModel.rs.next()){
-                        int id = dbModel.rs.getInt("id_pengguna");
-                        String nama = dbModel.rs.getString("nama");
-                        int level = dbModel.rs.getInt("level");
-                        
-                        Stage stage1 = (Stage) btnLogin.getScene().getWindow();
-                        stage1.close();
-                        if(level == 1){
-                            panggilHalaman("PrimaryHome", id, nama);
-                        
-                        }else{
-                            panggilHalaman("Admin", id, nama);
-                        }
-                    }   
+                        id = dbModel.rs.getInt("id_pengguna");
+                        nama = dbModel.rs.getString("nama");
+                        level = dbModel.rs.getInt("level");
+                    }
                     dbModel.rs.close();
+                    Stage stage1 = (Stage) btnLogin.getScene().getWindow();
+                    stage1.close();
+                    if(level == 1){
+                        panggilHalaman("PrimaryHome", id, nama);
+
+                    }else{
+                        panggilHalaman("Admin", id, nama);
+                    }
                 }else{
                     bantuAlert(null, "Email atau Password Salah");
                 }
@@ -98,7 +86,28 @@ public class LoginController implements Initializable {
             System.out.println(e.getMessage());
         }
     }
-    
+////////////////////////////////////////////////////////////////////////////////
+    private void panggilHalaman(String namaHal, int id, String nama) throws IOException, SQLException{
+        Stage primaryStage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/"+namaHal+".fxml"));
+        Parent root1 = (Parent) fxmlLoader.load();
+        if(namaHal.equals("PrimaryHome")){
+            PrimaryHomeController primaryHome = (PrimaryHomeController)fxmlLoader.getController();           
+            Scene scene = new Scene(root1);
+            scene.getStylesheets().add("/styles/Styles.css");
+            primaryStage.setScene(scene);
+            primaryStage.show();
+            primaryHome.GetUser(id, nama);  
+        }else{
+            AdminController admin = (AdminController)fxmlLoader.getController();
+            admin.GetUser(nama);
+            Scene scene = new Scene(root1);
+            scene.getStylesheets().add("/styles/Styles.css");
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        }
+    }
+
     private void bantuAlert(String header, String isi){
         a.setAlertType(Alert.AlertType.INFORMATION);
         a.setTitle("BarbelQ");

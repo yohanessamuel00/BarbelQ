@@ -11,8 +11,6 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.InnerShadow?>
@@ -28,7 +26,7 @@
    <children>
       <TabPane prefHeight="700.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Home">
+          <Tab text="Beranda">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -56,7 +54,7 @@
                                           <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="Berat Badan Ideal Anda " wrappingWidth="171.75341796875" />
                                           <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
                                              <children>
-                                                <Label fx:id="label1" prefHeight="66.0" prefWidth="113.0" style="-fx-font-weight: bold; -fx-font-size: 3em;" text="Label">
+                                                <Label fx:id="beratIdeal" prefHeight="66.0" prefWidth="113.0" style="-fx-font-weight: bold; -fx-font-size: 3em;" text="Label">
                                                    <font>
                                                       <Font size="47.0" />
                                                    </font>
@@ -139,39 +137,21 @@
                      </children></AnchorPane>
             </content>
           </Tab>
-          <Tab text="Overview">
+          <Tab text="Statistik">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: grey; -fx-background-color: #DBDAD6;">
                      <children>
                         <VBox alignment="CENTER" layoutX="891.0" layoutY="3.0" prefHeight="661.0" prefWidth="389.0" style="-fx-background-color: white;">
                            <children>
-                              <TableView prefHeight="200.0" prefWidth="200.0">
-                                 <columns>
-                                    <TableColumn prefWidth="205.0" text="Tanggal" />
-                                    <TableColumn minWidth="0.0" prefWidth="183.0" text="Berat Badan" />
-                                 </columns>
-                                 <VBox.margin>
-                                    <Insets bottom="20.0" />
-                                 </VBox.margin>
-                              </TableView>
-                              <VBox maxWidth="-Infinity" prefHeight="79.0" prefWidth="333.0" style="-fx-background-radius: 20px; -fx-background-color: #DBDAD6;">
+                              <VBox maxWidth="-Infinity" prefHeight="509.0" prefWidth="333.0" style="-fx-background-radius: 20px; -fx-background-color: #DBDAD6;">
                                  <children>
-                                    <Label style="-fx-font-weight: bold;" text="Suggestion">
+                                    <Label style="-fx-font-weight: bold;" text="Saran">
                                        <VBox.margin>
                                           <Insets left="15.0" />
                                        </VBox.margin>
                                     </Label>
+                                    <Label fx:id="Saran" alignment="TOP_RIGHT" contentDisplay="RIGHT" prefHeight="475.0" prefWidth="236.0" text="Label" />
                                  </children>
-                              </VBox>
-                              <VBox maxWidth="-Infinity" prefHeight="79.0" prefWidth="333.0" style="-fx-background-radius: 20px; -fx-background-color: #DBDAD6;">
-                                 <VBox.margin>
-                                    <Insets top="20.0" />
-                                 </VBox.margin>
-                              </VBox>
-                              <VBox maxWidth="-Infinity" prefHeight="79.0" prefWidth="333.0" style="-fx-background-radius: 20px; -fx-background-color: #DBDAD6;">
-                                 <VBox.margin>
-                                    <Insets top="20.0" />
-                                 </VBox.margin>
                               </VBox>
                            </children>
                            <effect>
@@ -190,52 +170,46 @@
                               <InnerShadow />
                            </effect>
                            <xAxis>
-                              <CategoryAxis side="BOTTOM" />
+                              <CategoryAxis label="Tanggal" side="BOTTOM" />
                            </xAxis>
                            <yAxis>
-                              <NumberAxis side="LEFT" />
+                              <NumberAxis label="Berat" side="LEFT" />
                            </yAxis>
                         </LineChart>
-                        <VBox layoutX="61.0" layoutY="462.0" prefHeight="125.0" prefWidth="165.0" style="-fx-background-radius: 20px; -fx-background-color: white;">
+                        <VBox layoutX="171.0" layoutY="468.0" prefHeight="125.0" prefWidth="165.0" style="-fx-background-radius: 20px; -fx-background-color: white;">
                            <children>
-                              <Label style="-fx-font-weight: bold;" text="Now" />
+                              <Label style="-fx-font-weight: bold;" text="Mulai" />
+                              <Label fx:id="Mulai" alignment="CENTER" prefHeight="95.0" prefWidth="140.0" style="-fx-font-weight: bold; -fx-font-size: 25;" text="Label" textAlignment="CENTER" />
                            </children>
                            <padding>
                               <Insets left="15.0" />
                            </padding>
                         </VBox>
-                        <VBox layoutX="274.0" layoutY="462.0" prefHeight="125.0" prefWidth="165.0" style="-fx-background-radius: 20px; -fx-background-color: white;">
+                        <VBox layoutX="384.0" layoutY="468.0" prefHeight="125.0" prefWidth="165.0" style="-fx-background-radius: 20px; -fx-background-color: white;">
                            <children>
-                              <Label style="-fx-font-weight: bold;" text="Current" />
+                              <Label style="-fx-font-weight: bold;" text="Baru" />
+                              <Label fx:id="Baru" alignment="CENTER" prefHeight="95.0" prefWidth="142.0" style="-fx-font-weight: bold; -fx-font-size: 25;" text="Label" textAlignment="CENTER" />
                            </children>
                            <padding>
                               <Insets left="15.0" />
                            </padding>
                         </VBox>
-                        <VBox layoutX="475.0" layoutY="462.0" prefHeight="125.0" prefWidth="165.0" style="-fx-background-radius: 20px; -fx-background-color: white;">
+                        <VBox layoutX="585.0" layoutY="468.0" prefHeight="125.0" prefWidth="165.0" style="-fx-background-radius: 20px; -fx-background-color: white;">
                            <children>
-                              <Label style="-fx-font-weight: bold;" text="Remaining" />
+                              <Label style="-fx-font-weight: bold;" text="Sisa" />
+                              <Label fx:id="Sisa" alignment="CENTER" prefHeight="93.0" prefWidth="139.0" style="-fx-font-weight: bold; -fx-font-size: 25;" text="Label" textAlignment="CENTER" />
                            </children>
                            <padding>
                               <Insets left="15.0" />
                            </padding>
                         </VBox>
-                        <VBox layoutX="681.0" layoutY="462.0" prefHeight="125.0" prefWidth="165.0" style="-fx-background-radius: 20px; -fx-background-color: white;">
-                           <children>
-                              <Label style="-fx-font-weight: bold;" text="BMI" />
-                              <Label style="-fx-font-weight: bold;" text="Number" />
-                           </children>
-                           <padding>
-                              <Insets left="15.0" />
-                           </padding>
-                        </VBox>
-                        <Label layoutX="61.0" layoutY="70.0" style="-fx-font-weight: bold;" text="Weight Overview" />
-                        <ComboBox fx:id="cbTampilData" layoutX="792.0" layoutY="31.0" onAction="#handleTampilData" prefHeight="31.0" prefWidth="54.0" />
-                        <Label layoutX="614.0" layoutY="38.0" text="Banyak Data Yang Ditampilkan :" />
+                        <Label layoutX="61.0" layoutY="70.0" style="-fx-font-weight: bold;" text="Statistik Berat Badan" />
+                        <ComboBox fx:id="cbTampilData" layoutX="765.0" layoutY="31.0" onAction="#handleTampilData" prefHeight="31.0" prefWidth="81.0" />
+                        <Label layoutX="586.0" layoutY="38.0" text="Banyak Data Yang Ditampilkan :" />
                      </children></AnchorPane>
             </content>
           </Tab>
-            <Tab text="Setting">
+            <Tab text="Pengaturan">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>

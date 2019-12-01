@@ -28,8 +28,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
@@ -45,53 +47,34 @@ public class AdminController implements Initializable {
     DBBarbelQ dbModel = new DBBarbelQ();
     Alert a = new Alert(Alert.AlertType.NONE);
     
-    private int id;
     @FXML
     private TableView<Saran> tabelSaran;
-   
     @FXML
     private TableColumn<Saran, Integer> colidSaran;
-    
     @FXML
-    private TableColumn<Saran, String> colMakanan;
-        
+    private TableColumn<Saran, String> colMakanan; 
     @FXML
     private TableColumn<Saran, String> colAktivitas;
- 
     @FXML
     private TableColumn<Saran, String> colKategori;
-
     
     @FXML
-    private Group tampilUbah,tampilTambah;
+    private Group tampilTambah;
     @FXML
-    private TextField txtaktivitas;
-
+    private TextArea txtaktivitas,txtmakanan,txtubahAktivitas,txtubahMakanan;
     @FXML
-    private TextField txtmakanan;
-    @FXML
-    private TextField txtubahAktivitas;
-    
-    @FXML
-    private TextField txtubahMakanan;
-    
+    private TextField namaAdmin,usiaAdmin,emailAdmin;
     @FXML
     private Label namaUser;
-    
     @FXML
-    private Button btnBatal,btnLogout;
-    
-    @FXML
-    private ComboBox<String> cbKategori, cbKategoriUbah;
-    
-    
-    ObservableList<String> options = FXCollections.observableArrayList("1","2","3","4","5","6");
+    private Button btnLogout;
     @FXML
     private AnchorPane Pendaftaran,crudAdmin;
     @FXML
-    private Button signupAdmin,cancelAdmin,daftarAdmin;
+    private PasswordField passwordAdmin;
     @FXML
-    private TextField namaAdmin,usiaAdmin,emailAdmin,passwordAdmin;
+    private ComboBox<String> cbKategori, cbKategoriUbah;
+    ObservableList<String> options = FXCollections.observableArrayList("Berlebihan","Kekurangan");
     /**
      * Initializes the controller class.
      *
@@ -101,6 +84,7 @@ public class AdminController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cbKategori.setItems(options);
+        cbKategori.setValue("Berlebihan");
         cbKategoriUbah.setItems(options);
         colidSaran.setCellValueFactory(new PropertyValueFactory("id_saran"));
         colMakanan.setCellValueFactory(new PropertyValueFactory("makanan"));
@@ -168,13 +152,12 @@ public class AdminController implements Initializable {
                         txtubahAktivitas.setText("");
                         txtubahMakanan.promptTextProperty().set(dbModel.rs.getString("makanan"));
                         txtubahMakanan.setText("");
-                        cbKategoriUbah.setValue("");
+                        cbKategoriUbah.setValue(dbModel.rs.getString("kategori"));
                     }
                     dbModel.rs.close();
                 } catch (SQLException ex) {
                     Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
             }
         });
     }
@@ -191,18 +174,8 @@ public class AdminController implements Initializable {
                 int index = tabelSaran.getSelectionModel().getSelectedIndex();
                 ObservableList<Saran> saran = tabelSaran.getItems();
                 dbModel.InsertOrUpdate("update Saran set makanan= '"+txtubahMakanan.getText()+"',aktivitas= '"+txtubahAktivitas.getText()+"',kategori= '"+cbKategoriUbah.getValue()+"' where id_saran ="+srn1.getId_saran()+" ");
-
-                Saran srn = new Saran();
-                srn.setId_saran(new SimpleIntegerProperty(srn1.getId_saran()));
-                srn.setAktivitas(txtubahAktivitas.getText());
-                srn.setMakanan(txtubahMakanan.getText());
-                srn.setKategori(cbKategoriUbah.getValue());
-
-                saran.set(index, srn);
-                
-                txtaktivitas.setText("");
-                txtmakanan.setText("");
-                cbKategori.setValue("");
+                saran.set(index, updateORinsert(srn1.getId_saran(),txtubahAktivitas,txtubahMakanan,cbKategoriUbah));
+                bantuAlert(null, "Data Berhasil Di Update");
                 tabelSaran.disableProperty().set(false);
                 tampilTambah.visibleProperty().set(true);
             }
@@ -224,31 +197,16 @@ public class AdminController implements Initializable {
                     hsl = dbModel.rs.getInt("hasil");
                 }
                 dbModel.rs.close();
-                System.out.println(hsl);
-                Saran srn = new Saran();
-                srn.setId_saran(new SimpleIntegerProperty(hsl));
-                srn.setAktivitas(txtaktivitas.getText());
-                srn.setMakanan(txtmakanan.getText());
-                srn.setKategori(cbKategori.getValue());
-
-                tabelSaran.getItems().add(srn);
-                txtaktivitas.setText("");
-                txtmakanan.setText("");
-                cbKategori.setValue("");
-                
-                bantuAlert(null, "Update Berhasil");
+                tabelSaran.getItems().add(updateORinsert(hsl,txtaktivitas,txtmakanan,cbKategori));
+                a.setAlertType(Alert.AlertType.INFORMATION);
+                a.setTitle("BarbelQ");
+                a.setHeaderText(null);
+                a.setContentText("Data Berhasil Di Tambah");
+                a.show();
             }
         } 
     }
-    
-    private void bantuAlert(String header, String isi){
-        a.setAlertType(Alert.AlertType.INFORMATION);
-        a.setTitle("BarbelQ");
-        a.setHeaderText(header);
-        a.setContentText(isi);
-        a.show();
-    }
-    
+     
     @FXML
     private void handleBatal(ActionEvent event) {
         tampilTambah.visibleProperty().set(true);
@@ -268,7 +226,56 @@ public class AdminController implements Initializable {
         primaryStage.show();  
     }
     
-    private boolean cekData(TextField aktivitas, TextField makanan) throws SQLException{
+    @FXML
+    private void btnSignupAdmin(ActionEvent event) {
+        dbModel.InsertOrUpdate("insert into DataPengguna(nama,email,password,usiaTahun,level) values('"+namaAdmin.getText()+"','"+emailAdmin.getText()+"','"+passwordAdmin.getText()+"',"+usiaAdmin.getText()+",2)");
+        bantuAlert(null,"Admin Berhasil Ditambah");
+        Pendaftaran.visibleProperty().set(false);
+        crudAdmin.visibleProperty().set(true);
+        
+    }
+
+    @FXML
+    private void btnCancelAdmin(ActionEvent event) {
+        namaAdmin.setText("");
+        usiaAdmin.setText("");
+        emailAdmin.setText("");
+        passwordAdmin.setText("");
+        crudAdmin.visibleProperty().set(true);
+        Pendaftaran.visibleProperty().set(false);
+    }
+
+    @FXML
+    private void btnDaftarAdmin(ActionEvent event) {
+        crudAdmin.visibleProperty().set(false);
+        Pendaftaran.visibleProperty().set(true);
+    }
+////////////////////////////////////////////////////////////////////////////////
+    public void GetUser(String nama) {
+        // TODO Auto-generated method stub
+        namaUser.setText(nama);
+    }
+    
+    private Saran updateORinsert(int id, TextArea aktivitas, TextArea makanan, ComboBox<String> Kategori){
+        Saran srn = new Saran();
+        srn.setId_saran(new SimpleIntegerProperty(id));
+        srn.setAktivitas(aktivitas.getText());
+        srn.setMakanan(makanan.getText());
+        srn.setKategori(Kategori.getValue());
+        aktivitas.setText("");
+        makanan.setText("");
+        Kategori.setValue("Berlebihan");
+        return srn;
+    }
+    private void bantuAlert(String header, String isi){
+        a.setAlertType(Alert.AlertType.INFORMATION);
+        a.setTitle("BarbelQ");
+        a.setHeaderText(header);
+        a.setContentText(isi);
+        a.showAndWait();
+    }
+        
+    private boolean cekData(TextArea aktivitas, TextArea makanan) throws SQLException{
         boolean hasil = false;
         dbModel.resultset("select * from Saran ");
         while(dbModel.rs.next()){ 
@@ -280,35 +287,5 @@ public class AdminController implements Initializable {
         dbModel.rs.close();
         return hasil;
     }
-
-    @FXML
-    private void btnSignupAdmin(ActionEvent event) {
-        dbModel.InsertOrUpdate("insert into DataPengguna(nama,email,password,usia,level) values('"+namaAdmin.getText()+"','"+emailAdmin.getText()+"','"+passwordAdmin.getText()+"',"+usiaAdmin.getText()+",2)");
-        a.setAlertType(Alert.AlertType.INFORMATION);
-        a.setTitle("BarbelQ");
-        a.setHeaderText(null);
-        a.setContentText("Data Berhasil Dimasukkan");
-        a.showAndWait();
-        Pendaftaran.visibleProperty().set(false);
-        crudAdmin.visibleProperty().set(true);
-        
-    }
-
-    @FXML
-    private void btnCancelAdmin(ActionEvent event) {
-        crudAdmin.visibleProperty().set(true);
-        Pendaftaran.visibleProperty().set(false);
-    }
-
-    @FXML
-    private void btnDaftarAdmin(ActionEvent event) {
-        crudAdmin.visibleProperty().set(false);
-        Pendaftaran.visibleProperty().set(true);
-    }
-
-    public void GetUser(String nama) {
-        // TODO Auto-generated method stub
-        namaUser.setText(nama);
-    }
-
+            
 }

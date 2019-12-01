@@ -32,7 +32,6 @@ import javafx.stage.Stage;
 public class DaftarController implements Initializable {
     DBBarbelQ dbModel = new DBBarbelQ();
     Alert a = new Alert(Alert.AlertType.NONE);
-    
     private String usia="0",bulan="0";
     
     @FXML
@@ -44,10 +43,8 @@ public class DaftarController implements Initializable {
     @FXML
     private PasswordField inputPassword;
     @FXML
-    private ComboBox<String> cbJenisKelamin;
+    private ComboBox<String> cbJenisKelamin,cbKategori;
     ObservableList<String> options = FXCollections.observableArrayList("Laki-Laki","Perempuan");
-    @FXML
-    private ComboBox<String> cbKategori;
     ObservableList<String> options2 = FXCollections.observableArrayList("Bayi","Anak-Anak","Remaja/Dewasa");
 
     @Override
@@ -57,38 +54,6 @@ public class DaftarController implements Initializable {
        cbKategori.setItems(options2);
        cbKategori.setValue("");
     }
-    
-    private boolean cekEmail(){
-        int id = 0;
-        try{
-            dbModel.rs =dbModel.resultset("select id_pengguna from DataPengguna where email ='" +inputEmail.getText()+"'");
-            if(dbModel.rs.next()) {
-                id = dbModel.rs.getInt("id_pengguna");
-            }
-            dbModel.rs.close();
-        }catch(SQLException e){
-            System.out.println(e.getMessage());
-        }   
-        return id == 0;
-    }
-    private boolean cekinputUsia(){
-        if(cbKategori.getValue().equals("Bayi") && !inputUsiaBulan.getText().isEmpty()){
-            bulan = inputUsiaBulan.getText();
-        }
-        if(cbKategori.getValue().equals("Anak-Anak") && !inputUsiaTahun.getText().isEmpty()){
-            usia = inputUsiaTahun.getText();
-            bulan = inputUsiaBulan.getText();
-        }
-        if(cbKategori.getValue().equals("Remaja/Dewasa") && !inputUsiaTahun.getText().isEmpty() ){
-            usia = inputUsiaTahun.getText();
-        }
-        return (!inputUsiaTahun.getText().isEmpty() || !inputUsiaBulan.getText().isEmpty());
-    }
-    
-    private boolean cekField(){
-        return !(inputNama.getText().isEmpty() || inputEmail.getText().isEmpty() || inputPassword.getText().isEmpty() || cbJenisKelamin.getValue().isEmpty() || cbKategori.getValue().isEmpty());
-    }
-    
     
     @FXML
     void btnDaftar(ActionEvent event) throws IOException, SQLException {
@@ -103,7 +68,7 @@ public class DaftarController implements Initializable {
                    namaUser = dbModel.rs.getString("nama");
                 }
                 dbModel.rs.close();
-                int cek  = dbModel.InsertOrUpdate("insert into Berat_badan (id_pengguna) values ('"+id+"')");
+                int cek  = dbModel.InsertOrUpdate("insert into Berat_badan (id_pengguna) values ('"+id+"',date('now','localtime'))");
                 if (cek > 0) {
                     System.out.println("user registered");
                 }
@@ -123,14 +88,11 @@ public class DaftarController implements Initializable {
                 a.setHeaderText(null);
                 if(cekField()== false ||cekinputUsia() == false) a.setContentText("Field Tidak Boleh Kosong");
                 else a.setContentText("Email telah terdaftar");
-                
-                // show the dialog 
                 a.showAndWait(); 
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        
     }
     
     @FXML
@@ -163,5 +125,37 @@ public class DaftarController implements Initializable {
             inputUsiaBulan.disableProperty().set(true);
         }
     }
-
+////////////////////////////////////////////////////////////////////////////////
+    private boolean cekinputUsia(){
+        if(cbKategori.getValue().equals("Bayi") && !inputUsiaBulan.getText().isEmpty()){
+            bulan = inputUsiaBulan.getText();
+        }
+        if(cbKategori.getValue().equals("Anak-Anak") && !inputUsiaTahun.getText().isEmpty()){
+            usia = inputUsiaTahun.getText();
+            bulan = inputUsiaBulan.getText();
+        }
+        if(cbKategori.getValue().equals("Remaja/Dewasa") && !inputUsiaTahun.getText().isEmpty() ){
+            usia = inputUsiaTahun.getText();
+        }
+        return (!inputUsiaTahun.getText().isEmpty() || !inputUsiaBulan.getText().isEmpty());
+    }
+    
+    private boolean cekField(){
+        return !(inputNama.getText().isEmpty() || inputEmail.getText().isEmpty() || inputPassword.getText().isEmpty() || cbJenisKelamin.getValue().isEmpty() || cbKategori.getValue().isEmpty());
+    }
+    
+    private boolean cekEmail(){
+        int id = 0;
+        try{
+            dbModel.rs =dbModel.resultset("select id_pengguna from DataPengguna where email ='" +inputEmail.getText()+"'");
+            if(dbModel.rs.next()) {
+                id = dbModel.rs.getInt("id_pengguna");
+            }
+            dbModel.rs.close();
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }   
+        return id == 0;
+    }
+    
 }

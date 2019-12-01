@@ -26,7 +26,6 @@ import javafx.stage.Stage;
 public class HomeController implements Initializable {
     DBBarbelQ dbModel = new DBBarbelQ();
     Alert a = new Alert(Alert.AlertType.NONE);
-    
     private int session;
     private String namaUser,kategori;
     
@@ -35,26 +34,11 @@ public class HomeController implements Initializable {
     @FXML
     private Button btnSubmit;
     
-    private void cekKategori() throws SQLException{
-        dbModel.resultset("select kategori from DataPengguna where id_pengguna = "+session+"");
-        if(dbModel.rs.next()){
-            kategori = dbModel.rs.getString("kategori");
-        }
-        dbModel.rs.close();   
-    }
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // TODO
     
-    private boolean cekData(int batasBawah, int batasAtas,int minberat, int maxberat){
-        boolean cek;
-        if(Double.parseDouble(inputTinggi.getText()) < batasBawah || Double.parseDouble(inputTinggi.getText()) > batasAtas || Double.parseDouble(inputBerat.getText()) < minberat || Double.parseDouble(inputBerat.getText()) > maxberat ){
-            bantuAlert("Data Tidak Valid","Min Tinggi = "+batasBawah+" cm Dan Max Tinggi = "+batasAtas+" cm\nMin Berat = "+minberat+" kg Dan Max Berat = "+maxberat+" kg" );
-            cek = true;
-        }else{
-            dbModel.InsertOrUpdate("update DataPengguna set tinggi = '" +inputTinggi.getText()+ "' where id_pengguna =  "+session+"");
-            dbModel.InsertOrUpdate("update Berat_badan set berat_badan = '" +inputBerat.getText()+ "' where id_pengguna =  "+session+"");
-            cek = false;
-        }
-        return cek;
-    }
+    } 
     
     @FXML
     void handleSubmit(ActionEvent event) throws SQLException, IOException {
@@ -64,11 +48,11 @@ public class HomeController implements Initializable {
             cekKategori();
             boolean cek = true;
             if(kategori.equals("Bayi")){
-                cek = cekData(50,78,2,5);
+                cek = cekData(50,78,2.5,11.8);
             }if(kategori.equals("Anak-Anak")){
-                cek = cekData(69,139,6,23);
+                cek = cekData(69,139,14.8,33);
             }if(kategori.equals("Remaja/Dewasa")){
-                cek = cekData(140,200,23,200);
+                cek = cekData(140,200,36,105);
             }
             if(!cek){
                 Stage stage1 = (Stage) btnSubmit.getScene().getWindow();
@@ -76,23 +60,36 @@ public class HomeController implements Initializable {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/PrimaryHome.fxml"));
                 Parent root1 = (Parent) fxmlLoader.load();
                 PrimaryHomeController primaryHome = (PrimaryHomeController)fxmlLoader.getController();
-                primaryHome.GetUser(session,namaUser);
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root1));  
                 stage.show();
+                primaryHome.GetUser(session,namaUser);
             }
             
         }   
     }
+////////////////////////////////////////////////////////////////////////////////
+    private void cekKategori() throws SQLException{
+        dbModel.resultset("select kategori from DataPengguna where id_pengguna = "+session+"");
+        if(dbModel.rs.next()){
+            kategori = dbModel.rs.getString("kategori");
+        }
+        dbModel.rs.close();   
+    }
     
-    
-    
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    
-    } 
-    
+    private boolean cekData(double batasBawah, double batasAtas,double minberat, double maxberat){
+        boolean cek;
+        if(Double.parseDouble(inputTinggi.getText()) < batasBawah || Double.parseDouble(inputTinggi.getText()) > batasAtas || Double.parseDouble(inputBerat.getText()) < minberat || Double.parseDouble(inputBerat.getText()) > maxberat ){
+            bantuAlert("Data Tidak Valid","Min Tinggi = "+batasBawah+" cm Dan Max Tinggi = "+batasAtas+" cm\nMin Berat = "+minberat+" kg Dan Max Berat = "+maxberat+" kg" );
+            cek = true;
+        }else{
+            dbModel.InsertOrUpdate("update DataPengguna set tinggi = '" +inputTinggi.getText()+ "' where id_pengguna =  "+session+"");
+            dbModel.InsertOrUpdate("update Berat_badan set berat_badan = '" +inputBerat.getText()+ "',tanggal = date('now','localtime') where id_pengguna =  "+session+"");
+            cek = false;
+        }
+        return cek;
+    }
+ 
     private void bantuAlert(String header, String isi){
         a.setAlertType(Alert.AlertType.INFORMATION);
         a.setTitle("BarbelQ");

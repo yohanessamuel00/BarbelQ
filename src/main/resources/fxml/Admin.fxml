@@ -9,6 +9,7 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
@@ -112,12 +113,12 @@
                         <Insets top="30.0" />
                      </VBox.margin>
                   </HBox>
-                  <Button fx:id="signupAdmin" mnemonicParsing="false" onAction="#btnSignupAdmin" prefWidth="180.0" style="-fx-background-color: #2188ff; -fx-background-radius: 100px; -fx-text-fill: white;" text="Signup">
+                  <Button mnemonicParsing="false" onAction="#btnSignupAdmin" prefWidth="180.0" style="-fx-background-color: #2188ff; -fx-background-radius: 100px; -fx-text-fill: white;" text="Signup">
                      <VBox.margin>
                         <Insets top="30.0" />
                      </VBox.margin>
                   </Button>
-                  <Button fx:id="cancelAdmin" mnemonicParsing="false" onAction="#btnCancelAdmin" prefWidth="180.0" style="-fx-background-color: #2188ff; -fx-background-radius: 100px; -fx-text-fill: white;" text="Cancel">
+                  <Button mnemonicParsing="false" onAction="#btnCancelAdmin" prefWidth="180.0" style="-fx-background-color: #2188ff; -fx-background-radius: 100px; -fx-text-fill: white;" text="Cancel">
                      <VBox.margin>
                         <Insets top="20.0" />
                      </VBox.margin>
@@ -134,45 +135,37 @@
       </AnchorPane>
       <AnchorPane fx:id="crudAdmin" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1280.0">
          <children>
-            <Group fx:id="tampilUbah">
+            <Group>
                <children>
-                  <VBox alignment="TOP_CENTER" layoutX="662.0" layoutY="56.0" prefHeight="544.0" prefWidth="555.0" style="-fx-background-color: white;">
+                  <VBox alignment="TOP_CENTER" layoutX="662.0" layoutY="56.0" prefHeight="574.0" prefWidth="555.0" style="-fx-background-color: white;">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 2em; -fx-fill: #2188ff; -fx-font-weight: Bold;" text="Ubah Data">
                            <VBox.margin>
                               <Insets top="50.0" />
                            </VBox.margin>
                         </Text>
-                        <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
+                        <HBox maxWidth="-Infinity" prefHeight="167.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 0px 0px;">
                            <children>
                               <Label prefHeight="21.0" prefWidth="70.0" text="Aktivitas" />
-                              <TextField fx:id="txtubahAktivitas" prefHeight="31.0" prefWidth="208.0" promptText="aktivitas" style="-fx-background-color: transparent;">
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                              </TextField>
+                              <TextArea fx:id="txtubahAktivitas" prefHeight="127.0" prefWidth="224.0" />
                            </children>
                            <VBox.margin>
                               <Insets top="20.0" />
                            </VBox.margin>
                         </HBox>
-                        <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
+                        <HBox maxWidth="-Infinity" prefHeight="167.0" prefWidth="289.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 0px 0px;">
                            <children>
                               <Label prefHeight="21.0" prefWidth="70.0" text="Makanan" />
-                              <TextField fx:id="txtubahMakanan" prefHeight="31.0" prefWidth="208.0" promptText="makanan" style="-fx-background-color: transparent;">
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                              </TextField>
+                              <TextArea fx:id="txtubahMakanan" prefHeight="131.0" prefWidth="215.0" />
                            </children>
                            <VBox.margin>
                               <Insets top="20.0" />
                            </VBox.margin>
                         </HBox>
-                        <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
+                        <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 0px 0px;">
                            <children>
                               <Label prefHeight="21.0" prefWidth="70.0" text="Kategori" />
-                              <ComboBox fx:id="cbKategoriUbah" prefHeight="31.0" prefWidth="208.0" />
+                              <ComboBox fx:id="cbKategoriUbah" prefHeight="31.0" prefWidth="222.0" />
                            </children>
                            <VBox.margin>
                               <Insets top="20.0" />
@@ -180,12 +173,12 @@
                         </HBox>
                         <Button mnemonicParsing="false" onAction="#handleUbah" prefWidth="200.0" style="-fx-background-color: #2188ff; -fx-background-radius: 100PX;" text="Ubah" textFill="WHITE">
                            <VBox.margin>
-                              <Insets top="40.0" />
+                              <Insets top="25.0" />
                            </VBox.margin>
                         </Button>
-                        <Button fx:id="btnBatal" maxWidth="200.0" mnemonicParsing="false" onAction="#handleBatal" style="-fx-background-color: #2188ff; -fx-background-radius: 100PX;" text="Batal" textFill="WHITE">
+                        <Button maxWidth="200.0" mnemonicParsing="false" onAction="#handleBatal" style="-fx-background-color: #2188ff; -fx-background-radius: 100PX;" text="Batal" textFill="WHITE">
                            <VBox.margin>
-                              <Insets top="30.0" />
+                              <Insets top="20.0" />
                            </VBox.margin>
                         </Button>
                      </children>
@@ -197,34 +190,26 @@
             </Group>
             <Group fx:id="tampilTambah">
                <children>
-                  <VBox alignment="TOP_CENTER" layoutX="662.0" layoutY="56.0" prefHeight="544.0" prefWidth="555.0" style="-fx-background-color: white;">
+                  <VBox alignment="TOP_CENTER" layoutX="662.0" layoutY="56.0" prefHeight="574.0" prefWidth="555.0" style="-fx-background-color: white;">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 2em; -fx-fill: #2188ff; -fx-font-weight: Bold;" text="Tambah Data">
                            <VBox.margin>
                               <Insets top="50.0" />
                            </VBox.margin>
                         </Text>
-                        <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
+                        <HBox maxWidth="-Infinity" prefHeight="152.0" prefWidth="306.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 0px 0px;">
                            <children>
                               <Label prefHeight="21.0" prefWidth="70.0" text="Aktivitas" />
-                              <TextField fx:id="txtaktivitas" prefHeight="31.0" prefWidth="208.0" promptText="aktivitas" style="-fx-background-color: transparent;">
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                              </TextField>
+                              <TextArea fx:id="txtaktivitas" prefHeight="117.0" prefWidth="236.0" />
                            </children>
                            <VBox.margin>
                               <Insets top="20.0" />
                            </VBox.margin>
                         </HBox>
-                        <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
+                        <HBox maxWidth="-Infinity" prefHeight="151.0" prefWidth="304.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 0px 0px;">
                            <children>
                               <Label prefHeight="21.0" prefWidth="70.0" text="Makanan" />
-                              <TextField fx:id="txtmakanan" prefHeight="31.0" prefWidth="208.0" promptText="makanan" style="-fx-background-color: transparent;">
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                              </TextField>
+                              <TextArea fx:id="txtmakanan" prefHeight="123.0" prefWidth="235.0" />
                            </children>
                            <VBox.margin>
                               <Insets top="20.0" />
@@ -251,7 +236,7 @@
                   </VBox>
                </children>
             </Group>
-            <BorderPane layoutX="9.0" layoutY="55.0" minHeight="500.0" minWidth="603.0" prefHeight="575.0" prefWidth="638.0">
+            <BorderPane layoutX="9.0" layoutY="55.0" minHeight="500.0" minWidth="603.0" prefHeight="602.0" prefWidth="638.0">
                <bottom>
                   <FlowPane BorderPane.alignment="CENTER">
                      <children>
@@ -264,7 +249,7 @@
                   </FlowPane>
                </bottom>
                <center>
-                  <TableView fx:id="tabelSaran" prefHeight="632.0" prefWidth="705.0" BorderPane.alignment="CENTER">
+                  <TableView fx:id="tabelSaran" prefHeight="599.0" prefWidth="638.0" BorderPane.alignment="CENTER">
                      <columns>
                         <TableColumn fx:id="colidSaran" prefWidth="75.0" text="No" visible="false" />
                         <TableColumn fx:id="colAktivitas" prefWidth="183.0" text="Aktivitas" />
@@ -291,7 +276,7 @@
                </image>
             </ImageView>
             <Label fx:id="namaUser" layoutX="1225.0" layoutY="53.0" prefHeight="25.0" prefWidth="47.0" style="-fx-text-fill: #2188ff; -fx-font-weight: bold;" text="Admin" />
-            <Button fx:id="daftarAdmin" layoutX="850.0" layoutY="645.0" mnemonicParsing="false" onAction="#btnDaftarAdmin" prefWidth="200.0" style="-fx-background-color: #2188ff; -fx-background-radius: 100px;" text="Daftar" textFill="WHITE" />
+            <Button layoutX="850.0" layoutY="645.0" mnemonicParsing="false" onAction="#btnDaftarAdmin" prefWidth="200.0" style="-fx-background-color: #2188ff; -fx-background-radius: 100px;" text="Daftar" textFill="WHITE" />
          </children>
       </AnchorPane>
    </children>
