@@ -42,6 +42,7 @@ import javafx.stage.Stage;
 public class PrimaryHomeController implements Initializable {
     DBBarbelQ dbModel = new DBBarbelQ();
     Alert a = new Alert(Alert.AlertType.NONE);
+    Reminder reminder = new Reminder();
 
     
     private int session;
@@ -154,6 +155,12 @@ public class PrimaryHomeController implements Initializable {
                     }
                     dbModel.rs.close();
                     cbTampilData.setValue("5");
+                    
+                     if(Kategori.equals("Remaja/Dewasa")){
+                        reminder.ambilDataBerat(Double.parseDouble(beratIdeal.getText()), berat);
+                        reminder.aturSaran(Saran);
+                    }
+                     
                     tampilGrafik();
                 }  
             } 
@@ -270,6 +277,9 @@ public class PrimaryHomeController implements Initializable {
         hitungBeratIdeal();
         cekdataBerat();
         tampilGrafik();
+        if(Kategori.equals("Remaja/Dewasa")){
+            reminder.tampilSaran(Saran,user);
+        }
     }
     
     private void tampilGrafik() throws SQLException{
