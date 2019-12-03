@@ -19,7 +19,7 @@ import javafx.scene.control.Label;
  * @author yohan
  */
 public class Reminder {
-     private int session;
+    private int session;
     private String tampung;
     private double tampungIdeal,tampungBerat;
     DBBarbelQ dbModel = new DBBarbelQ();
@@ -75,10 +75,7 @@ public class Reminder {
         }
         dbModel.rs.close();
         int banyakData = Saran.size();
-        System.out.println(tampung);
-        System.out.println(banyakData);
         int hasil = randomNumbers.nextInt(banyakData);
-        System.out.println(hasil);
         String Aktivitas = Saran.get(hasil).get(1);
         String Makanan = Saran.get(hasil).get(2);
         saran.setText("Makanan: \n"+Makanan+"\nAktivitas: \n"+Aktivitas+"");

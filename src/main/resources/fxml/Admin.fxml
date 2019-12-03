@@ -98,7 +98,7 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
                      <children>
-                        <Label text="Password">
+                        <Label prefHeight="17.0" prefWidth="64.0" text="Password">
                            <HBox.margin>
                               <Insets top="5.0" />
                            </HBox.margin>
@@ -162,7 +162,7 @@
                               <Insets top="20.0" />
                            </VBox.margin>
                         </HBox>
-                        <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 0px 0px;">
+                        <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="27.0" prefWidth="286.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 0px 0px;">
                            <children>
                               <Label prefHeight="21.0" prefWidth="70.0" text="Kategori" />
                               <ComboBox fx:id="cbKategoriUbah" prefHeight="31.0" prefWidth="222.0" />
@@ -215,10 +215,10 @@
                               <Insets top="20.0" />
                            </VBox.margin>
                         </HBox>
-                        <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
+                        <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="302.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 0px 0px;">
                            <children>
-                              <Label prefHeight="21.0" prefWidth="70.0" text="Kategori" />
-                              <ComboBox fx:id="cbKategori" prefHeight="31.0" prefWidth="208.0" />
+                              <Label prefHeight="21.0" prefWidth="108.0" text="Kategori" />
+                              <ComboBox fx:id="cbKategori" prefHeight="31.0" prefWidth="267.0" />
                            </children>
                            <VBox.margin>
                               <Insets top="20.0" />
@@ -277,6 +277,115 @@
             </ImageView>
             <Label fx:id="namaUser" layoutX="1225.0" layoutY="53.0" prefHeight="25.0" prefWidth="47.0" style="-fx-text-fill: #2188ff; -fx-font-weight: bold;" text="Admin" />
             <Button layoutX="850.0" layoutY="645.0" mnemonicParsing="false" onAction="#btnDaftarAdmin" prefWidth="200.0" style="-fx-background-color: #2188ff; -fx-background-radius: 100px;" text="Daftar" textFill="WHITE" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="Pendaftaran1" layoutX="10.0" layoutY="10.0" prefHeight="700.0" prefWidth="616.0" visible="false">
+         <children>
+            <VBox alignment="TOP_CENTER" layoutX="316.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="656.0" prefWidth="670.0" style="-fx-background-color: white;">
+               <children>
+                  <HBox alignment="TOP_RIGHT" prefHeight="83.0" prefWidth="673.0">
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #2188ff; -fx-font-weight: bold;" text="BarbelQ" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold; -fx-fill: #2188ff;" text="Weight Tracker" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 2em; -fx-font-weight: bold; -fx-fill: #2188ff;" text="Sign Up Admin">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Text>
+                  <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
+                     <children>
+                        <Label prefHeight="21.0" prefWidth="70.0" text="Nama">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Label>
+                        <TextField fx:id="namaAdmin1" prefHeight="31.0" prefWidth="208.0" promptText="nama" style="-fx-background-color: transparent;">
+                           <HBox.margin>
+                              <Insets top="5.0" />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
+                     <children>
+                        <Label prefHeight="26.0" prefWidth="77.0" text="Usia">
+                           <padding>
+                              <Insets top="5.0" />
+                           </padding>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Label>
+                        <TextField fx:id="usiaAdmin1" prefHeight="26.0" prefWidth="201.0" promptText="usia" style="-fx-background-color: transparent;">
+                           <padding>
+                              <Insets top="5.0" />
+                           </padding>
+                           <HBox.margin>
+                              <Insets top="5.0" />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
+                     <children>
+                        <Label prefHeight="21.0" prefWidth="70.0" text="Email" />
+                        <TextField fx:id="emailAdmin1" prefHeight="31.0" prefWidth="208.0" promptText="example@examp.com" style="-fx-background-color: transparent;">
+                           <HBox.margin>
+                              <Insets top="5.0" />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="279.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 0px 0px 2px 0px;">
+                     <children>
+                        <Label prefHeight="17.0" prefWidth="64.0" text="Password">
+                           <HBox.margin>
+                              <Insets top="5.0" />
+                           </HBox.margin>
+                        </Label>
+                        <PasswordField fx:id="passwordAdmin1" promptText="password" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </PasswordField>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <Button mnemonicParsing="false" onAction="#btnSignupAdmin" prefWidth="180.0" style="-fx-background-color: #2188ff; -fx-background-radius: 100px; -fx-text-fill: white;" text="Signup">
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#btnCancelAdmin" prefWidth="180.0" style="-fx-background-color: #2188ff; -fx-background-radius: 100px; -fx-text-fill: white;" text="Cancel">
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+               <effect>
+                  <DropShadow />
+               </effect>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </VBox>
          </children>
       </AnchorPane>
    </children>

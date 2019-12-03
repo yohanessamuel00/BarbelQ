@@ -8,6 +8,7 @@ package rpl.barbelq;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,6 +25,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
@@ -90,7 +92,6 @@ public class AdminController implements Initializable {
         colMakanan.setCellValueFactory(new PropertyValueFactory("makanan"));
         colAktivitas.setCellValueFactory(new PropertyValueFactory("aktivitas"));
         colKategori.setCellValueFactory(new PropertyValueFactory("kategori"));
-
         try {
             dbModel.rs = dbModel.resultset("SELECT * FROM Saran");
             ObservableList<Saran> saran = FXCollections.observableArrayList();
@@ -132,9 +133,17 @@ public class AdminController implements Initializable {
             public void handle(ActionEvent event) {
                 final Saran srn = tabelSaran.getSelectionModel().getSelectedItem();
                 int index = tabelSaran.getSelectionModel().getSelectedIndex();
-                dbModel.InsertOrUpdate("DELETE FROM Saran WHERE id_saran ='" + srn.getId_saran() + "'");
-                tabelSaran.getItems().remove(index);
-                System.out.println(srn.getId_saran());
+                a.setAlertType(Alert.AlertType.CONFIRMATION);
+                a.setTitle("BarbelQ");
+                a.setHeaderText(null);
+                a.setContentText("Apa Anda Yakin Akan Menghapus Saran Ini?");
+                Optional<ButtonType> result = a.showAndWait();
+                if(result.get() == ButtonType.OK){
+                    dbModel.InsertOrUpdate("DELETE FROM Saran WHERE id_saran ='" + srn.getId_saran() + "'");
+                    tabelSaran.getItems().remove(index);
+                    System.out.println(srn.getId_saran());
+                }
+                
             }
         });
         
@@ -148,10 +157,8 @@ public class AdminController implements Initializable {
                 try {
                     dbModel.rs = dbModel.resultset("Select * from Saran where id_saran = "+srn.getId_saran()+" ");
                     if(dbModel.rs.next()){
-                        txtubahAktivitas.promptTextProperty().set(dbModel.rs.getString("aktivitas"));
-                        txtubahAktivitas.setText("");
-                        txtubahMakanan.promptTextProperty().set(dbModel.rs.getString("makanan"));
-                        txtubahMakanan.setText("");
+                        txtubahAktivitas.setText(dbModel.rs.getString("aktivitas"));
+                        txtubahMakanan.setText(dbModel.rs.getString("makanan"));
                         cbKategoriUbah.setValue(dbModel.rs.getString("kategori"));
                     }
                     dbModel.rs.close();
@@ -197,7 +204,7 @@ public class AdminController implements Initializable {
                     hsl = dbModel.rs.getInt("hasil");
                 }
                 dbModel.rs.close();
-                tabelSaran.getItems().add(updateORinsert(hsl,txtaktivitas,txtmakanan,cbKategori));
+                tabelSaran.getItems().add(updateORinsert(hsl, txtaktivitas, txtmakanan, cbKategori));
                 a.setAlertType(Alert.AlertType.INFORMATION);
                 a.setTitle("BarbelQ");
                 a.setHeaderText(null);
@@ -208,13 +215,13 @@ public class AdminController implements Initializable {
     }
      
     @FXML
-    private void handleBatal(ActionEvent event) {
+    void handleBatal(ActionEvent event) {
         tampilTambah.visibleProperty().set(true);
         tabelSaran.disableProperty().set(false);
     }
 
     @FXML
-    private void handleLogout(ActionEvent event) throws IOException {
+    void handleLogout(ActionEvent event) throws IOException {
         Stage stage1 = (Stage) btnLogout.getScene().getWindow();
         stage1.close();
         Stage primaryStage = new Stage();
@@ -227,7 +234,7 @@ public class AdminController implements Initializable {
     }
     
     @FXML
-    private void btnSignupAdmin(ActionEvent event) {
+    void btnSignupAdmin(ActionEvent event) {
         dbModel.InsertOrUpdate("insert into DataPengguna(nama,email,password,usiaTahun,level) values('"+namaAdmin.getText()+"','"+emailAdmin.getText()+"','"+passwordAdmin.getText()+"',"+usiaAdmin.getText()+",2)");
         bantuAlert(null,"Admin Berhasil Ditambah");
         Pendaftaran.visibleProperty().set(false);
@@ -236,7 +243,7 @@ public class AdminController implements Initializable {
     }
 
     @FXML
-    private void btnCancelAdmin(ActionEvent event) {
+    void btnCancelAdmin(ActionEvent event) {
         namaAdmin.setText("");
         usiaAdmin.setText("");
         emailAdmin.setText("");
@@ -246,7 +253,7 @@ public class AdminController implements Initializable {
     }
 
     @FXML
-    private void btnDaftarAdmin(ActionEvent event) {
+    void btnDaftarAdmin(ActionEvent event) {
         crudAdmin.visibleProperty().set(false);
         Pendaftaran.visibleProperty().set(true);
     }

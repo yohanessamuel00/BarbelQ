@@ -44,7 +44,6 @@ public class PrimaryHomeController implements Initializable {
     Alert a = new Alert(Alert.AlertType.NONE);
     Reminder reminder = new Reminder();
 
-    
     private int session;
     private String nama,usiaTahun="0",usiaBulan="0",Kategori,jKelamin,email,password,tinggi;
     private double berat;
@@ -88,21 +87,24 @@ public class PrimaryHomeController implements Initializable {
     } 
     
     @FXML
-    private void btnUpdate(ActionEvent event) throws SQLException {
+    void btnUpdate(ActionEvent event) throws SQLException {
         if(!Changename.getText().isEmpty() && !ChangecbKategori.getValue().isEmpty() && cekinputUsia() && !ChangecbJenisKelamin.getValue().isEmpty() && !Changeemail.getText().isEmpty() && !Changepassword.getText().isEmpty() && !Changetinggi.getText().isEmpty()){
-            if(!cekTinggi()){
-                dbModel.InsertOrUpdate("update DataPengguna set nama= '" +Changename.getText()+ "',kategori = '"+ChangecbKategori.getValue()+"',usiaTahun = '"+ChangeusiaTahun.getText()+"',usiaBulan = '"+ChangeusiaBulan.getText()+"',jenis_kelamin = '"+ChangecbJenisKelamin.getValue()+"',password= '" +Changepassword.getText()+ "',tinggi= '" +Changetinggi.getText()+ "' where id_pengguna =  "+session+"");
-                if(ambil.equals(Changeemail.getText())){
-                    bantuUpdate();
-                }else{
-                    if(cekEmail(Changeemail)){
-                        bantuAlert(null, "Email Sudah Digunakan");
-                    }else{
-                        dbModel.InsertOrUpdate("update DataPengguna set email ='"+Changeemail.getText()+"'where id_pengguna =  "+session+"");
+            if(!cekTinggi1() && !cekTinggi2()){
+                if(ubahkategori()){
+                    dbModel.InsertOrUpdate("update DataPengguna set nama= '" +Changename.getText()+ "',kategori = '"+ChangecbKategori.getValue()+"',usiaTahun = '"+ChangeusiaTahun.getText()+"',usiaBulan = '"+ChangeusiaBulan.getText()+"',jenis_kelamin = '"+ChangecbJenisKelamin.getValue()+"',password= '" +Changepassword.getText()+ "',tinggi= '" +Changetinggi.getText()+ "' where id_pengguna =  "+session+"");
+                    if(ambil.equals(Changeemail.getText())){
                         bantuUpdate();
+                    }else{
+                        if(cekEmail(Changeemail) || Double.parseDouble(Changetinggi.getText()) < Double.parseDouble(tinggi)){
+                            bantuAlert(null, "Email Sudah Digunakan");
+                        }else{
+                            dbModel.InsertOrUpdate("update DataPengguna set email ='"+Changeemail.getText()+"'where id_pengguna =  "+session+"");
+                            bantuUpdate();
+                        }
                     }
+                    hitungBeratIdeal();
+                    tampilGrafik();
                 }
-                hitungBeratIdeal();
             }
         }else{
             bantuAlert(null, "Data Tidak Boleh Kosong");
@@ -110,7 +112,7 @@ public class PrimaryHomeController implements Initializable {
     }
 
     @FXML
-    private void handleLogout(ActionEvent event) throws IOException {
+    void handleLogout(ActionEvent event) throws IOException {
         try{
             Stage stage1 = (Stage) btnLogout.getScene().getWindow();
             stage1.close();
@@ -135,9 +137,7 @@ public class PrimaryHomeController implements Initializable {
             a.setContentText("Apakah Anda Yakin Menambah Data");
             Optional<ButtonType> result = a.showAndWait();
             if(result.get() == ButtonType.OK){
-                if(Double.parseDouble(inpBerat.getText()) < 10 || Double.parseDouble(inpBerat.getText()) > 500){
-                    bantuAlert(null, "Data Tidak Valid");
-                }else{
+                if(!cekBatasanBerat(Kategori)){
                     Date d = new Date();
                     SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");
                     dbModel.rs = dbModel.resultset("select tanggal from Berat_badan where id_pengguna ='" +session+"' and tanggal = '"+ft.format(d)+"'");
@@ -155,20 +155,18 @@ public class PrimaryHomeController implements Initializable {
                     }
                     dbModel.rs.close();
                     cbTampilData.setValue("5");
-                    
-                     if(Kategori.equals("Remaja/Dewasa")){
+                    tampilGrafik();
+                    if(Kategori.equals("Remaja/Dewasa")){
                         reminder.ambilDataBerat(Double.parseDouble(beratIdeal.getText()), berat);
                         reminder.aturSaran(Saran);
-                    }
-                     
-                    tampilGrafik();
-                }  
+                    } 
+                } 
             } 
         }
     }
     
     @FXML
-    private void handleEdit(ActionEvent event) {
+    void handleEdit(ActionEvent event) {
         btnEdit.disableProperty().set(true);
         Update.disableProperty().set(false);
         btnCancel.disableProperty().set(false);
@@ -177,7 +175,7 @@ public class PrimaryHomeController implements Initializable {
     }
 
     @FXML
-    private void handlecancel(ActionEvent event) {
+    void handlecancel(ActionEvent event) {
         btnEdit.disableProperty().set(false);
         Update.disableProperty().set(true);
         btnCancel.disableProperty().set(true);
@@ -202,7 +200,7 @@ public class PrimaryHomeController implements Initializable {
     }
     
     @FXML
-    private void handleKategori(ActionEvent event) {
+    void handleKategori(ActionEvent event) {
         if(ChangecbKategori.getValue().equals("Bayi")){
             cekKategori(true,false,"0","");  
         }if(ChangecbKategori.getValue().equals("Anak-Anak")){
@@ -213,39 +211,48 @@ public class PrimaryHomeController implements Initializable {
     }
     
     @FXML
-    private void handleTampilData(ActionEvent event) throws SQLException {
+    void handleTampilData(ActionEvent event) throws SQLException {
         tampilGrafik = new XYChart.Series();
         tampilGrafik.setName("Berat User");
         grafikBerat.getData().clear();
         int total = simpanSemuaData.getData().size();
-        if(cbTampilData.getValue().equals("5") && total >= 5){
-            for(int i = total-5;i<total;i++){
-                tampilGrafik.getData().add(simpanSemuaData.getData().get(i));
-            }
-            grafikBerat.getData().add(tampilGrafik);
-            garisBeratBadanIdeal(5);
-        }
-        if(cbTampilData.getValue().equals("10") && total >= 10){
-            for(int i = total-10;i<total;i++){
-                tampilGrafik.getData().add(simpanSemuaData.getData().get(i));
-            }
-            grafikBerat.getData().add(tampilGrafik);
-            garisBeratBadanIdeal(10);
-        }
-        if(cbTampilData.getValue().equals("15") && total >= 15){
-            for(int i = total-15;i<total;i++){
-                tampilGrafik.getData().add(simpanSemuaData.getData().get(i));
-            }
-            grafikBerat.getData().add(tampilGrafik);
-            garisBeratBadanIdeal(15);
-        }
-        if(cbTampilData.getValue().equals("All") || total < 5){
+        if(total<5){
             for(int i = total-total;i<total;i++){
                 tampilGrafik.getData().add(simpanSemuaData.getData().get(i));
             }
             grafikBerat.getData().add(tampilGrafik);
             garisBeratBadanIdeal(total);
         }
+        else if(cbTampilData.getValue().equals("5")){
+            for(int i = total-5;i<total;i++){
+                tampilGrafik.getData().add(simpanSemuaData.getData().get(i));
+            }
+            grafikBerat.getData().add(tampilGrafik);
+            garisBeratBadanIdeal(5);
+        }
+        else if(cbTampilData.getValue().equals("10") && total==10){
+            for(int i = total-10;i<total;i++){
+                tampilGrafik.getData().add(simpanSemuaData.getData().get(i));
+            }
+            grafikBerat.getData().add(tampilGrafik);
+            garisBeratBadanIdeal(10);
+        }
+        else if(cbTampilData.getValue().equals("15") && total==15){
+            for(int i = total-15;i<total;i++){
+                tampilGrafik.getData().add(simpanSemuaData.getData().get(i));
+            }
+            grafikBerat.getData().add(tampilGrafik);
+            garisBeratBadanIdeal(15);
+        }
+        else if(total>5){
+            for(int i = total-total;i<total;i++){
+                tampilGrafik.getData().add(simpanSemuaData.getData().get(i));
+            }
+            grafikBerat.getData().add(tampilGrafik);
+            garisBeratBadanIdeal(total);
+        }
+
+        
     }
 //////////////////////////////////////////////////////////////////////////////////////////////////// 
     public void GetUser(int user, String nama1) throws SQLException {
@@ -273,6 +280,8 @@ public class PrimaryHomeController implements Initializable {
             Changetinggi.setText(String.valueOf(dbModel.rs.getDouble("tinggi"))); 
             tinggi = Changetinggi.getText();
         }
+        ChangeusiaTahun.disableProperty().set(true);
+        ChangeusiaBulan.disableProperty().set(true);
         dbModel.rs.close();
         hitungBeratIdeal();
         cekdataBerat();
@@ -339,10 +348,9 @@ public class PrimaryHomeController implements Initializable {
         }
         if(Kategori.equals("Remaja/Dewasa") &&jKelamin.equals("Perempuan")){
             double tampilTinggi = Double.parseDouble(tinggi);
-            double hasil = (tampilTinggi - 100) - ((tampilTinggi - 100) * 0.1);
+            double hasil = (tampilTinggi - 100) - ((tampilTinggi - 100) * 0.15);
             beratIdeal.setText(String.valueOf(hasil));
         } 
-        
     }
       
     private void cekdataBerat() throws SQLException{
@@ -358,8 +366,8 @@ public class PrimaryHomeController implements Initializable {
         if(dbModel.rs.next()){
             berat = dbModel.rs.getDouble("berat_badan");
             Baru.setText(String.valueOf(dbModel.rs.getDouble("berat_badan")));
-            String tampungIdeal=beratIdeal.getText();
-            double hasil= dbModel.rs.getDouble("berat_badan") - Double.parseDouble(tampungIdeal);
+            String Ideal=beratIdeal.getText();
+            double hasil= dbModel.rs.getDouble("berat_badan") - Double.parseDouble(Ideal);
             if(hasil < 0){
                Sisa.textFillProperty().setValue(Paint.valueOf("red"));
                Sisa.setText(String.valueOf(hasil));
@@ -379,7 +387,52 @@ public class PrimaryHomeController implements Initializable {
         }
         dbModel.rs.close();
     }
+
+    private boolean ubahkategori(){
+        boolean hasil = false;
+        if(ChangecbKategori.getValue().equals(Kategori)){
+            hasil = true;
+        }else{
+            a.setAlertType(Alert.AlertType.CONFIRMATION);
+            a.setTitle("BarbelQ");
+            a.setHeaderText(null);
+            a.setContentText("Apakah Anda Yakin Merubah Kategori?");
+            Optional<ButtonType> result = a.showAndWait();
+            if(result.get() == ButtonType.OK){
+                dbModel.InsertOrUpdate("DELETE FROM Berat_Badan WHERE id_pengguna = "+session+"");
+                Mulai.setText("");
+                Baru.setText("");
+                Sisa.setText("");
+                rataRata.setText("");
+                minimal.setText("");
+                maksimal.setText("");
+                hasil = true;
+            }
+        }
+        return hasil;
+    }
     
+    private boolean cekBatasanBerat(String Ktgori){
+        boolean cek = false;
+        if(Ktgori.equals("Bayi")){
+            if(Double.parseDouble(inpBerat.getText()) < 2.5 || Double.parseDouble(inpBerat.getText()) > 11.8 ){
+                bantuAlert("Data Tidak Valid","Min Berat = "+2.5+" kg Dan Max Berat = "+11.8+" kg" );
+                cek = true;
+            }
+        }if(Ktgori.equals("Anak-Anak")){
+            if(Double.parseDouble(inpBerat.getText()) < 14.8 || Double.parseDouble(inpBerat.getText()) > 33 ){
+                bantuAlert("Data Tidak Valid","Min Berat = "+14.8+" kg Dan Max Berat = "+33+" kg" );
+                cek = true;
+            }
+        }if(Ktgori.equals("Remaja/Dewasa")){
+            if(Double.parseDouble(inpBerat.getText()) < 36 || Double.parseDouble(inpBerat.getText()) > 105 ){
+                bantuAlert("Data Tidak Valid","Min Berat = "+36+" kg Dan Max Berat = "+105+" kg" );
+                cek = true;
+            }
+        }
+        return cek;
+    }
+        
     private boolean cekinputUsia(){
         return (!ChangeusiaTahun.getText().isEmpty() && !ChangeusiaBulan.getText().isEmpty());
     }
@@ -398,11 +451,14 @@ public class PrimaryHomeController implements Initializable {
                 }
             }
             dbModel.rs.close();
+            
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }
         return hasil;
     }
+    
+
     
     private void cekKategori(boolean tahun, boolean bulan, String setData, String setdata2){
         ChangeusiaTahun.setText(setData);
@@ -427,6 +483,7 @@ public class PrimaryHomeController implements Initializable {
         hboxPassword.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
         hboxTinggi.styleProperty().set("-fx-border-width: 0px 0px 2px 0px;"+"-fx-border-color: black;");
         bantuAlert(null, "Update Berhasil");
+        
         nama = Changename.getText();
         Kategori = ChangecbKategori.getValue();
         usiaTahun = ChangeusiaTahun.getText();
@@ -441,15 +498,16 @@ public class PrimaryHomeController implements Initializable {
         Changename.disableProperty().set(false);
         ChangecbKategori.disableProperty().set(false);
         if(Kategori.equals("Bayi")){
-            ChangeusiaTahun.disableProperty().set(true);
-            ChangeusiaBulan.disableProperty().set(false);
+            cekKategori(true,false,"0","");
         }if(Kategori.equals("Anak-Anak")){
-            ChangeusiaTahun.disableProperty().set(false);
-            ChangeusiaBulan.disableProperty().set(false);
+            cekKategori(false,false,"","0");
         }if(Kategori.equals("Remaja/Dewasa")){
-            ChangeusiaTahun.disableProperty().set(false);
-            ChangeusiaBulan.disableProperty().set(true);
+            cekKategori(false,true,"","0");
         }
+        Changename.setPromptText(nama);
+        ChangeusiaTahun.setPromptText(usiaTahun);
+        ChangeusiaBulan.setPromptText(usiaBulan);
+        Changeemail.setPromptText(email);
         ChangecbJenisKelamin.disableProperty().set(false);
         Changeemail.disableProperty().set(false);
         Changepassword.disableProperty().set(false);   
@@ -474,7 +532,17 @@ public class PrimaryHomeController implements Initializable {
         Changetinggi.disableProperty().set(true);
     }
     
-    private boolean cekTinggi(){
+    private boolean cekTinggi2(){
+        boolean hasil = false;
+        if(ChangecbKategori.getValue().equals(Kategori)){
+            hasil = Double.parseDouble(Changetinggi.getText()) < Double.parseDouble(tinggi);
+        }
+        if(hasil){
+            bantuAlert(null, "Tinggi Tidak Boleh Kurang dari "+tinggi+"");
+        }
+        return hasil;
+    }
+    private boolean cekTinggi1(){
         boolean cek = true;
         int batasBawah=0,batasAtas=0;
         if(ChangecbKategori.getValue().equals("Bayi")){
@@ -500,6 +568,6 @@ public class PrimaryHomeController implements Initializable {
         a.setTitle("BarbelQ");
         a.setHeaderText(header);
         a.setContentText(isi);
-        a.show();
+        a.showAndWait();
     }
 }

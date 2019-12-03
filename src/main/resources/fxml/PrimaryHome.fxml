@@ -196,7 +196,7 @@
                         </VBox>
                         <VBox layoutX="585.0" layoutY="468.0" prefHeight="125.0" prefWidth="165.0" style="-fx-background-radius: 20px; -fx-background-color: white;">
                            <children>
-                              <Label style="-fx-font-weight: bold;" text="Sisa" />
+                              <Label style="-fx-font-weight: bold;" text="Selisih" />
                               <Label fx:id="Sisa" alignment="CENTER" prefHeight="93.0" prefWidth="139.0" style="-fx-font-weight: bold; -fx-font-size: 25;" text="Label" textAlignment="CENTER" />
                            </children>
                            <padding>

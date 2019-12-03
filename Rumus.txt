@@ -1,0 +1,16 @@
+https://www.fimela.com/beauty-health/read/3852502/cara-menghitung-berat-badan-ideal-wanita-pria-dan-anak
+
+Bayi
+Berat badan ideal = {umur (bulan) :2} + 4
+Umur 5 bulan, maka = (5:2) + 4 = 2.5 + 4 = 6.5 kg
+
+Anak-anak
+Berat badan ideal = 2.n + 8
+Umur anak 3 tahun 4 bulan maka (2 x 3.4) + 8 = 14.8
+
+www.bmi-calculator.net/ideal-weight-calculator/broca-formula/
+Remaja/Dewasa
+Laki-Laki
+Men: Ideal Body Weight (kg) = [Height (cm) - 100] - ([Height (cm) - 100] x 10%)
+Perempuan
+Women: Ideal Body Weight (kg) = [Height (cm) - 100] + ([Height (cm) - 100] x 15%)

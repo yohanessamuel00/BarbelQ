@@ -38,7 +38,7 @@ public class LoginController implements Initializable {
     } 
     
     @FXML
-    private void buttoncomOnAction(ActionEvent event) throws IOException{
+    void buttoncomOnAction(ActionEvent event) throws IOException{
         try {
             Stage stage1 = (Stage) btnDaftar.getScene().getWindow();
             stage1.close();
@@ -53,7 +53,7 @@ public class LoginController implements Initializable {
     }
     
     @FXML
-    public void Login (ActionEvent event) {
+    void Login (ActionEvent event) {
         try {
             if(!"".equals(txtPassword.getText()) && !"".equals(txtEmail.getText())){
                 if(dbModel.isLogin(txtEmail.getText(), txtPassword.getText())){

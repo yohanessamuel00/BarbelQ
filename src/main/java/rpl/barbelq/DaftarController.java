@@ -59,34 +59,36 @@ public class DaftarController implements Initializable {
     void btnDaftar(ActionEvent event) throws IOException, SQLException {
         try {
             if(cekEmail() && cekField() && cekinputUsia()){
-                int id = 0;
-                String namaUser = "";
-                dbModel.InsertOrUpdate("insert into DataPengguna(nama, email, password,kategori,usiaTahun,usiaBulan,jenis_kelamin,level) values('"+inputNama.getText()+"', '"+inputEmail.getText()+"','"+inputPassword.getText()+"' ,'"+cbKategori.getValue()+"','"+usia+"' ,'"+bulan+"' ,'"+cbJenisKelamin.getValue()+"', '1')");
-                dbModel.rs = dbModel.resultset("select id_pengguna, nama from DataPengguna where email ='" +inputEmail.getText()+"'");
-                while (dbModel.rs.next()) {
-                   id = dbModel.rs.getInt("id_pengguna");
-                   namaUser = dbModel.rs.getString("nama");
+                if(cekKategori()){
+                    int id = 0;
+                    String namaUser = "";
+                    dbModel.InsertOrUpdate("insert into DataPengguna(nama, email, password,kategori,usiaTahun,usiaBulan,jenis_kelamin,level) values('"+inputNama.getText()+"', '"+inputEmail.getText()+"','"+inputPassword.getText()+"' ,'"+cbKategori.getValue()+"','"+usia+"' ,'"+bulan+"' ,'"+cbJenisKelamin.getValue()+"', '1')");
+                    dbModel.rs = dbModel.resultset("select id_pengguna, nama from DataPengguna where email ='" +inputEmail.getText()+"'");
+                    while (dbModel.rs.next()) {
+                       id = dbModel.rs.getInt("id_pengguna");
+                       namaUser = dbModel.rs.getString("nama");
+                    }
+                    dbModel.rs.close();
+                    int cek  = dbModel.InsertOrUpdate("insert into Berat_badan (id_pengguna,tanggal) values ('"+id+"',date('now','localtime'))");
+                    if (cek > 0) {
+                        System.out.println("user registered");
+                    }
+                    Stage stage1 = (Stage) btnDaftar.getScene().getWindow();
+                    stage1.close();
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Home.fxml"));
+                    Parent root1 = (Parent) fxmlLoader.load();
+                    HomeController userController = (HomeController)fxmlLoader.getController();
+                    userController.GetUser(id,namaUser);
+                    Stage stage = new Stage();
+                    stage.setScene(new Scene(root1));  
+                    stage.show();
+                    dbModel.statement.close(); 
                 }
-                dbModel.rs.close();
-                int cek  = dbModel.InsertOrUpdate("insert into Berat_badan (id_pengguna) values ('"+id+"',date('now','localtime'))");
-                if (cek > 0) {
-                    System.out.println("user registered");
-                }
-                Stage stage1 = (Stage) btnDaftar.getScene().getWindow();
-                stage1.close();
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Home.fxml"));
-                Parent root1 = (Parent) fxmlLoader.load();
-                HomeController userController = (HomeController)fxmlLoader.getController();
-                userController.GetUser(id,namaUser);
-                Stage stage = new Stage();
-                stage.setScene(new Scene(root1));  
-                stage.show();
-                dbModel.statement.close(); 
             }else{
                 a.setAlertType(Alert.AlertType.INFORMATION);
                 a.setTitle("Register Gagal");
                 a.setHeaderText(null);
-                if(cekField()== false ||cekinputUsia() == false) a.setContentText("Field Tidak Boleh Kosong");
+                if(cekField()== false || cekinputUsia() == false) a.setContentText("Field Tidak Boleh Kosong");
                 else a.setContentText("Email telah terdaftar");
                 a.showAndWait(); 
             }
@@ -111,7 +113,7 @@ public class DaftarController implements Initializable {
     }
 
     @FXML
-    private void handleKategori(ActionEvent event) {
+    void handleKategori(ActionEvent event) {
         if(cbKategori.getValue().equals("Bayi")){
             inputUsiaTahun.disableProperty().set(true);
             inputUsiaBulan.disableProperty().set(false);
@@ -140,6 +142,40 @@ public class DaftarController implements Initializable {
         return (!inputUsiaTahun.getText().isEmpty() || !inputUsiaBulan.getText().isEmpty());
     }
     
+    private boolean cekKategori(){
+        boolean cek = true;
+        if(cbKategori.getValue().equals("Bayi")){
+            if(Integer.parseInt(inputUsiaBulan.getText()) > 0 && Integer.parseInt(inputUsiaBulan.getText()) < 12){
+                cek = true;
+            }else{
+                bantuAlert(null, "Minimal Usia: 1 Bulan dan Maksimal Usia: 11 bulan");
+                cek = false;
+            }
+        }
+        if(cbKategori.getValue().equals("Anak-Anak")){
+            if(Integer.parseInt(inputUsiaTahun.getText()) > 0 && Integer.parseInt(inputUsiaTahun.getText()) < 11){
+                if(Integer.parseInt(inputUsiaBulan.getText()) < 12){
+                    cek = true;
+                }else{
+                    bantuAlert(null, "Minimal Bulan: 1 dan Maksimal Bulan: 11");
+                    cek = false;
+                }
+            }else{
+                bantuAlert(null, "Minimal Tahun: 1 dan Maksimal Tahun: 10");
+                cek = false;
+            }
+        }
+        if(cbKategori.getValue().equals("Remaja/Dewasa")){
+            if(Integer.parseInt(inputUsiaTahun.getText()) > 10 && Integer.parseInt(inputUsiaTahun.getText()) < 90){
+                cek=true;
+            }else{
+                bantuAlert(null, "Minimal Tahun: 11 dan Maksimal Tahun: 90");
+                cek = false;
+            }
+        }
+        return cek;
+    }
+    
     private boolean cekField(){
         return !(inputNama.getText().isEmpty() || inputEmail.getText().isEmpty() || inputPassword.getText().isEmpty() || cbJenisKelamin.getValue().isEmpty() || cbKategori.getValue().isEmpty());
     }
@@ -158,4 +194,11 @@ public class DaftarController implements Initializable {
         return id == 0;
     }
     
+    private void bantuAlert(String header,String isi){
+        a.setAlertType(Alert.AlertType.INFORMATION);
+        a.setTitle("Register Gagal");
+        a.setHeaderText(header);
+        a.setContentText(isi);
+        a.showAndWait(); 
+    }
 }

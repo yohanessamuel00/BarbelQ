@@ -83,8 +83,8 @@ public class HomeController implements Initializable {
             bantuAlert("Data Tidak Valid","Min Tinggi = "+batasBawah+" cm Dan Max Tinggi = "+batasAtas+" cm\nMin Berat = "+minberat+" kg Dan Max Berat = "+maxberat+" kg" );
             cek = true;
         }else{
-            dbModel.InsertOrUpdate("update DataPengguna set tinggi = '" +inputTinggi.getText()+ "' where id_pengguna =  "+session+"");
-            dbModel.InsertOrUpdate("update Berat_badan set berat_badan = '" +inputBerat.getText()+ "',tanggal = date('now','localtime') where id_pengguna =  "+session+"");
+            dbModel.InsertOrUpdate("update DataPengguna set tinggi = '" +inputTinggi.getText()+ "', saranPengguna = '' where id_pengguna =  "+session+"");
+            dbModel.InsertOrUpdate("update Berat_badan set berat_badan = '" +inputBerat.getText()+ "' where id_pengguna =  "+session+"");
             cek = false;
         }
         return cek;
